@@ -1,0 +1,12 @@
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\bin\Debug\Dominio.dll
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\bin\Debug\Dominio.pdb
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.csproj.AssemblyReference.cache
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.dll
+C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.pdb
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\bin\Debug\Dominio.dll
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\bin\Debug\Dominio.pdb
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.csproj.AssemblyReference.cache
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.csproj.CoreCompileInputs.cache
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.dll
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Dominio\obj\Debug\Dominio.pdb

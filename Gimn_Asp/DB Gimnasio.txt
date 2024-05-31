@@ -1,0 +1,78 @@
+use master
+go
+drop database Gimnasio
+go
+create database Gimnasio
+go
+use Gimnasio
+go
+create table Personas(
+ID int identity(1,1) primary key,
+DNI varchar(10) unique,
+Nombre varchar(50),
+Apellido varchar(50),
+Email varchar(70) unique,
+FechaNacimiento date,
+) 
+
+create table TipoUsuario(  
+ID  int identity(1,1) primary key,
+Tipo varchar(30),
+)
+
+create table Usuarios(
+ID  int identity(1,1) primary key,
+IDPersona int foreign key references Personas(ID),
+Usuario varchar(30),
+Clave varchar(10),
+IDTipoUsuario int foreign key references TipoUsuario(ID),
+)
+
+
+create table Membresias(
+ID int identity (1,1) primary key,
+TipoMembresia varchar(50),
+Precio money,
+)
+
+create table  MembresiasUsuarios(
+ID int identity (1,1),
+IDPersona int foreign key references Personas(ID),
+IDMembresia int foreign key references Membresias(ID),
+FechaInicio date,
+FechaFin    date,
+Estado bit,
+)
+
+ALTER TABLE Usuarios
+ADD CONSTRAINT DF_IDTipoUsuario DEFAULT (2) FOR IDTipoUsuario;
+
+alter table Usuarios add TipoMembresia int foreign key references Membresias(ID)
+
+alter table Usuarios
+ADD CONSTRAINT UQ_Usuario unique (Usuario) 
+
+
+
+
+
+create table  ActividadSalon(
+Id int identity(1,1)primary key,
+Nombre varchar(50) not null,
+)
+
+
+
+CREATE TABLE reserva (
+    Id INT PRIMARY KEY,
+    IdActividad INT,
+    Lugar VARCHAR(255),
+    Fecha DATE,
+    CONSTRAINT fk_idClase FOREIGN KEY (IdActividad) REFERENCES ActividadSalon(Id),
+    CONSTRAINT unique_lugar_por_clase UNIQUE (idActividad, lugar)
+);
+
+
+
+
+

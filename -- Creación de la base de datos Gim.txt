@@ -1,0 +1,104 @@
+-- Creación de la base de datos Gimnasio
+USE master;
+GO
+drop database Gimnasio1;
+GO
+create DATABASE Gimnasio1;
+GO
+USE Gimnasio1;
+GO
+
+
+
+-- Tabla TiposMembresias
+CREATE TABLE TiposMembresias (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100),
+    Precio MONEY
+);
+GO
+
+-- Tabla Personas
+CREATE TABLE Personas (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    DNI VARCHAR(10) UNIQUE,
+    Nombre VARCHAR(50),
+    Apellido VARCHAR(50),
+    Email VARCHAR(70) UNIQUE,
+    FechaNacimiento DATE
+);
+GO
+
+-- Tabla CargosEmpleados
+CREATE TABLE CargosEmpleados (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) UNIQUE
+);
+GO
+
+-- Tabla Empleados
+CREATE TABLE Empleados (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
+    IDCargoEmpleado INT FOREIGN KEY REFERENCES CargosEmpleados(ID),
+    NombreUsuario VARCHAR(50) UNIQUE,
+    Clave VARCHAR(50)
+);
+GO
+
+-- Tabla Miembros
+CREATE TABLE Miembros (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
+    IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
+    FechaInicio DATE,
+    FechaFin DATE,
+    NombreUsuario VARCHAR(50),
+    Clave VARCHAR(50)
+);
+GO
+
+
+-- Tabla Cobros
+CREATE TABLE Cobros (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDMiembro INT FOREIGN KEY REFERENCES Miembros(ID),
+    IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
+    FechaCobro DATE
+);
+GO
+
+INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
+VALUES
+('95996162', 'Juan', 'Pérez', 'juan.perez@example.com', '1990-01-15'),
+('96011491', 'María', 'González', 'maria.gonzalez@example.com', '1985-05-22'),
+('17245319', 'Pedro', 'López', 'pedro.lopez@example.com', '1993-03-10');
+GO
+
+-- Insertar 2 tipos de membresía en la tabla TiposMembresias
+INSERT INTO TiposMembresias (Descripcion, Precio)
+VALUES
+('Básica', 20.00),
+('Premium', 50.00);
+GO
+
+select * from Personas
+
+
+INSERT INTO Miembros (IDPersona, IDTipoMembresia, FechaInicio, FechaFin, NombreUsuario, Clave)
+VALUES
+(1, 1, '2024-05-01', '2025-05-01', 'juan.perez', 'password123'),
+(2, 2, '2024-05-01', '2025-05-01', 'maria.gonzalez', 'password456'),
+(3, 1, '2024-05-01', '2025-05-01', 'pedro.lopez', 'password789');
+GO
+
+update  Miembros
+set  FechaFin= '2024-05-01'  where IDPersona=3
+
+select * from Personas
+select * from Miembros
+select * from Cobros
+
+UPDATE Miembros SET FechaFin = @NuevaFechaFin WHERE IDPersona = @IDMiembro
+
+SELECT ID, DNI, Nombre, Apellido, Email, FechaNacimiento FROM Personas WHERE DNI ='31'
