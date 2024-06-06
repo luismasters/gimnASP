@@ -14,10 +14,6 @@ namespace Dominio
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public bool EstadoActivo { get; set; }
-
-
-
-
-
+        public Persona Persona { get; set; }
     }
 }

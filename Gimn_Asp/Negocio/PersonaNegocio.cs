@@ -83,6 +83,10 @@ namespace Negocio
         }
 
 
+
+
+
+
         public Persona BuscarPersona(string dni)
         {
             Persona persona = null; // Inicializa persona como null para manejar casos en los que no se encuentra

@@ -31,21 +31,47 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <asp:ListBox ID="lstPersonas" runat="server" CssClass="form-control" Height="200px" OnSelectedIndexChanged="lstPersonas_SelectedIndexChanged" AutoPostBack="true">
-                        </asp:ListBox>
+                        <asp:ListBox ID="lstPersonas" runat="server" CssClass="form-control" Height="200px" OnSelectedIndexChanged="lstPersonas_SelectedIndexChanged" AutoPostBack="true"></asp:ListBox>
                     </div>
-                    <div class="mt-3">
-                        <asp:GridView ID="gvPersonas" runat="server" CssClass="table table-striped" AutoGenerateColumns="false">
-                            <Columns>
-                                <asp:BoundField DataField="ID" HeaderText="ID" />
-                                <asp:BoundField DataField="DNI" HeaderText="DNI" />
-                                <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-                                <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
-                                <asp:BoundField DataField="Email" HeaderText="Email" />
-                                <asp:BoundField DataField="FechaNacimiento" HeaderText="Fecha Nacimiento" DataFormatString="{0:dd/MM/yyyy}" />
-                            </Columns>
-                        </asp:GridView>
-                    </div>
+
+
+                    <asp:Panel ID="pnlCard" runat="server" Visible="false">
+                        <div id="card" class="mt-5 d-flex">
+                            <div style="margin: auto">
+                                <div class="card mb-3 bg-c" style="width: 640px; height: 300px">
+                                    <div class="row g-0">
+                                        <div class="col-md-4 bg-c">
+                                            <asp:Image ID="imgFoto" runat="server" CssClass="img-fluid rounded-start" Style="height:300px;width:300px" />
+                                        </div>
+                                        <div class="col-md-8 bg-c">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Nombre:
+                                        <asp:Label ID="lblNombre" runat="server" /></h5>
+                                                <p class="card-text">
+                                                    Tipo de Membresia:
+                                        <asp:Label ID="lblTipoMembresia" runat="server" />
+                                                </p>
+
+                                                <p class="card-text">
+                                                    Fecha de Inicio:
+                                        <asp:Label ID="lblFechaInicio" runat="server" />
+                                                </p>
+                                                <p class="card-text">
+                                                    Fecha de Vencimiento:
+                                        <asp:Label ID="lblFechaVencimiento" runat="server" />
+                                                </p>
+
+                                                <p class="card-text">
+                                                    <asp:Label ID="lblAcceso" runat="server" />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </asp:Panel>
+
                 </div>
             </div>
         </div>

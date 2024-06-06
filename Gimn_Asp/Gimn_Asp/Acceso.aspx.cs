@@ -38,6 +38,14 @@ namespace Gimn_Asp
                     lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                     lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");
 
+
+                    ImagenNegocio imagenNegocio = new ImagenNegocio();
+                    Imagen imagen = new Imagen();
+                    
+                    imagen=imagenNegocio.CargarImagenPorIDPersona(miembro.IDPersona);
+
+                    imgFoto.ImageUrl = imagenNegocio.UrlPerfilImagen(imagen);
+
                     if (miembro.FechaFin >= DateTime.Now)
                     {
                         lblAcceso.Text = "Acceso permitido";

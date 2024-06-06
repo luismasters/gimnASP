@@ -44,6 +44,7 @@
     <Compile Include="CargoEmpleado.cs" />
     <Compile Include="Cobro.cs" />
     <Compile Include="Empleado.cs" />
+    <Compile Include="Imagen.cs" />
     <Compile Include="Miembro.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

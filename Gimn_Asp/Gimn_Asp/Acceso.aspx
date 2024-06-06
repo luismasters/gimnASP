@@ -37,7 +37,7 @@
                                 <div class="card mb-3 bg-c" style="width: 640px;height:300px">
                                     <div class="row g-0">
                                         <div class="col-md-4 bg-c">
-                                            <img src="Content/Imagen/gymn.jpg" class="img-fluid rounded-start" alt="..." style="height:300px;width:300px">
+                                            <asp:Image ID="imgFoto" runat="server" CssClass="img-fluid rounded-start" Style="height:300px;width:300px" />
                                         </div>
                                         <div class="col-md-8 bg-c">
                                             <div class="card-body">
@@ -73,7 +73,7 @@
             background-color: rgb(60, 60, 60);
             border-radius: 5px;
             border: solid;
-            border-color: red;
+            border-color:rgb(146, 146, 146);
             color: aliceblue;
         }
     </style>

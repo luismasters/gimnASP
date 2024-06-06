@@ -57,13 +57,57 @@ namespace Gimn_Asp
             Persona persona = personaNegocio.BuscarPersona(dni);
             if (persona != null)
             {
-                gvPersonas.DataSource = new List<Persona> { persona };
-                gvPersonas.DataBind();
+
+                Miembro miembro = new Miembro();
+                MiembroNegocio miembroNegocio = new MiembroNegocio();
+
+                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.ID);
+
+                if (miembro != null)
+                {
+                    TipoMembresia tipoMembresia = new TipoMembresia();
+                    TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
+                    tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
+
+                    lblNombre.Text = $"{persona.Nombre} {persona.Apellido}";
+                    lblTipoMembresia.Text = tipoMembresia.Descripcion;
+                    lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
+                    lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");
+
+                    Dominio.Imagen imagen = new Imagen();
+                    ImagenNegocio imagenNegocio = new ImagenNegocio();
+
+                     imagen=imagenNegocio.CargarImagenPorIDPersona(miembro.IDPersona);
+
+                    imgFoto.ImageUrl=imagenNegocio.UrlPerfilImagen(imagen);
+
+
+
+                    if (miembro.FechaFin >= DateTime.Now)
+                    {
+                        lblAcceso.Text = "Acceso permitido";
+                        lblAcceso.ForeColor = System.Drawing.Color.Green;
+                    }
+                    else
+                    {
+                        lblAcceso.Text = "Membresía vencida";
+                        lblAcceso.ForeColor = System.Drawing.Color.Red;
+                    }
+
+                    pnlCard.Visible = true;
+                }
+                else
+                {
+                    pnlCard.Visible = false;
+                }
+
+
+
+
             }
             else
             {
-                gvPersonas.DataSource = null;
-                gvPersonas.DataBind();
+              
             }
         }
     }
