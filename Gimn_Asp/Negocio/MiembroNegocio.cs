@@ -28,7 +28,7 @@ namespace Negocio
                 while (DT.Lector.Read())
                 {
                     Miembro miembro = new Miembro();
-                    miembro.ID = Convert.ToInt32(DT.Lector["ID"]);
+                    miembro.IDMiembro = Convert.ToInt32(DT.Lector["ID"]);
                     miembro.IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]);
                     miembro.TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]);
                     miembro.FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]);
@@ -100,7 +100,7 @@ namespace Negocio
                 {
                     miembro = new Miembro
                     {
-                        ID = Convert.ToInt32(DT.Lector["ID"]),
+                        IDMiembro = Convert.ToInt32(DT.Lector["ID"]),
                         IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]),
                         TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]),
                         FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]),
@@ -147,14 +147,93 @@ namespace Negocio
             }
 
 
+        }
 
+        public List<Miembro> ListarMiembrosVencidos()
+        {
+            List<Miembro> miembros = new List<Miembro>();
+            try
+            {
+                // Consulta SQL para obtener miembros con membresía vencida
+                DT.setearConsulta(@"
+            SELECT P.DNI, P.Nombre, P.Apellido, M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin
+            FROM Miembros M
+            INNER JOIN Personas P ON P.ID = M.IDPersona
+            WHERE M.ID IN (
+                SELECT MAX(ID) 
+                FROM Miembros 
+                GROUP BY IDPersona
+            )
+            AND M.FechaFin < GETDATE();
+        ");
+                DT.ejecutarLectura();
 
+                while (DT.Lector.Read())
+                {
+                    Miembro miembro = new Miembro();
+                    miembro.DNI = DT.Lector["DNI"].ToString();
+                    miembro.Nombre = DT.Lector["Nombre"].ToString();
+                    miembro.Apellido = DT.Lector["Apellido"].ToString();
+                    miembro.IDMiembro = Convert.ToInt32(DT.Lector["ID"]);
+                    miembro.IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]);
+                    miembro.TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]);
+                    miembro.FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]);
+                    miembro.FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"]);
+                    miembros.Add(miembro);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los miembros con membresía vencida", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return miembros;
+        }
 
+        public List<Miembro> ListarUltimosMiembros()
+        {
+            List<Miembro> miembros = new List<Miembro>();
+            try
+            {
+                // Consulta SQL para obtener el último registro por cada IDPersona
+                DT.setearConsulta(@"
+            SELECT P.DNI, P.Nombre, P.Apellido, M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin
+FROM Miembros M
+INNER JOIN Personas P ON P.ID = M.IDPersona
+WHERE M.ID IN (
+    SELECT MAX(ID) 
+    FROM Miembros 
+    GROUP BY IDPersona
+);
+        ");
+                DT.ejecutarLectura();
 
-
-
-
-
+                while (DT.Lector.Read())
+                {
+                    Miembro miembro = new Miembro();
+                    miembro.DNI = DT.Lector["DNI"].ToString();
+                    miembro.Nombre = DT.Lector["Nombre"].ToString(); // Agrega esta línea
+                    miembro.Apellido = DT.Lector["Apellido"].ToString(); // Agrega esta línea
+                    miembro.IDMiembro = Convert.ToInt32(DT.Lector["ID"]);
+                    miembro.IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]);
+                    miembro.TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]);
+                    miembro.FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]);
+                    miembro.FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"]);
+                    miembros.Add(miembro);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los últimos registros de los miembros", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return miembros;
         }
 
 

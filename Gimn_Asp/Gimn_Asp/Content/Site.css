@@ -1,11 +1,6 @@
-﻿/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    margin-top: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    background-color: aqua;
-}
+﻿
+
+
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
@@ -14,9 +9,4 @@ textarea {
     max-width: 280px;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .body-content {
-        padding: 0;
-    }
-}
+

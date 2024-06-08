@@ -25,7 +25,7 @@ namespace Negocio
                 while (DT.Lector.Read())
                 {
                     Persona persona = new Persona();
-                    persona.ID = Convert.ToInt32(DT.Lector["ID"]);
+                    persona.IDPersona = Convert.ToInt32(DT.Lector["ID"]);
                     persona.DNI = DT.Lector["DNI"].ToString();
                     persona.Nombre = DT.Lector["Nombre"].ToString();
                     persona.Apellido = DT.Lector["Apellido"].ToString();
@@ -105,7 +105,7 @@ namespace Negocio
                 if (DT.Lector.Read())
                 {
                     persona = new Persona(); // Crea una nueva instancia de Persona solo si hay resultados
-                    persona.ID = Convert.ToInt32(DT.Lector["ID"]);
+                    persona.IDPersona = Convert.ToInt32(DT.Lector["ID"]);
                     persona.DNI = DT.Lector["DNI"].ToString();
                     persona.Nombre = DT.Lector["Nombre"].ToString();
                     persona.Apellido = DT.Lector["Apellido"].ToString();

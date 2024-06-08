@@ -25,7 +25,7 @@ namespace Gimn_Asp
                 Miembro miembro = new Miembro();
                 MiembroNegocio miembroNegocio = new MiembroNegocio();
 
-                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.ID);
+                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
 
                 if (miembro != null)
                 {
@@ -33,7 +33,7 @@ namespace Gimn_Asp
                     TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
                     tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
 
-                    lblNombre.Text = $"{persona.Nombre} {persona.Apellido}";
+                    lblNombre.Text = $"{miembro.Nombre} {miembro.Apellido}";
                     lblTipoMembresia.Text = tipoMembresia.Descripcion;
                     lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                     lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");
@@ -69,7 +69,7 @@ namespace Gimn_Asp
             }
             else
             {
-                lblMensaje.Text = "Persona no registrada.";
+                lblMensaje.Text = "Socio no registrado.";
                 lblMensaje.Visible = true;
                 pnlCard.Visible = false;
             }

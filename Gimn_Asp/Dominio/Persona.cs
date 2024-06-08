@@ -12,7 +12,7 @@ using System.Threading.Tasks;
     {
         public class Persona
         {
-            public int ID { get; set; }
+            public int IDPersona { get; set; }
             public string DNI { get; set; }
             public string Nombre { get; set; }
             public string Apellido { get; set; }

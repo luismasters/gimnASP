@@ -77,10 +77,6 @@ C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.Core
 C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.CopyComplete
 C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.dll
 C:\Users\luism\Desktop\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.pdb
-C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.AssemblyReference.cache
-C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.CoreCompileInputs.cache
-C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.dll
-C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.pdb
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\Gimn_Asp.dll.config
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\Gimn_Asp.dll
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\Gimn_Asp.pdb
@@ -155,4 +151,8 @@ C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\es\System.Web.Optimization.resources.dll
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\bin\es\Microsoft.AspNet.FriendlyUrls.resources.dll
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.AssemblyReference.cache
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.CoreCompileInputs.cache
 C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.csproj.CopyComplete
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.dll
+C:\Users\luism\Desktop\UTN\3erCuatrimestre\Programacion3\Gimn_Asp\Gimn_Asp\Gimn_Asp\obj\Debug\Gimn_Asp.pdb

@@ -2,9 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
-        <div class="container">
-            <div class="row" style="height: 700px">
-                <div class="col-3 bg-c">
+        <div class="container ">
+            <div class="row bg-c mt-3" style="height: 900px">
+                <div class="col-3 border-L">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="acceso.aspx">Acceso</a>
@@ -40,10 +40,10 @@
                             <div style="margin: auto">
                                 <div class="card mb-3 bg-c" style="width: 640px; height: 300px">
                                     <div class="row g-0">
-                                        <div class="col-md-4 bg-c">
-                                            <asp:Image ID="imgFoto" runat="server" CssClass="img-fluid rounded-start" Style="height:300px;width:300px" />
+                                        <div class="col-md-4 border-L">
+                                            <asp:Image ID="imgFoto" runat="server" CssClass="img-fluid rounded-start" Style="height: 300px; width: 300px" />
                                         </div>
-                                        <div class="col-md-8 bg-c">
+                                        <div class="col-md-8">
                                             <div class="card-body">
                                                 <h5 class="card-title">Nombre:
                                         <asp:Label ID="lblNombre" runat="server" /></h5>
@@ -76,13 +76,5 @@
             </div>
         </div>
     </main>
-    <style>
-        .bg-c {
-            background-color: rgb(60, 60, 60);
-            border-radius: 5px;
-            border: solid;
-            border-color: red;
-            color: aliceblue;
-        }
-    </style>
+   
 </asp:Content>

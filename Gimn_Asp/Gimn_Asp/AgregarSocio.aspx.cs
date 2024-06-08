@@ -39,7 +39,7 @@ namespace Gimn_Asp
 
 
 
-                    int idPersona = persona.ID;
+                    int idPersona = persona.IDPersona;
 
                     // Instanciar la clase ImagenNegocio
                     ImagenNegocio negocioImagen = new ImagenNegocio();

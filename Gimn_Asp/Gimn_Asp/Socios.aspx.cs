@@ -11,6 +11,7 @@ namespace Gimn_Asp
     public partial class Socios : Page
     {
         private PersonaNegocio personaNegocio = new PersonaNegocio();
+        private MiembroNegocio miembroNegocio = new MiembroNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,14 +23,14 @@ namespace Gimn_Asp
 
         protected void LoadPersonas()
         {
-            List<Persona> personas = personaNegocio.listarPersona();
-            Session["Personas"] = personas; // Guardar la lista completa en sesión para filtrar
-            BindListBox(personas);
+            List<Miembro> miembros = miembroNegocio.ListarUltimosMiembros();
+            Session["Personas"] = miembros; // Guardar la lista completa en sesión para filtrar
+            BindListBox(miembros);
         }
 
-        protected void BindListBox(List<Persona> personas)
+        protected void BindListBox(List<Miembro> miembros)
         {
-            lstPersonas.DataSource = personas;
+            lstPersonas.DataSource = miembros;
             lstPersonas.DataTextField = "NombreCompleto"; // Usar una propiedad combinada para mostrar nombre completo
             lstPersonas.DataValueField = "DNI";
             lstPersonas.DataBind();
@@ -38,17 +39,17 @@ namespace Gimn_Asp
         protected void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             string filter = txtBuscar.Text.ToLower();
-            List<Persona> personas = Session["Personas"] as List<Persona>;
+            List<Miembro> miembros = Session["Personas"] as List<Miembro>;
 
             if (!string.IsNullOrWhiteSpace(filter))
             {
-                personas = personas.Where(p =>
+                miembros = miembros.Where(p =>
                     p.DNI.ToLower().Contains(filter) ||
                     p.Nombre.ToLower().Contains(filter) ||
                     p.Apellido.ToLower().Contains(filter)).ToList();
             }
 
-            BindListBox(personas);
+            BindListBox(miembros);
         }
 
         protected void lstPersonas_SelectedIndexChanged(object sender, EventArgs e)
@@ -59,9 +60,8 @@ namespace Gimn_Asp
             {
 
                 Miembro miembro = new Miembro();
-                MiembroNegocio miembroNegocio = new MiembroNegocio();
 
-                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.ID);
+                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
 
                 if (miembro != null)
                 {
@@ -69,7 +69,7 @@ namespace Gimn_Asp
                     TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
                     tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
 
-                    lblNombre.Text = $"{persona.Nombre} {persona.Apellido}";
+                    lblNombre.Text = $"{miembro.Nombre} {miembro.Apellido}";
                     lblTipoMembresia.Text = tipoMembresia.Descripcion;
                     lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                     lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");

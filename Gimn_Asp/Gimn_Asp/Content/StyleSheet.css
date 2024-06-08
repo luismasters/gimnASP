@@ -1,3 +1,16 @@
-﻿* {
-    background-color: aqua;
+﻿.bg-c {
+    background-color: rgba(30,30,30,255);
+    border-radius: 5px;
+    border: solid;
+    border-color: rgb(146, 146, 146);
+    color: aliceblue;
+}
+
+.border-L {
+    border-right: solid;
+    border-color: rgb(146, 146, 146);
+}
+
+body {
+    background-color: rgba(30,30,30,255);
 }
