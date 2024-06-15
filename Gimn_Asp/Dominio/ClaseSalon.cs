@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    public class Empleado 
+    public class ClaseSalon
     {
+
         public int ID { get; set; }
-        public int IDPersona { get; set; }
-        public CargoEmpleado cargoEmpleado { get; set; }
+        public string NombreClase { get; set; }
 
 
-     
+
+
     }
-
 }

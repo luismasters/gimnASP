@@ -69,7 +69,7 @@ namespace Gimn_Asp
                     TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
                     tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
 
-                    lblNombre.Text = $"{miembro.Nombre} {miembro.Apellido}";
+                    lblNombre.Text = $"{persona.Nombre} {persona.Apellido}";
                     lblTipoMembresia.Text = tipoMembresia.Descripcion;
                     lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                     lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");

@@ -88,7 +88,7 @@ namespace Gimn_Asp
                     DateTime nuevafechafin = DateTime.Today.AddDays(30);
                     DateTime fechahoy = DateTime.Today;
                     txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                    txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd +de+ MMMM del yyyy");
+                    txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
 
 
                     if (miembro.FechaFin >= DateTime.Now)
@@ -165,7 +165,7 @@ namespace Gimn_Asp
                         DateTime nuevafechafin = DateTime.Today.AddDays(30);
                         DateTime fechahoy = DateTime.Today;
                         txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                        txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd +de+ MMMM del yyyy");
+                        txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd / MMMM / yyyy");
                     }
                     else
                     {

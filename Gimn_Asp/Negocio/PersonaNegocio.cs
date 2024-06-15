@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,12 +45,13 @@ namespace Negocio
             }
             return personas;
         }
-        public bool AgregarPersona(Persona persona)
+        public bool AgregarPersona(Persona persona, out string errorMessage)
         {
+            errorMessage = string.Empty;
+
             try
             {
-
-                DT.setearConsulta("insert into Personas(DNI,Nombre,Apellido,Email,FechaNacimiento)" + "OUTPUT INSERTED.Id VALUES (@DNIP,@Nombre,@Apellido,@Email,@FechaNacimiento)");
+                DT.setearConsulta("insert into Personas(DNI,Nombre,Apellido,Email,FechaNacimiento) OUTPUT INSERTED.Id VALUES (@DNIP,@Nombre,@Apellido,@Email,@FechaNacimiento)");
                 DT.agregarParametro("@DNIP", persona.DNI);
                 DT.agregarParametro("@Nombre", persona.Nombre);
                 DT.agregarParametro("@Apellido", persona.Apellido);
@@ -58,12 +60,27 @@ namespace Negocio
 
                 return DT.ejecutarAccion();
             }
-            catch (Exception)
+            catch (SqlException ex)
             {
+                // Error number for unique constraint violation
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    errorMessage = "El Email ingresado ya está registrado.";
+                    return false;
+                }
+                // Propagate other SQL exceptions
                 throw;
             }
-            finally { DT.cerrarConexion(); }
-
+            catch (Exception ex)
+            {
+                // Manejo de otras excepciones
+                errorMessage = "Ocurrió un error al intentar agregar la persona: " + ex.Message;
+                return false;
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
         }
 
 
@@ -130,5 +147,9 @@ namespace Negocio
             return persona; // Devuelve la persona o null si no se encuentra
         }
 
+        public void AgregarPersona(Persona persona, out object errorMessage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

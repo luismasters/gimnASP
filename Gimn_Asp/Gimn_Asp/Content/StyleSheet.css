@@ -3,7 +3,7 @@
     border-radius: 5px;
     border: solid;
     border-color: rgb(146, 146, 146);
-    color: aliceblue;
+    color: aliceblue!important;
 }
 
 .border-L {

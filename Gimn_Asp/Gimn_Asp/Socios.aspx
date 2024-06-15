@@ -12,9 +12,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="Pago.aspx">Cobro</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="Socios.aspx">Socios</a>
-                        </li>
+        
+                        <div class="dropdown">
+                            <a class="nav-item" href="#"  data-bs-toggle="dropdown" aria-expanded="false">Socios
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="Socios.aspx">Estatus/Buscar Socio</a></li>
+                                <li><a class="dropdown-item" href="AgregarSocio.aspx">Agregar Socio</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+
                         <li class="nav-item">
                             <a class="nav-link" href="#">Actividades</a>
                         </li>
@@ -76,5 +85,5 @@
             </div>
         </div>
     </main>
-   
+
 </asp:Content>

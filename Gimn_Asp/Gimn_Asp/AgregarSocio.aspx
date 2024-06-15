@@ -6,38 +6,136 @@
 
 
     <main>
-       <div class="container ">
-     <div class="row bg-c mt-3" style="height: 900px">
-         <div class="col-3 border-L">
-             <ul class="nav flex-column">
-                 <li class="nav-item">
-                     <a class="nav-link active" aria-current="page" href="acceso.aspx">Acceso</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="Pago.aspx">Cobro</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="Socios.aspx">Socios</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="#">Actividades</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="#">Instructores</a>
-                 </li>
-             </ul>
-         </div>
-                <div class="col-9 bg-c">
-                    <div class="mt-5 d-flex">
-                        <div style="margin: auto">
-                            <h4>Control de acceso</h4>
-                            <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" Width="800px"></asp:TextBox>
+        <div class="container ">
+            <div class="row bg-c mt-3" style="height: 900px">
+                <div class="col-3 border-L">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="acceso.aspx">Acceso</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="Pago.aspx">Cobro</a>
+                        </li>
+
+                        <div class="dropdown">
+                            <a class="nav-item" href="#" data-bs-toggle="dropdown" aria-expanded="false">Socios
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="Socios.aspx">Estatus/Buscar Socio</a></li>
+                                <li><a class="dropdown-item" href="AgregarSocio.aspx">Agregar Socio</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
                         </div>
-                    </div>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Actividades</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Instructores</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-9 bg-c">
+
+
+
+
+                    <div>
+                        <h2>Agregar Nuevo Socio</h2>
+
+                        <div class="mt-5 d-flex">
+                            <div style="margin: auto">
+                                <h4>Control de acceso</h4>
+                                <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" Width="800px"></asp:TextBox>
+                                <asp:Button Text="Enviar" runat="server" OnClick="BuscarUsuario_Click" />
+                            </div>
+                        </div>
+
+                        <asp:Panel runat="server" ID="panel" Visible="false">
+                            <table>
+                                <tr>
+                                    <td>Nombre:</td>
+                                    <td>
+                                        <asp:TextBox ID="txtNombre" runat="server" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Apellido:</td>
+                                    <td>
+                                        <asp:TextBox ID="txtApellido" runat="server" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha de Nacimiento:</td>
+                                    <td>
+                                        <asp:TextBox ID="txtFechaNacimiento" runat="server" TextMode="Date" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>
+                                        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" /></td>
+                                </tr>
+                                <tr>
+                                    <td>DNI:</td>
+                                    <td>
+                                        <asp:TextBox ID="txtDNIUser" runat="server" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Inicio Nuevo Periodo</td>
+                                    <td>     <asp:TextBox runat="server" CssClass="form-control" ID="txtFechaActual" />
+
+                                       </td>
+                                </tr>
+                                <tr>
+                                    <td>Inicio Nuevo Periodo</td>
+                                    <td>
+                                             <asp:TextBox runat="server" CssClass="form-control" ID="txtfinNuevoPeriodo" /></td>
+
+                                </tr>
+
+
+                            </table>
+
+                     <div class="col-md-6">
+     <label for="inputMembershipType" class="form-label">Tipo de membresía</label>
+     <asp:DropDownList ID="DropDownListMembresia" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMembresia_SelectedIndexChanged">
+     </asp:DropDownList>
+ </div>
+
+ <div class="col-md-6">
+     <label for="inputPrice" class="form-label">Precio</label>
+     <asp:Label runat="server" ID="lblPrecio" />
+ </div>
+                  
+
+
+
+
+
+
+
+                    <script type="text/javascript">
+                        function previewImage(input) {
+                            var preview = document.getElementById('<%= imgPreview.ClientID %>');
+                            var file = input.files[0];
+                            var reader = new FileReader();
+
+                            reader.onload = function (e) {
+                                preview.src = e.target.result;
+                            };
+
+                            if (file) {
+                                reader.readAsDataURL(file);
+                            }
+                        }
+    </script>
+
+
 
                     <div>
                         <h2>Subir Imagen</h2>
-                        <asp:FileUpload ID="fileUploadImagen" runat="server" />
+                        <asp:FileUpload ID="fileUploadImagen" runat="server" OnChange="previewImage(this)" />
+                        <br />
+                        <asp:Image ID="imgPreview" runat="server" Width="200px" Height="200px" />
                         <br />
                         <asp:Button ID="btnGuardar" runat="server" Text="Guardar Imagen" OnClick="btnGuardar_Click" />
                         <br />
@@ -45,25 +143,10 @@
                     </div>
 
 
-                    <asp:Label ID="Label1" runat="server" CssClass="text-danger" Visible="false"></asp:Label>
+    </asp:Panel>
+
                 </div>
             </div>
-        </div>
-    </main>
-
-   <style>
-       .bg-c {
-           background-color: rgba(30,30,30,255);
-           border-radius: 5px;
-           border: solid;
-           border-color: rgb(146, 146, 146);
-           color: aliceblue;
-       }
-
-       .border-L {
-           border-right: solid;
-           border-color: rgb(146, 146, 146);
-       }
-   </style>
-
+  </div>
+        
 </asp:Content>

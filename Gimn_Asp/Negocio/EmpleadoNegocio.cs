@@ -28,7 +28,7 @@ namespace Negocio
                     Empleado empleado = new Empleado();
                     empleado.ID = Convert.ToInt32(Dt.Lector["ID"]);
                     empleado.IDPersona = Convert.ToInt32(Dt.Lector["IDPersona"]);
-                    empleado.IDCargoEmpleado = Convert.ToInt32(Dt.Lector["IDCargoEmpleado"]);
+                    empleado.cargoEmpleado.ID = Convert.ToInt32(Dt.Lector["IDCargoEmpleado"]);
                     empleados.Add(empleado);
                 }
             }
@@ -49,7 +49,7 @@ namespace Negocio
             {
                 Dt.setearConsulta("insert into Empleados(IDPersona,IDCargoEmpleado,NombreUsuario,Clave)" + "OUTPUT INSERTED.Id VALUES (@IDPersona,@IDCargoEmpleado,@NombreUsuario,@Clave)");
                 Dt.agregarParametro("@IDPersona", empleado.IDPersona);
-                Dt.agregarParametro("@IDCargoEmpleado", empleado.IDCargoEmpleado);
+                Dt.agregarParametro("@IDCargoEmpleado", empleado.cargoEmpleado.ID);
                 return Dt.ejecutarAccion();
 
             }

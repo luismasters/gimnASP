@@ -42,13 +42,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CargoEmpleado.cs" />
+    <Compile Include="ClaseSalon.cs" />
     <Compile Include="Cobro.cs" />
     <Compile Include="Empleado.cs" />
+    <Compile Include="HorarioClase.cs" />
     <Compile Include="Imagen.cs" />
     <Compile Include="Miembro.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reserva.cs" />
     <Compile Include="Rol.cs" />
+    <Compile Include="Salon.cs" />
     <Compile Include="TipoMembresia.cs" />
     <Compile Include="Usuario.cs" />
   </ItemGroup>

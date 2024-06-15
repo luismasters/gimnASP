@@ -1,9 +1,7 @@
 ﻿using Dominio;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Negocio
 {
@@ -15,19 +13,20 @@ namespace Negocio
         {
             DT = new AccesoDatos();
         }
+
         public List<CargoEmpleado> ListarCargosEmpleados()
         {
             List<CargoEmpleado> cargoEmpleados = new List<CargoEmpleado>();
             try
             {
-                DT.setearConsulta("select ID,Descripcion from CargosEmpleados");
+                DT.setearConsulta("SELECT ID, Descripcion FROM CargosEmpleados");
                 DT.ejecutarLectura();
                 while (DT.Lector.Read())
                 {
-                    CargoEmpleado cargoempleado = new CargoEmpleado();
-                    cargoempleado.ID = Convert.ToInt32(DT.Lector["ID"]);
-                    cargoempleado.Descripcion = Convert.ToString(DT.Lector["Descripcion"]);
-                    cargoEmpleados.Add(cargoempleado);
+                    CargoEmpleado cargoEmpleado = new CargoEmpleado();
+                    cargoEmpleado.ID = Convert.ToInt32(DT.Lector["ID"]);
+                    cargoEmpleado.Descripcion = Convert.ToString(DT.Lector["Descripcion"]);
+                    cargoEmpleados.Add(cargoEmpleado);
                 }
             }
             catch (Exception)
@@ -45,7 +44,7 @@ namespace Negocio
         {
             try
             {
-                DT.setearConsulta("insert into CargosEmpleados(Descripcion)" + "OUTPUT INSERTED.Id VALUES (@Descripcion)");
+                DT.setearConsulta("INSERT INTO CargosEmpleados (Descripcion) OUTPUT INSERTED.ID VALUES (@Descripcion)");
                 DT.agregarParametro("@Descripcion", cargo.Descripcion);
                 return DT.ejecutarAccion();
             }
@@ -53,13 +52,28 @@ namespace Negocio
             {
                 throw;
             }
-            finally { DT.cerrarConexion(); }
+            finally
+            {
+                DT.cerrarConexion();
+            }
         }
 
-
-
-
-
-
+        public bool EliminarCargoEmpleado(int id)
+        {
+            try
+            {
+                DT.setearConsulta("DELETE FROM CargosEmpleados WHERE ID = @ID");
+                DT.agregarParametro("@ID", id);
+                return DT.ejecutarAccion();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+        }
     }
 }
