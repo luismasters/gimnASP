@@ -12,7 +12,9 @@ namespace Dominio
         public int ID { get; set; }
         public ClaseSalon claseSalon { get; set; }
         public DateTime Fecha { get; set; }
-        public  TimeSpan HoraInicio { get; set; }
-        public TimeSpan  HoraFin { get; set; }
+        public string HoraInicio { get; set; }  // Cambiado a string
+        public string HoraFin { get; set; }     // Cambiado a string
+        public  Salon salon { get; set; }
+
     }
 }

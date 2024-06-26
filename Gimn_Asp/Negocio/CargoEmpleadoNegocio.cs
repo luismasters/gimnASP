@@ -14,7 +14,7 @@ namespace Negocio
             DT = new AccesoDatos();
         }
 
-        public List<CargoEmpleado> ListarCargosEmpleados()
+        public List<CargoEmpleado> ListarCargos()
         {
             List<CargoEmpleado> cargoEmpleados = new List<CargoEmpleado>();
             try
@@ -40,7 +40,7 @@ namespace Negocio
             return cargoEmpleados;
         }
 
-        public bool AgregarCargoEmpleado(CargoEmpleado cargo)
+        public bool AgregarCargo(CargoEmpleado cargo)
         {
             try
             {

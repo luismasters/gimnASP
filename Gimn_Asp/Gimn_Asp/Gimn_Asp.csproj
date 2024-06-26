@@ -107,6 +107,7 @@
     <Content Include="AgragarActividades.aspx" />
     <Content Include="AgregarEmpleados.aspx" />
     <Content Include="AgregarSocio.aspx" />
+    <Content Include="CargarHorarioSalon.aspx" />
     <Content Include="Config.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -231,6 +232,13 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="CargarHorarioSalon.aspx.cs">
+      <DependentUpon>CargarHorarioSalon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CargarHorarioSalon.aspx.designer.cs">
+      <DependentUpon>CargarHorarioSalon.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Config.aspx.cs">
       <DependentUpon>Config.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

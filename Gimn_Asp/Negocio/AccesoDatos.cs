@@ -1,36 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient; //para conectarse a la base de datos
+using System.Data.SqlClient;
 
 namespace Negocio
 {
     public class AccesoDatos
     {
+        private SqlConnection conexion; // para conectarse a la base de datos
+        private SqlCommand comando; // para ejecutar comandos SQL
+        private SqlDataReader lector; // para leer datos de la base de datos
 
-        private SqlConnection conexion; //para conectarse a la base de datos
-        private SqlCommand comando; //para ejecutar comandos sql
-        private SqlDataReader lector; //para leer datos de la base de datos
-        public SqlDataReader Lector //propiedad para devolver el lector
+        public SqlDataReader Lector // propiedad para devolver el lector
         {
             get { return lector; }
         }
-        public AccesoDatos() //constructor
+
+        public AccesoDatos() // constructor
         {
             conexion = new SqlConnection("server=.\\SQLEXPRESS; database=Gimnasio2; integrated security=true");
             comando = new SqlCommand();
         }
+
         public void setearConsulta(string consulta)
         {
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
         }
+
         public void agregarParametro(string nombre, object valor)
         {
             comando.Parameters.AddWithValue(nombre, valor);
         }
+
         public bool ejecutarAccion()
         {
             comando.Connection = conexion;
@@ -40,12 +40,17 @@ namespace Negocio
                 comando.ExecuteNonQuery();
                 return true; // La operación fue exitosa
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw new Exception("Error al ejecutar la acción", ex);
             }
-
+            finally
+            {
+                conexion.Close();
+                comando.Parameters.Clear(); // Limpiar los parámetros después de ejecutar la acción
+            }
         }
+
         public void ejecutarLectura()
         {
             comando.Connection = conexion;
@@ -56,21 +61,22 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al ejecutar la lectura", ex);
             }
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-        public void cerrarConexion()
-        {
-            if (lector != null)
-                lector.Close();
-            conexion.Close();
-        }
-        public void limpiarParametros()
-        {
-            // Method to clear parameters set previously
-            this.comando.Parameters.Clear();
         }
 
+        public void cerrarConexion()
+        {
+            if (lector != null && !lector.IsClosed)
+                lector.Close();
+            if (conexion.State == System.Data.ConnectionState.Open)
+                conexion.Close();
+        }
+
+        public void limpiarParametros()
+        {
+            comando.Parameters.Clear();
+        }
 
         public int ejecutarAccionReturn()
         {
@@ -82,15 +88,13 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error al ejecutar la acción y retornar el valor", ex);
             }
             finally
             {
-                cerrarConexion();
+                conexion.Close();
+                comando.Parameters.Clear(); // Limpiar los parámetros después de ejecutar la acción
             }
         }
-
-
-      
     }
 }

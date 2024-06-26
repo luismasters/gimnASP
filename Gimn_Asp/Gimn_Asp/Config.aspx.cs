@@ -102,7 +102,7 @@ namespace Gimn_Asp
             try
             {
                 CargoEmpleadoNegocio cargoEmpleadoNegocio = new CargoEmpleadoNegocio();
-                List<CargoEmpleado> cargosEmpleados = cargoEmpleadoNegocio.ListarCargosEmpleados();
+                List<CargoEmpleado> cargosEmpleados = cargoEmpleadoNegocio.ListarCargos();
                 gvCargosEmpleados.DataSource = cargosEmpleados;
                 gvCargosEmpleados.DataBind();
             }
@@ -122,7 +122,7 @@ namespace Gimn_Asp
                 };
 
                 CargoEmpleadoNegocio cargoEmpleadoNegocio = new CargoEmpleadoNegocio();
-                bool exito = cargoEmpleadoNegocio.AgregarCargoEmpleado(cargo);
+                bool exito = cargoEmpleadoNegocio.AgregarCargo(cargo);
 
                 if (exito)
                 {

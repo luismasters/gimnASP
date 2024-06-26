@@ -1,40 +1,63 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AgregarEmpleados.aspx.cs" Inherits="Gimn_Asp.AgregarEmpleados" %>
+﻿<%@ Page Title="Agregar Empleados" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AgregarEmpleados.aspx.cs" Inherits="Gimn_Asp.AgregarEmpleados" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-
-
-
-
+    <main>
         <div class="container">
-            <div class="row bg-c mt-3" style="height: 900px">
+            <div class="row bg-c mt-3">
                 <div class="col-12">
-                    <!-- Listado de Cargos de Empleados -->
-                    <h3>Cargos de Empleados</h3>
-                    <asp:GridView ID="gvCargosEmpleados" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvCargosEmpleados_RowDeleting">
-                        <Columns>
-                            <asp:BoundField DataField="ID" HeaderText="ID" />
-                            <asp:BoundField DataField="Descripcion" HeaderText="Descripción" />
-                            <asp:TemplateField>
-                                <ItemTemplate>
-                                    <asp:Button ID="btnEliminarCargoEmpleado" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar este cargo de empleado?');" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
-
-                    <!-- Formulario para Agregar Cargos de Empleados -->
-                    <div class="mt-4">
-                        <h4>Agregar Nuevo Cargo de Empleado</h4>
-                        <asp:Label ID="lblMensajeCargoEmpleado" runat="server" Text="" ForeColor="Red"></asp:Label>
-                        <div class="form-group">
-                            <label for="txtDescripcionCargoEmpleado">Descripción:</label>
-                            <asp:TextBox ID="txtDescripcionCargoEmpleado" runat="server" CssClass="form-control"></asp:TextBox>
-                        </div>
-                        <asp:Button ID="btnAgregarCargoEmpleado" runat="server" Text="Agregar Cargo de Empleado" CssClass="btn btn-primary mt-2" OnClick="btnAgregarCargoEmpleado_Click" />
+                    <h3>Agregar Nuevo Empleado</h3>
+                    <asp:Label ID="lblMensaje" runat="server" Text="" ForeColor="Red"></asp:Label>
+                    <div class="form-group">
+                        <label for="txtDNI">DNI:</label>
+                        <asp:TextBox ID="txtDNI" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
+                    <div class="form-group">
+                        <label for="txtNombre">Nombre:</label>
+                        <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtApellido">Apellido:</label>
+                        <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmail">Email:</label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtFechaNacimiento">Fecha de Nacimiento:</label>
+                        <asp:TextBox ID="txtFechaNacimiento" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                    </div>
+                    <div class="form-group">
+                        <label for="ddlCargos">Cargo:</label>
+                        <asp:DropDownList ID="ddlCargos" runat="server" CssClass="form-control"></asp:DropDownList>
+                    </div>
+
+                    <div class="form-group">
+                        <h2>Subir Imagen</h2>
+                        <asp:FileUpload ID="fileUploadImagen" runat="server" OnChange="previewImage(this)" />
+                        <br />
+                        <asp:Image ID="imgPreview" runat="server" Width="200px" Height="200px" />
+                        <br />
+                        <asp:Label ID="Label1" runat="server" Text=""></asp:Label>
+                    </div>
+
+
+                    <asp:Button ID="btnAgregarEmpleado" runat="server" Text="Agregar Empleado" CssClass="btn btn-primary mt-2" OnClick="btnAgregarEmpleado_Click" />
                 </div>
             </div>
         </div>
-  
 
+
+        <script type="text/javascript">
+            function previewImage(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('<%= imgPreview.ClientID %>').src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+</script>
+    </main>
 </asp:Content>

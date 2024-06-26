@@ -12,81 +12,89 @@ namespace Gimn_Asp
         {
             if (!IsPostBack)
             {
-                CargarCargosEmpleados();
+                CargarCargos();
             }
         }
 
-        private void CargarCargosEmpleados()
+        private void CargarCargos()
         {
             try
             {
-                CargoEmpleadoNegocio cargoEmpleadoNegocio = new CargoEmpleadoNegocio();
-                List<CargoEmpleado> cargosEmpleados = cargoEmpleadoNegocio.ListarCargosEmpleados();
-                gvCargosEmpleados.DataSource = cargosEmpleados;
-                gvCargosEmpleados.DataBind();
+                CargoEmpleadoNegocio cargoNegocio = new CargoEmpleadoNegocio();
+                List<CargoEmpleado> cargos = cargoNegocio.ListarCargos();
+                ddlCargos.DataSource = cargos;
+                ddlCargos.DataTextField = "Descripcion";
+                ddlCargos.DataValueField = "ID";
+                ddlCargos.DataBind();
             }
             catch (Exception ex)
             {
-                lblMensajeCargoEmpleado.Text = "Error al cargar los cargos de empleados: " + ex.Message;
+                lblMensaje.Text = "Error al cargar los cargos: " + ex.Message;
             }
         }
 
-        protected void btnAgregarCargoEmpleado_Click(object sender, EventArgs e)
+        protected void btnAgregarEmpleado_Click(object sender, EventArgs e)
         {
             try
             {
-                CargoEmpleado cargo = new CargoEmpleado
+                Empleado empleado = new Empleado
                 {
-                    Descripcion = txtDescripcionCargoEmpleado.Text
+                    DNI = txtDNI.Text,
+                    Nombre = txtNombre.Text,
+                    Apellido = txtApellido.Text,
+                    Email = txtEmail.Text,
+                    FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text),
+                    cargoEmpleado = new CargoEmpleado { ID = int.Parse(ddlCargos.SelectedValue) }
                 };
 
-                CargoEmpleadoNegocio cargoEmpleadoNegocio = new CargoEmpleadoNegocio();
-                bool exito = cargoEmpleadoNegocio.AgregarCargoEmpleado(cargo);
+                EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
+                string errorMessage;
+                bool exito = empleadoNegocio.AgregarEmpleado(empleado, out errorMessage);
 
                 if (exito)
                 {
-                    lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Green;
-                    lblMensajeCargoEmpleado.Text = "Cargo de empleado agregado con éxito.";
-                    CargarCargosEmpleados(); // Volver a cargar la lista de cargos de empleados para incluir el nuevo
+                    if (fileUploadImagen.HasFile)
+                    {
+                        byte[] datosImagen = fileUploadImagen.FileBytes;
+                        ImagenNegocio negocioImagen = new ImagenNegocio();
+                        try
+                        {
+                            negocioImagen.InsertarImagen(empleado.IDPersona, datosImagen);
+                            lblMensaje.Text = "Empleado y imagen agregados correctamente.";
+                        }
+                        catch (Exception ex)
+                        {
+                            lblMensaje.Text = "Empleado agregado, pero error al guardar la imagen: " + ex.Message;
+                        }
+                    }
+                    else
+                    {
+                        lblMensaje.Text = "Empleado agregado correctamente, pero no se subió ninguna imagen.";
+                    }
+                    LimpiarFormulario();
                 }
                 else
                 {
-                    lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Red;
-                    lblMensajeCargoEmpleado.Text = "Error al agregar el cargo de empleado.";
+                    lblMensaje.ForeColor = System.Drawing.Color.Red;
+                    lblMensaje.Text = errorMessage;
                 }
             }
             catch (Exception ex)
             {
-                lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Red;
-                lblMensajeCargoEmpleado.Text = "Error al agregar el cargo de empleado: " + ex.Message;
+                lblMensaje.ForeColor = System.Drawing.Color.Red;
+                lblMensaje.Text = "Error al agregar el empleado: " + ex.Message;
             }
         }
 
-        protected void gvCargosEmpleados_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        private void LimpiarFormulario()
         {
-            try
-            {
-                int idCargoEmpleado = Convert.ToInt32(gvCargosEmpleados.DataKeys[e.RowIndex].Value);
-                CargoEmpleadoNegocio cargoEmpleadoNegocio = new CargoEmpleadoNegocio();
-                bool exito = cargoEmpleadoNegocio.EliminarCargoEmpleado(idCargoEmpleado);
-
-                if (exito)
-                {
-                    lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Green;
-                    lblMensajeCargoEmpleado.Text = "Cargo de empleado eliminado con éxito.";
-                    CargarCargosEmpleados(); // Volver a cargar la lista de cargos de empleados para reflejar los cambios
-                }
-                else
-                {
-                    lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Red;
-                    lblMensajeCargoEmpleado.Text = "Error al eliminar el cargo de empleado.";
-                }
-            }
-            catch (Exception ex)
-            {
-                lblMensajeCargoEmpleado.ForeColor = System.Drawing.Color.Red;
-                lblMensajeCargoEmpleado.Text = "Error al eliminar el cargo de empleado: " + ex.Message;
-            }
+            txtDNI.Text = string.Empty;
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtFechaNacimiento.Text = string.Empty;
+            ddlCargos.SelectedIndex = 0;
+            imgPreview.ImageUrl = string.Empty;
         }
     }
 }
