@@ -42,6 +42,8 @@ namespace Gimn_Asp
             if (personaNegocio.AgregarPersona(persona, out errorMessage))
             {
 
+
+
                 Miembro miembro = new Miembro();
                 MiembroNegocio miembroNegocio = new MiembroNegocio();
 
@@ -59,6 +61,13 @@ namespace Gimn_Asp
 
                 if (miembroAgregado)
                 {
+
+                    Usuario usuario= new Usuario();
+                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+
+                    usuario.NombreUsuario = persona.Email;
+                    usuario.Clave = persona.DNI;
+                    usuario.IDRol = 1;
 
 
 

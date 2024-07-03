@@ -1,5 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Pago.aspx.cs" Inherits="Gimn_Asp.Pago" %>
 
+<%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
 
@@ -11,39 +13,7 @@
 
         <div class="container ">
             <div class="row bg-c mt-3" style="height: 900px">
-                <div class="col-3 border-L">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="acceso.aspx">Acceso</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="Pago.aspx">Cobro</a>
-                        </li>
-
-                        <div class="dropdown">
-                            <a class="nav-item" href="#" data-bs-toggle="dropdown" aria-expanded="false">Socios</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="Socios.aspx">Estatus/Buscar Socio</a></li>
-                                <li><a class="dropdown-item" href="AgregarSocio.aspx">Agregar Socio</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="dropdown">
-                            <a class="nav-item" href="#" data-bs-toggle="dropdown" aria-expanded="false">Actividades</a>
-
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="q">Agregar/ver Actividades de salon</a></li>
-                                <li><a class="dropdown-item" href="AgregarSocio.aspx">Agregar Socio</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Instructores</a>
-                        </li>
-                    </ul>
-                </div>
+                      <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
 
 
 

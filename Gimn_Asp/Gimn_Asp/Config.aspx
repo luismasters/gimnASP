@@ -1,18 +1,18 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Config.aspx.cs" Inherits="Gimn_Asp.Config" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
     <main>
 
-
-
-
-
-
-
         <div class="container">
+
+
+
+
+
+
             <div class="row bg-c mt-3" style="height: 900px">
                 <div class="col-12">
+
                     <!-- Listado de Cargos de Empleados -->
                     <h3>Cargos de Empleados</h3>
                     <asp:GridView ID="gvCargosEmpleados" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvCargosEmpleados_RowDeleting" style="color:aliceblue">
@@ -37,14 +37,12 @@
                         <asp:Button ID="btnAgregarCargoEmpleado" runat="server" Text="Agregar Cargo de Empleado" CssClass="btn btn-primary mt-2" OnClick="btnAgregarCargoEmpleado_Click" />
                     </div>
 
-
-
-
+                    <!-- Listado de Salones -->
                     <h3>Salones</h3>
                     <asp:GridView ID="gvSalones" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvSalones_RowDeleting" Style="color: aliceblue">
                         <Columns>
                             <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
-                            <asp:BoundField DataField="capacidad" HeaderText="Capacidad" />
+                            <asp:BoundField DataField="Capacidad" HeaderText="Capacidad" />
                             <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:Button ID="btnEliminar" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" />
@@ -67,23 +65,8 @@
                         </div>
                         <asp:Button ID="btnAgregarSalon" runat="server" Text="Agregar Salón" CssClass="btn btn-primary mt-2" OnClick="btnAgregarSalon_Click" />
                     </div>
-
-
-
-
-
-
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
     </main>
-
 </asp:Content>

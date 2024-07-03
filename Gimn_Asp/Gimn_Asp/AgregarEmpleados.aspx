@@ -1,10 +1,16 @@
 ﻿<%@ Page Title="Agregar Empleados" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AgregarEmpleados.aspx.cs" Inherits="Gimn_Asp.AgregarEmpleados" %>
+    <%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="container">
+
+
+
             <div class="row bg-c mt-3">
-                <div class="col-12">
+                  <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
+                <div class="col-9">
                     <h3>Agregar Nuevo Empleado</h3>
                     <asp:Label ID="lblMensaje" runat="server" Text="" ForeColor="Red"></asp:Label>
                     <div class="form-group">

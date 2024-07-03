@@ -8,13 +8,12 @@ namespace Dominio
 {
     public class HorarioClase
     {
-
         public int ID { get; set; }
         public ClaseSalon claseSalon { get; set; }
         public DateTime Fecha { get; set; }
-        public string HoraInicio { get; set; }  // Cambiado a string
-        public string HoraFin { get; set; }     // Cambiado a string
-        public  Salon salon { get; set; }
-
+        public string HoraInicio { get; set; }
+        public string HoraFin { get; set; }
+        public Salon salon { get; set; }
+        public Empleado Instructor { get; set; }  // Nuevo campo para el instructor
     }
 }

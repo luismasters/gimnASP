@@ -1,37 +1,15 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Socios.aspx.cs" Inherits="Gimn_Asp.Socios" %>
+<%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
         <div class="container ">
             <div class="row bg-c mt-3" style="height: 900px">
-                <div class="col-3 border-L">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="acceso.aspx">Acceso</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="Pago.aspx">Cobro</a>
-                        </li>
-        
-                        <div class="dropdown">
-                            <a class="nav-item" href="#"  data-bs-toggle="dropdown" aria-expanded="false">Socios
-                            </a>
+                                      <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
 
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="Socios.aspx">Estatus/Buscar Socio</a></li>
-                                <li><a class="dropdown-item" href="AgregarSocio.aspx">Agregar Socio</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Actividades</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Instructores</a>
-                        </li>
-                    </ul>
-                </div>
+             
                 <div class="col-9 bg-c">
                     <div class="mt-1 d-flex">
                         <div style="margin: auto">

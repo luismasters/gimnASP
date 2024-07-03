@@ -3,14 +3,27 @@
     border-radius: 5px;
     border: solid;
     border-color: rgb(146, 146, 146);
-    color: aliceblue!important;
+    color: aliceblue !important;
+    background-color: rgba(30,30,30,255);
 }
 
 .border-L {
     border-right: solid;
     border-color: rgb(146, 146, 146);
+    background-color: rgba(30,30,30,255);
 }
 
 body {
     background-color: rgba(30,30,30,255);
+}
+
+/* Estilo para los elementos del dropdown cuando se seleccionan o se pasa el ratón sobre ellos */
+.dropdown-custom .dropdown-item:hover, .dropdown-custom .dropdown-item:focus {
+    background-color: aliceblue !important; /* Color de fondo claro al pasar el ratón o seleccionar */
+    color: rgba(30, 30, 30, 255) !important; /* Color del texto oscuro */
+}
+
+/* Asegúrate de que los enlaces del dropdown mantengan su color claro por defecto */
+.dropdown-custom .dropdown-item {
+    color: aliceblue !important;
 }

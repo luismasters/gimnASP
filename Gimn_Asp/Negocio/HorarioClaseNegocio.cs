@@ -26,12 +26,13 @@ namespace Negocio
                     return false;
                 }
 
-                DT.setearConsulta("INSERT INTO HorariosClases (IDClaseSalon, Fecha, HoraInicio, HoraFin, IDSalon) OUTPUT INSERTED.ID VALUES (@IDClaseSalon, @Fecha, @HoraInicio, @HoraFin, @IDSalon)");
+                DT.setearConsulta("INSERT INTO HorariosClases (IDClaseSalon, Fecha, HoraInicio, HoraFin, IDSalon,IDInstructor) OUTPUT INSERTED.ID VALUES (@IDClaseSalon, @Fecha, @HoraInicio, @HoraFin, @IDSalon,@IDInstructor)");
                 DT.agregarParametro("@IDClaseSalon", horarioClase.claseSalon.ID);
                 DT.agregarParametro("@Fecha", horarioClase.Fecha);
                 DT.agregarParametro("@HoraInicio", horarioClase.HoraInicio);
                 DT.agregarParametro("@HoraFin", horarioClase.HoraFin);
                 DT.agregarParametro("@IDSalon", horarioClase.salon.ID);
+                DT.agregarParametro("@IDInstructor", horarioClase.Instructor.ID);
                 bool resultado = DT.ejecutarAccion();
                 return resultado;
             }
@@ -51,8 +52,7 @@ namespace Negocio
         {
             try
             {
-                DT.setearConsulta("SELECT COUNT(*) FROM HorariosClases WHERE IDClaseSalon = @IDClaseSalon AND Fecha = @Fecha AND IDSalon = @IDSalon AND ((HoraInicio <= @HoraInicio AND HoraFin > @HoraInicio) OR (HoraInicio < @HoraFin AND HoraFin >= @HoraFin) OR (HoraInicio >= @HoraInicio AND HoraFin <= @HoraFin))");
-                DT.agregarParametro("@IDClaseSalon", horarioClase.claseSalon.ID);
+                DT.setearConsulta("SELECT COUNT(*) FROM HorariosClases WHERE Fecha = @Fecha AND IDSalon = @IDSalon AND ((HoraInicio <= @HoraInicio AND HoraFin > @HoraInicio) OR (HoraInicio < @HoraFin AND HoraFin >= @HoraFin) OR (HoraInicio >= @HoraInicio AND HoraFin <= @HoraFin))");
                 DT.agregarParametro("@Fecha", horarioClase.Fecha);
                 DT.agregarParametro("@HoraInicio", horarioClase.HoraInicio);
                 DT.agregarParametro("@HoraFin", horarioClase.HoraFin);
@@ -74,7 +74,13 @@ namespace Negocio
             List<HorarioClase> horariosClases = new List<HorarioClase>();
             try
             {
-                DT.setearConsulta("SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, S.Nombre AS NombreSalon FROM HorariosClases H INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID INNER JOIN Salones S ON H.IDSalon = S.ID");
+                DT.setearConsulta(@"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
+                            S.Nombre AS NombreSalon, P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor
+                            FROM HorariosClases H 
+                            INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                            INNER JOIN Salones S ON H.IDSalon = S.ID
+                            INNER JOIN Empleados E ON H.IDInstructor = E.ID
+                            INNER JOIN Personas P ON E.IDPersona = P.ID");
                 DT.ejecutarLectura();
                 while (DT.Lector.Read())
                 {
@@ -85,7 +91,12 @@ namespace Negocio
                         HoraInicio = DT.Lector["HoraInicio"].ToString(),
                         HoraFin = DT.Lector["HoraFin"].ToString(),
                         claseSalon = new ClaseSalon { NombreClase = DT.Lector["NombreClase"].ToString() },
-                        salon = new Salon { Nombre = DT.Lector["NombreSalon"].ToString() }
+                        salon = new Salon { Nombre = DT.Lector["NombreSalon"].ToString() },
+                        Instructor = new Empleado
+                        {
+                            Nombre = DT.Lector["NombreInstructor"].ToString(),
+                            Apellido = DT.Lector["ApellidoInstructor"].ToString()
+                        }
                     };
                     horariosClases.Add(horarioClase);
                 }
@@ -102,12 +113,20 @@ namespace Negocio
             return horariosClases;
         }
 
+
         public List<HorarioClase> ListarHorariosClasesPorSemana(DateTime fechaInicio, DateTime fechaFin)
         {
             List<HorarioClase> horariosClases = new List<HorarioClase>();
             try
             {
-                DT.setearConsulta("SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, S.Nombre AS NombreSalon FROM HorariosClases H INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID INNER JOIN Salones S ON H.IDSalon = S.ID WHERE H.Fecha BETWEEN @FechaInicio AND @FechaFin");
+                DT.setearConsulta(@"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
+                            S.Nombre AS NombreSalon, P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor
+                            FROM HorariosClases H 
+                            INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                            INNER JOIN Salones S ON H.IDSalon = S.ID
+                            INNER JOIN Empleados E ON H.IDInstructor = E.ID
+                            INNER JOIN Personas P ON E.IDPersona = P.ID
+                            WHERE H.Fecha BETWEEN @FechaInicio AND @FechaFin");
                 DT.agregarParametro("@FechaInicio", fechaInicio);
                 DT.agregarParametro("@FechaFin", fechaFin);
                 DT.ejecutarLectura();
@@ -120,7 +139,12 @@ namespace Negocio
                         HoraInicio = DT.Lector["HoraInicio"].ToString(),
                         HoraFin = DT.Lector["HoraFin"].ToString(),
                         claseSalon = new ClaseSalon { NombreClase = DT.Lector["NombreClase"].ToString() },
-                        salon = new Salon { Nombre = DT.Lector["NombreSalon"].ToString() }
+                        salon = new Salon { Nombre = DT.Lector["NombreSalon"].ToString() },
+                        Instructor = new Empleado
+                        {
+                            Nombre = DT.Lector["NombreInstructor"].ToString(),
+                            Apellido = DT.Lector["ApellidoInstructor"].ToString()
+                        }
                     };
                     horariosClases.Add(horarioClase);
                 }

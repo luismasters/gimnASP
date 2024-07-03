@@ -54,6 +54,7 @@
     <Compile Include="ReservaNegocio.cs" />
     <Compile Include="SalonNegocio.cs" />
     <Compile Include="TipoMembresiaNegocio.cs" />
+    <Compile Include="UsuarioNegocio.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dominio\Dominio.csproj">

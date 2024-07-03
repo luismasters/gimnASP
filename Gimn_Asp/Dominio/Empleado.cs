@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    public class Empleado: Persona 
+    public class Empleado : Persona
     {
         public int ID { get; set; }
         public CargoEmpleado cargoEmpleado { get; set; }
-
-
-     
+        public string NombreCompleto
+        {
+            get { return $"{Nombre} {Apellido}"; }
+        }
     }
-
 }

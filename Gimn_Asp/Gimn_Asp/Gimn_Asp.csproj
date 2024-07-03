@@ -131,6 +131,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Login.aspx" />
+    <Content Include="NavigationMenu.ascx" />
     <Content Include="Pago.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -255,6 +257,20 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationMenu.ascx.cs">
+      <DependentUpon>NavigationMenu.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NavigationMenu.ascx.designer.cs">
+      <DependentUpon>NavigationMenu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pago.aspx.cs">
       <DependentUpon>Pago.aspx</DependentUpon>

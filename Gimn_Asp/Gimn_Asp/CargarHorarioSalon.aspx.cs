@@ -15,8 +15,11 @@ namespace Gimn_Asp
                 CargarClasesSalon();
                 CargarSalones();
                 CargarHorariosClases();
+                CargarInstructores(); 
+
             }
         }
+      
 
         private void CargarClasesSalon()
         {
@@ -32,6 +35,22 @@ namespace Gimn_Asp
             catch (Exception ex)
             {
                 lblMensajeHorarioClase.Text = "Error al cargar las clases de salón: " + ex.Message;
+            }
+        }
+        private void CargarInstructores()
+        {
+            try
+            {
+                EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
+                List<Empleado> instructores = empleadoNegocio.ListarInstructores();
+                ddlInstructor.DataSource = instructores;
+                ddlInstructor.DataTextField = "NombreCompleto";
+                ddlInstructor.DataValueField = "ID";
+                ddlInstructor.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblMensajeHorarioClase.Text = "Error al cargar los instructores: " + ex.Message;
             }
         }
 
@@ -51,7 +70,6 @@ namespace Gimn_Asp
                 lblMensajeHorarioClase.Text = "Error al cargar los salones: " + ex.Message;
             }
         }
-
         private void CargarHorariosClases(DateTime? fechaInicio = null, DateTime? fechaFin = null)
         {
             try
@@ -108,7 +126,8 @@ namespace Gimn_Asp
                     salon = new Salon { ID = int.Parse(ddlSalon.SelectedValue) },
                     Fecha = DateTime.Parse(txtFecha.Text),
                     HoraInicio = txtHoraInicio.Text,
-                    HoraFin = txtHoraFin.Text
+                    HoraFin = txtHoraFin.Text,
+                    Instructor = new Empleado { ID = int.Parse(ddlInstructor.SelectedValue) } // Asignar el instructor
                 };
 
                 HorarioClaseNegocio horarioClaseNegocio = new HorarioClaseNegocio();

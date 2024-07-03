@@ -55,7 +55,45 @@ namespace Negocio
             return empleados;
         }
 
-        public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
+
+
+
+        public List<Empleado> ListarInstructores()
+        {
+            List<Empleado> instructores = new List<Empleado>();
+            try
+            {
+                Dt.setearConsulta("SELECT E.ID, P.Nombre, P.Apellido FROM Empleados E INNER JOIN Personas P ON E.IDPersona = P.ID INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID WHERE C.Descripcion = 'Instructor de salon'");
+                Dt.ejecutarLectura();
+                while (Dt.Lector.Read())
+                {
+                    Empleado instructor = new Empleado
+                    {
+                        ID = Convert.ToInt32(Dt.Lector["ID"]),
+                        Nombre = Dt.Lector["Nombre"].ToString(),
+                        Apellido = Dt.Lector["Apellido"].ToString()
+                    };
+                    instructores.Add(instructor);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los instructores", ex);
+            }
+            finally
+            {
+                Dt.cerrarConexion();
+                Dt.limpiarParametros();
+            }
+            return instructores;
+        }
+    
+
+
+
+
+
+    public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
         {
             errorMessage = string.Empty;
             try

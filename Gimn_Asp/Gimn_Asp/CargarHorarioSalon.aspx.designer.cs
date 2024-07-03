@@ -15,6 +15,15 @@ namespace Gimn_Asp
     {
 
         /// <summary>
+        /// Control NavigationMenu1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Gimn_Asp.NavigationMenu NavigationMenu1;
+
+        /// <summary>
         /// Control txtFechaInicio.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace Gimn_Asp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHoraFin;
+
+        /// <summary>
+        /// Control ddlInstructor.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlInstructor;
 
         /// <summary>
         /// Control btnAgregarHorarioClase.
