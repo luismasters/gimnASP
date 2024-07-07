@@ -1,5 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NavigationMenu.ascx.cs" Inherits="Gimn_Asp.NavigationMenu" %>
-<div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c" style="width: 280px;">
+
+
+
+
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
         <span class="fs-4" style="color: aliceblue;">Sidebar</span>
     </a>
@@ -91,11 +94,13 @@
             </ul>
         </li>
         <li>
-            <a href="#" class="nav-link" style="color: aliceblue;">
+            <a href="VerificarReservasAdmin.aspx" class="nav-link" style="color: aliceblue;">
                 <i class="bi bi-person"></i>
-                Instructores
+                Verificar Reservas
             </a>
         </li>
+         <li>
+     <asp:Button ID="btnCerrarSesion" runat="server" CssClass="btn btn-link nav-link" Text="Cerrar Sesión" OnClick="btnCerrarSesion_Click" style="color: aliceblue; text-align: left;" />
+ </li>
     </ul>
     <hr style="border-color: rgb(146, 146, 146);">
-</div>

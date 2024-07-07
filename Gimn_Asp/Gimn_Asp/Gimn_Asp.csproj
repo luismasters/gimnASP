@@ -129,11 +129,13 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Default.aspx" />
+    <Content Include="DetalleReservas.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="NavigationMenu.ascx" />
     <Content Include="Pago.aspx" />
+    <Content Include="ReservarClases.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -191,6 +193,10 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="Socios.aspx" />
+    <Content Include="UserDashboar.aspx" />
+    <Content Include="UserNav.ascx" />
+    <Content Include="VerificarReservasAdmin.aspx" />
+    <Content Include="VerReservas.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -255,6 +261,13 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DetalleReservas.aspx.cs">
+      <DependentUpon>DetalleReservas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetalleReservas.aspx.designer.cs">
+      <DependentUpon>DetalleReservas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +293,13 @@
       <DependentUpon>Pago.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservarClases.aspx.cs">
+      <DependentUpon>ReservarClases.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ReservarClases.aspx.designer.cs">
+      <DependentUpon>ReservarClases.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -300,6 +320,34 @@
     </Compile>
     <Compile Include="Socios.aspx.designer.cs">
       <DependentUpon>Socios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserDashboar.aspx.cs">
+      <DependentUpon>UserDashboar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserDashboar.aspx.designer.cs">
+      <DependentUpon>UserDashboar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserNav.ascx.cs">
+      <DependentUpon>UserNav.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserNav.ascx.designer.cs">
+      <DependentUpon>UserNav.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="VerificarReservasAdmin.aspx.cs">
+      <DependentUpon>VerificarReservasAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerificarReservasAdmin.aspx.designer.cs">
+      <DependentUpon>VerificarReservasAdmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="VerReservas.aspx.cs">
+      <DependentUpon>VerReservas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VerReservas.aspx.designer.cs">
+      <DependentUpon>VerReservas.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

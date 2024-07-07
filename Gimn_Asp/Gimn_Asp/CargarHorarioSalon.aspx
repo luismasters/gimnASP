@@ -8,11 +8,16 @@
 
     <main>
         <div class="container">
-            <div class="row bg-c mt-3" style="height: 900px">
+       
+      <div class="row bg-c mt-3" >
+         
+<div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c">
+
+  <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
 
 
+                              </div>
 
-                <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
 
 
                 <div class="col-9">

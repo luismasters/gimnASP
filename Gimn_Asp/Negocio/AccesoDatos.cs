@@ -96,5 +96,7 @@ namespace Negocio
                 comando.Parameters.Clear(); // Limpiar los parámetros después de ejecutar la acción
             }
         }
+      
+
     }
 }

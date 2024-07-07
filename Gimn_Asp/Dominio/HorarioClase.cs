@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dominio
 {
@@ -10,10 +6,13 @@ namespace Dominio
     {
         public int ID { get; set; }
         public ClaseSalon claseSalon { get; set; }
+        public Salon salon { get; set; }
         public DateTime Fecha { get; set; }
         public string HoraInicio { get; set; }
         public string HoraFin { get; set; }
-        public Salon salon { get; set; }
-        public Empleado Instructor { get; set; }  // Nuevo campo para el instructor
+        public Empleado Instructor { get; set; }
+        public int CapacidadRestante { get; set; }
+        public int IDClaseSalon { get; set; } // Nueva propiedad
+        public int IDSalon { get; set; } // Nueva propiedad
     }
 }

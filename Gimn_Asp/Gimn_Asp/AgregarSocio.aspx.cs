@@ -65,11 +65,12 @@ namespace Gimn_Asp
                     Usuario usuario= new Usuario();
                     UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
 
-                    usuario.NombreUsuario = persona.Email;
-                    usuario.Clave = persona.DNI;
-                    usuario.IDRol = 1;
+                    usuario.NombreUsuario = PN.Email;
+                    usuario.Clave = PN.DNI;
+                    usuario.IDRol = 3;
+                    usuario.IDPersona = PN.IDPersona;
 
-
+                    usuarioNegocio.AgregarUsuario(usuario,out errorMessage) ;
 
                     Cobro cobro = new Cobro();
                     CobroNegocio cobroNegocio = new CobroNegocio();

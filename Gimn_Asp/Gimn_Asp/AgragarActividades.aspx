@@ -4,27 +4,18 @@
     <%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
 
 
+      <div class="row bg-c mt-3" >
+         
+<div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c">
+
+  <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
 
 
-      <div class="container ">
-      <div class="row bg-c mt-3" style="height: 900px">
-      
-                                                <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
-
-
-
-
-
-
-
-
-
-
+                              </div>
 
 
 
                 <div class="col-9">
-                  
 
                     <!-- Listado de Clases de Salón -->
                     <h3>Clases de Salón</h3>

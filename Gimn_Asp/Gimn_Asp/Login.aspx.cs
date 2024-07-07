@@ -24,13 +24,35 @@ namespace Gimn_Asp
                 Session["Username"] = username;
                 Session["Role"] = usuario.IDRol; // Guarda el ID del rol en la sesión
 
-                // Redirige según el rol del usuario
-                if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
+                if (usuario.IDRol == 3) // Asumiendo que el rol de Cliente tiene ID 3
+                {
+                    MiembroNegocio miembroNegocio = new MiembroNegocio();
+                    Miembro miembro = miembroNegocio.BuscarUltimoRegMiembro(usuario.IDPersona);
+
+                    if (miembro != null)
+                    {
+                        // Almacenar los datos del miembro en la sesión
+                        Session["MiembroID"] = miembro.IDMiembro;
+                        Session["IDPersona"] = miembro.IDPersona;
+                        Session["TipoMembresia"] = miembro.TipoMembresiaDescripcion;
+                        Session["FechaInicio"] = miembro.FechaInicio;
+                        Session["FechaFin"] = miembro.FechaFin;
+                        Session["DNI"] = miembro.DNI;
+                        Session["Nombre"] = miembro.Nombre;
+                        Session["Apellido"] = miembro.Apellido;
+                    }
+
+                    // Redirigir al panel de usuario
+                    Response.Redirect("UserDashboar.aspx");
+                }
+                else if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
                 {
                     Response.Redirect("Acceso.aspx");
                 }
                 else
                 {
+                    // Redirigir a una página por defecto o mostrar un mensaje si el rol no está manejado
+                    Response.Redirect("Default.aspx");
                 }
             }
             else
@@ -38,11 +60,6 @@ namespace Gimn_Asp
                 // Error de autenticación
                 lblMessage.Text = "Usuario o contraseña incorrectos.";
             }
-        }
-
-        protected void btnLogin_Click1(object sender, EventArgs e)
-        {
-
         }
     }
 }

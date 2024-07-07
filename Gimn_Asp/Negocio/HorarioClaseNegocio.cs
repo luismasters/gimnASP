@@ -114,6 +114,8 @@ namespace Negocio
         }
 
 
+
+
         public List<HorarioClase> ListarHorariosClasesPorSemana(DateTime fechaInicio, DateTime fechaFin)
         {
             List<HorarioClase> horariosClases = new List<HorarioClase>();
@@ -160,6 +162,116 @@ namespace Negocio
             }
             return horariosClases;
         }
+
+        public HorarioClase ObtenerHorarioClasePorId(int id)
+        {
+            HorarioClase horarioClase = null;
+            try
+            {
+                DT.setearConsulta(@"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.ID AS ClaseSalonID, C.Descripcion AS NombreClase, 
+                            S.ID AS SalonID, S.Nombre AS NombreSalon, S.Capacidad,
+                            P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor
+                            FROM HorariosClases H 
+                            INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                            INNER JOIN Salones S ON H.IDSalon = S.ID
+                            INNER JOIN Empleados E ON H.IDInstructor = E.ID
+                            INNER JOIN Personas P ON E.IDPersona = P.ID
+                            WHERE H.ID = @ID");
+                DT.agregarParametro("@ID", id);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    horarioClase = new HorarioClase
+                    {
+                        ID = Convert.ToInt32(DT.Lector["ID"]),
+                        Fecha = Convert.ToDateTime(DT.Lector["Fecha"]),
+                        HoraInicio = DT.Lector["HoraInicio"].ToString(),
+                        HoraFin = DT.Lector["HoraFin"].ToString(),
+                        claseSalon = new ClaseSalon
+                        {
+                            ID = Convert.ToInt32(DT.Lector["ClaseSalonID"]),
+                            NombreClase = DT.Lector["NombreClase"].ToString()
+                        },
+                        salon = new Salon
+                        {
+                            ID = Convert.ToInt32(DT.Lector["SalonID"]),
+                            Nombre = DT.Lector["NombreSalon"].ToString(),
+                            capacidad = Convert.ToInt32(DT.Lector["Capacidad"])
+                        },
+                        Instructor = new Empleado
+                        {
+                            Nombre = DT.Lector["NombreInstructor"].ToString(),
+                            Apellido = DT.Lector["ApellidoInstructor"].ToString()
+                        }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el horario de clase", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+                DT.limpiarParametros();
+            }
+            return horarioClase;
+        }
+
+        public List<HorarioClase> ListarHorariosDisponibles()
+        {
+            List<HorarioClase> horariosClases = new List<HorarioClase>();
+            try
+            {
+                DT.setearConsulta(@"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
+                            S.Nombre AS NombreSalon, S.Capacidad, 
+                            (S.Capacidad - COUNT(R.ID)) AS CapacidadRestante,
+                            P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor,
+                            H.IDClaseSalon, H.IDSalon
+                            FROM HorariosClases H 
+                            INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                            INNER JOIN Salones S ON H.IDSalon = S.ID
+                            LEFT JOIN Reservas R ON H.ID = R.IDHorarioClase
+                            INNER JOIN Empleados E ON H.IDInstructor = E.ID
+                            INNER JOIN Personas P ON E.IDPersona = P.ID
+                            WHERE H.Fecha >= GETDATE()
+                            GROUP BY H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion, 
+                                     S.Nombre, S.Capacidad, P.Nombre, P.Apellido, H.IDClaseSalon, H.IDSalon");
+                DT.ejecutarLectura();
+                while (DT.Lector.Read())
+                {
+                    HorarioClase horarioClase = new HorarioClase
+                    {
+                        ID = Convert.ToInt32(DT.Lector["ID"]),
+                        Fecha = Convert.ToDateTime(DT.Lector["Fecha"]),
+                        HoraInicio = DT.Lector["HoraInicio"].ToString(),
+                        HoraFin = DT.Lector["HoraFin"].ToString(),
+                        claseSalon = new ClaseSalon { ID = Convert.ToInt32(DT.Lector["IDClaseSalon"]), NombreClase = DT.Lector["NombreClase"].ToString() },
+                        salon = new Salon { ID = Convert.ToInt32(DT.Lector["IDSalon"]),
+                            Nombre = DT.Lector["NombreSalon"].ToString(),
+                            capacidad = Convert.ToInt32(DT.Lector["Capacidad"]) },
+                        CapacidadRestante = Convert.ToInt32(DT.Lector["CapacidadRestante"]),
+                        Instructor = new Empleado
+                        {
+                            Nombre = DT.Lector["NombreInstructor"].ToString(),
+                            Apellido = DT.Lector["ApellidoInstructor"].ToString()
+                        }
+                    };
+                    horariosClases.Add(horarioClase);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los horarios de clases disponibles", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+                DT.limpiarParametros();
+            }
+            return horariosClases;
+        }
+
 
         public bool EliminarHorarioClase(int id)
         {

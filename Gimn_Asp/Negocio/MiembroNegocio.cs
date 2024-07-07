@@ -92,8 +92,13 @@ namespace Negocio
             Miembro miembro = null;
             try
             {
-                // Asumiendo que la columna FechaInicio puede determinar el orden de los registros
-                DT.setearConsulta("SELECT TOP 1 ID, IDPersona, IDTipoMembresia, FechaInicio, FechaFin FROM Miembros WHERE IDPersona = @IDPersona ORDER BY FechaInicio DESC");
+                DT.setearConsulta(@"SELECT TOP 1 M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin, 
+                            P.DNI, P.Nombre, P.Apellido, T.Descripcion AS TipoMembresiaDescripcion 
+                            FROM Miembros M
+                            INNER JOIN Personas P ON M.IDPersona = P.ID
+                            INNER JOIN TiposMembresias T ON M.IDTipoMembresia = T.ID
+                            WHERE M.IDPersona = @IDPersona 
+                            ORDER BY M.FechaInicio DESC");
                 DT.agregarParametro("@IDPersona", IDPersona);
                 DT.ejecutarLectura();
                 if (DT.Lector.Read())
@@ -104,7 +109,11 @@ namespace Negocio
                         IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]),
                         TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]),
                         FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]),
-                        FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"])
+                        FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"]),
+                        DNI = DT.Lector["DNI"].ToString(),
+                        Nombre = DT.Lector["Nombre"].ToString(),
+                        Apellido = DT.Lector["Apellido"].ToString(),
+                        TipoMembresiaDescripcion = DT.Lector["TipoMembresiaDescripcion"].ToString()
                     };
                 }
             }

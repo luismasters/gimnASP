@@ -11,7 +11,7 @@ namespace Gimn_Asp
 {
 
 
-    public partial class NavigationMenu
+    public partial class UserNav
     {
 
         /// <summary>

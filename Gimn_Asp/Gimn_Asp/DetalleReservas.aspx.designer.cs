@@ -11,16 +11,25 @@ namespace Gimn_Asp
 {
 
 
-    public partial class NavigationMenu
+    public partial class DetalleReservas
     {
 
         /// <summary>
-        /// Control btnCerrarSesion.
+        /// Control NavigationMenu1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCerrarSesion;
+        protected global::Gimn_Asp.NavigationMenu NavigationMenu1;
+
+        /// <summary>
+        /// Control gvReservas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvReservas;
     }
 }
