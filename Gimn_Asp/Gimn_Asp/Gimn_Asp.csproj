@@ -135,6 +135,7 @@
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
     <Content Include="NavigationMenu.ascx" />
+    <Content Include="NavigationMenuAdmin.ascx" />
     <Content Include="Pago.aspx" />
     <Content Include="ReservarClases.aspx" />
     <Content Include="ResumenCaja.aspx" />
@@ -293,6 +294,13 @@
     </Compile>
     <Compile Include="NavigationMenu.ascx.designer.cs">
       <DependentUpon>NavigationMenu.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NavigationMenuAdmin.ascx.cs">
+      <DependentUpon>NavigationMenuAdmin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NavigationMenuAdmin.ascx.designer.cs">
+      <DependentUpon>NavigationMenuAdmin.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pago.aspx.cs">
       <DependentUpon>Pago.aspx</DependentUpon>

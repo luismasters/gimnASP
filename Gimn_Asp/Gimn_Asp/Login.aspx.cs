@@ -47,7 +47,7 @@ namespace Gimn_Asp
                 }
                 else if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
                 {
-                    Response.Redirect("Acceso.aspx");
+                    Response.Redirect("AgregarEmpleados.aspx");
                 }
                 else if (usuario.IDRol == 2) // Asumiendo que el rol de Empleado tiene ID 2
                 {

@@ -15,13 +15,13 @@ namespace Gimn_Asp
     {
 
         /// <summary>
-        /// Control NavigationMenu1.
+        /// Control NavigationMenuAdmin1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::Gimn_Asp.NavigationMenu NavigationMenu1;
+        protected global::Gimn_Asp.NavigationMenuAdmin NavigationMenuAdmin1;
 
         /// <summary>
         /// Control lblMensaje.
