@@ -1,18 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Config.aspx.cs" Inherits="Gimn_Asp.Config" %>
+﻿<%@ Page Title="Configuración" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Config.aspx.cs" Inherits="Gimn_Asp.Config" %>
+<%@ Register Src="~/NavigationMenuAdmin.ascx" TagPrefix="uc" TagName="NavigationMenuAdmin" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <main>
-
         <div class="container">
-
-
-
-
-
-
-            <div class="row bg-c mt-3" style="height: 900px">
-                <div class="col-12">
-
+            <div class="row bg-c mt-3">
+                <div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c">
+                    <uc:NavigationMenuAdmin ID="NavigationMenuAdmin1" runat="server" />
+                </div>
+                <div class="col-9">
                     <!-- Listado de Cargos de Empleados -->
                     <h3>Cargos de Empleados</h3>
                     <asp:GridView ID="gvCargosEmpleados" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvCargosEmpleados_RowDeleting" style="color:aliceblue">
@@ -39,13 +35,13 @@
 
                     <!-- Listado de Salones -->
                     <h3>Salones</h3>
-                    <asp:GridView ID="gvSalones" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvSalones_RowDeleting" Style="color: aliceblue">
+                    <asp:GridView ID="gvSalones" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvSalones_RowDeleting" style="color: aliceblue">
                         <Columns>
                             <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
                             <asp:BoundField DataField="Capacidad" HeaderText="Capacidad" />
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <asp:Button ID="btnEliminar" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" />
+                                    <asp:Button ID="btnEliminar" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar este salón?');" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

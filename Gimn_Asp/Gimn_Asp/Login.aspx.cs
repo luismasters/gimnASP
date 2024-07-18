@@ -43,7 +43,7 @@ namespace Gimn_Asp
                     }
 
                     // Redirigir al panel de usuario
-                    Response.Redirect("UserDashboard.aspx");
+                    Response.Redirect("UserDashboar.aspx");
                 }
                 else if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
                 {
