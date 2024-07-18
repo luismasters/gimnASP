@@ -10,8 +10,6 @@ namespace Gimn_Asp
 {
     public partial class Pago : System.Web.UI.Page
     {
-
-
         private PersonaNegocio personaNegocio = new PersonaNegocio();
         private MiembroNegocio miembroNegocio = new MiembroNegocio();
 
@@ -61,10 +59,7 @@ namespace Gimn_Asp
             Persona persona = personaNegocio.BuscarPersona(dni);
             if (persona != null)
             {
-
-                Miembro miembro = new Miembro();
-
-                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
+                Miembro miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
 
                 if (miembro != null)
                 {
@@ -79,17 +74,13 @@ namespace Gimn_Asp
 
                     Dominio.Imagen imagen = new Imagen();
                     ImagenNegocio imagenNegocio = new ImagenNegocio();
-
                     imagen = imagenNegocio.CargarImagenPorIDPersona(miembro.IDPersona);
-
                     imgFoto.ImageUrl = imagenNegocio.UrlPerfilImagen(imagen);
-
 
                     DateTime nuevafechafin = DateTime.Today.AddDays(30);
                     DateTime fechahoy = DateTime.Today;
                     txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
                     txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
-
 
                     if (miembro.FechaFin >= DateTime.Now)
                     {
@@ -108,20 +99,8 @@ namespace Gimn_Asp
                 {
                     pnlCard.Visible = false;
                 }
-
-
-
-
-            }
-            else
-            {
-
             }
         }
-
-
-
-
 
         private void CargarTiposMembresias()
         {
@@ -136,7 +115,7 @@ namespace Gimn_Asp
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
-            string DNI = lstPersonas.SelectedValue; 
+            string DNI = lstPersonas.SelectedValue;
             Persona persona = new Persona();
             PersonaNegocio personaNegocio = new PersonaNegocio();
 
@@ -165,17 +144,13 @@ namespace Gimn_Asp
                         DateTime nuevafechafin = DateTime.Today.AddDays(30);
                         DateTime fechahoy = DateTime.Today;
                         txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                        txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd / MMMM / yyyy");
+                        txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
                     }
                     else
                     {
                         string script = "alert('Usuario con membresía activa.');";
                         ClientScript.RegisterStartupScript(this.GetType(), "AlertaMembresiaActiva", script, true);
                     }
-
-
-
-
                 }
             }
         }
@@ -204,7 +179,7 @@ namespace Gimn_Asp
 
                 Persona persona = new Persona();
                 PersonaNegocio personaNegocio = new PersonaNegocio();
-                string DNI = lstPersonas.SelectedValue; 
+                string DNI = lstPersonas.SelectedValue;
                 persona = personaNegocio.BuscarPersona(DNI);
 
                 if (persona != null)
@@ -218,9 +193,14 @@ namespace Gimn_Asp
                     bool miembroAgregado = miembroNegocio.AgregarMiembro(miembro);
                     if (miembroAgregado)
                     {
+                        // Recuperar el ID del empleado de la sesión
+                        int empleadoID = (int)Session["EmpleadoID"];
+
                         cobro.IDPersona = persona.IDPersona;
                         cobro.IDTipoMembresia = miembro.TipoMembresia;
                         cobro.FechaCobro = fechahoy;
+                        cobro.Empleado = new Empleado { ID = empleadoID }; // Asignar el ID del empleado
+
                         bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
 
                         if (cobroAgregado)
@@ -257,6 +237,5 @@ namespace Gimn_Asp
                 ClientScript.RegisterStartupScript(this.GetType(), "ErrorGeneral", script, true);
             }
         }
-
     }
 }

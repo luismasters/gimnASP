@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using Dominio;
 using Negocio;
@@ -151,6 +152,13 @@ namespace Gimn_Asp
                 lblMensajeHorarioClase.ForeColor = System.Drawing.Color.Red;
                 lblMensajeHorarioClase.Text = "Error al agregar el horario de clase: " + ex.Message;
             }
+        }
+
+
+        public string FormatearFecha(object fecha)
+        {
+            DateTime fechaClase = (DateTime)fecha;
+            return fechaClase.ToString("dddd d 'de' MMMM", new CultureInfo("es-ES"));
         }
 
         protected void gvHorariosClases_RowDeleting(object sender, GridViewDeleteEventArgs e)

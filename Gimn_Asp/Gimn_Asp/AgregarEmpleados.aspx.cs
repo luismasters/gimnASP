@@ -53,6 +53,27 @@ namespace Gimn_Asp
 
                 if (exito)
                 {
+                    // Asignar usuario y clave al empleado
+                    string nombreUsuario = empleado.Email + ".Emp";
+                    string clave = empleado.DNI;
+                    Usuario usuario = new Usuario
+                    {
+                        IDPersona = empleado.IDPersona,
+                        IDRol = 2, // Rol de Empleado
+                        NombreUsuario = nombreUsuario,
+                        Clave = clave
+                    };
+
+                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                    bool usuarioExito = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
+
+                    if (!usuarioExito)
+                    {
+                        lblMensaje.ForeColor = System.Drawing.Color.Red;
+                        lblMensaje.Text = "Empleado agregado, pero error al crear el usuario: " + errorMessage;
+                        return;
+                    }
+
                     if (fileUploadImagen.HasFile)
                     {
                         byte[] datosImagen = fileUploadImagen.FileBytes;
@@ -60,16 +81,16 @@ namespace Gimn_Asp
                         try
                         {
                             negocioImagen.InsertarImagen(empleado.IDPersona, datosImagen);
-                            lblMensaje.Text = "Empleado y imagen agregados correctamente.";
+                            lblMensaje.Text = "Empleado, usuario e imagen agregados correctamente.";
                         }
                         catch (Exception ex)
                         {
-                            lblMensaje.Text = "Empleado agregado, pero error al guardar la imagen: " + ex.Message;
+                            lblMensaje.Text = "Empleado y usuario agregados, pero error al guardar la imagen: " + ex.Message;
                         }
                     }
                     else
                     {
-                        lblMensaje.Text = "Empleado agregado correctamente, pero no se subió ninguna imagen.";
+                        lblMensaje.Text = "Empleado y usuario agregados correctamente, pero no se subió ninguna imagen.";
                     }
                     LimpiarFormulario();
                 }

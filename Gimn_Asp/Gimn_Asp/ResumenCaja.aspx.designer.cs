@@ -11,25 +11,25 @@ namespace Gimn_Asp
 {
 
 
-    public partial class NavigationMenu
+    public partial class ResumenCaja
     {
 
         /// <summary>
-        /// Control sidebarTitle.
+        /// Control lblFecha.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sidebarTitle;
+        protected global::System.Web.UI.WebControls.Label lblFecha;
 
         /// <summary>
-        /// Control btnCerrarSesion.
+        /// Control gvResumenCaja.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCerrarSesion;
+        protected global::System.Web.UI.WebControls.GridView gvResumenCaja;
     }
 }

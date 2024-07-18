@@ -87,13 +87,53 @@ namespace Negocio
             }
             return instructores;
         }
-    
 
 
 
+        public Empleado BuscarEmpleadoPorIDPersona(int idPersona)
+        {
+            Empleado empleado = null;
+            try
+            {
+                Dt.setearConsulta("SELECT E.ID, E.IDPersona, E.IDCargoEmpleado, P.DNI, P.Nombre, P.Apellido, P.Email, P.FechaNacimiento, C.Descripcion AS CargoDescripcion " +
+                                  "FROM Empleados E " +
+                                  "INNER JOIN Personas P ON E.IDPersona = P.ID " +
+                                  "INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID " +
+                                  "WHERE E.IDPersona = @IDPersona");
+                Dt.agregarParametro("@IDPersona", idPersona);
+                Dt.ejecutarLectura();
+                if (Dt.Lector.Read())
+                {
+                    empleado = new Empleado
+                    {
+                        ID = Convert.ToInt32(Dt.Lector["ID"]),
+                        IDPersona = Convert.ToInt32(Dt.Lector["IDPersona"]),
+                        DNI = Dt.Lector["DNI"].ToString(),
+                        Nombre = Dt.Lector["Nombre"].ToString(),
+                        Apellido = Dt.Lector["Apellido"].ToString(),
+                        Email = Dt.Lector["Email"].ToString(),
+                        FechaNacimiento = Convert.ToDateTime(Dt.Lector["FechaNacimiento"]),
+                        cargoEmpleado = new CargoEmpleado
+                        {
+                            ID = Convert.ToInt32(Dt.Lector["IDCargoEmpleado"]),
+                            Descripcion = Dt.Lector["CargoDescripcion"].ToString()
+                        }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                Dt.cerrarConexion();
+            }
+            return empleado;
+        }
 
 
-    public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
+        public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
         {
             errorMessage = string.Empty;
             try

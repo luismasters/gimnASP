@@ -43,10 +43,29 @@ namespace Gimn_Asp
                     }
 
                     // Redirigir al panel de usuario
-                    Response.Redirect("UserDashboar.aspx");
+                    Response.Redirect("UserDashboard.aspx");
                 }
                 else if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
                 {
+                    Response.Redirect("Acceso.aspx");
+                }
+                else if (usuario.IDRol == 2) // Asumiendo que el rol de Empleado tiene ID 2
+                {
+                    EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
+                    Empleado empleado = empleadoNegocio.BuscarEmpleadoPorIDPersona(usuario.IDPersona);
+
+                    if (empleado != null)
+                    {
+                        // Almacenar los datos del empleado en la sesión
+                        Session["EmpleadoID"] = empleado.ID;
+                        Session["IDPersona"] = empleado.IDPersona;
+                        Session["CargoEmpleado"] = empleado.cargoEmpleado.Descripcion;
+                        Session["DNI"] = empleado.DNI;
+                        Session["Nombre"] = empleado.Nombre;
+                        Session["Apellido"] = empleado.Apellido;
+                    }
+
+                    // Redirigir al panel de empleado
                     Response.Redirect("Acceso.aspx");
                 }
                 else

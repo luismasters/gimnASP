@@ -48,7 +48,7 @@ namespace Negocio
                     INNER JOIN Miembros M ON R.IDMiembro = M.ID
                     INNER JOIN Personas P ON M.IDPersona = P.ID
                     INNER JOIN HorariosClases H ON R.IDHorarioClase = H.ID
-                    WHERE R.IDHorarioClase = @HorarioID AND H.Fecha >= GETDATE()");
+                    WHERE R.IDHorarioClase = @HorarioID");
                 DT.agregarParametro("@HorarioID", horarioId);
                 DT.ejecutarLectura();
                 while (DT.Lector.Read())
@@ -90,19 +90,19 @@ namespace Negocio
             try
             {
                 DT.setearConsulta(@"
-                    SELECT R.ID, R.IDClaseSalon, R.IDSalone, R.IDMiembro, R.IDHorarioClase, 
-                           H.Fecha, H.HoraInicio, H.HoraFin, 
-                           C.Descripcion AS NombreClase, 
-                           S.Nombre AS NombreSalon, 
-                           P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor
-                    FROM Reservas R
-                    INNER JOIN HorariosClases H ON R.IDHorarioClase = H.ID
-                    INNER JOIN ClasesSalon C ON R.IDClaseSalon = C.ID
-                    INNER JOIN Salones S ON R.IDSalone = S.ID
-                    INNER JOIN Empleados E ON H.IDInstructor = E.ID
-                    INNER JOIN Personas P ON E.IDPersona = P.ID
-                    WHERE R.IDMiembro = @IDMiembro AND H.Fecha >= GETDATE()
-                    ORDER BY H.Fecha, H.HoraInicio");
+            SELECT R.ID, R.IDClaseSalon, R.IDSalone, R.IDMiembro, R.IDHorarioClase, 
+                   H.Fecha, H.HoraInicio, H.HoraFin, 
+                   C.Descripcion AS NombreClase, 
+                   S.Nombre AS NombreSalon, 
+                   P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor
+            FROM Reservas R
+            INNER JOIN HorariosClases H ON R.IDHorarioClase = H.ID
+            INNER JOIN ClasesSalon C ON R.IDClaseSalon = C.ID
+            INNER JOIN Salones S ON R.IDSalone = S.ID
+            INNER JOIN Empleados E ON H.IDInstructor = E.ID
+            INNER JOIN Personas P ON E.IDPersona = P.ID
+            WHERE R.IDMiembro = @IDMiembro AND CAST(H.Fecha AS DATE) >= CAST(GETDATE() AS DATE)
+            ORDER BY H.Fecha, H.HoraInicio");
                 DT.agregarParametro("@IDMiembro", idMiembro);
                 DT.ejecutarLectura();
 

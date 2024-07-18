@@ -2,6 +2,7 @@
 using Negocio;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -24,6 +25,14 @@ namespace Gimn_Asp
             gvHorariosDisponibles.DataSource = horarios;
             gvHorariosDisponibles.DataBind();
         }
+
+        public string FormatearFecha(object fecha)
+        {
+            DateTime fechaClase = (DateTime)fecha;
+            return fechaClase.ToString("dddd d 'de' MMMM", new CultureInfo("es-ES"));
+        }
+
+
 
         protected void gvHorariosDisponibles_RowCommand(object sender, GridViewCommandEventArgs e)
         {

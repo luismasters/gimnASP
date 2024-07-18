@@ -129,6 +129,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\StyleSheet.css" />
     <Content Include="Default.aspx" />
+    <Content Include="DetalleCobro.aspx" />
     <Content Include="DetalleReservas.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -136,6 +137,7 @@
     <Content Include="NavigationMenu.ascx" />
     <Content Include="Pago.aspx" />
     <Content Include="ReservarClases.aspx" />
+    <Content Include="ResumenCaja.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -261,6 +263,13 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DetalleCobro.aspx.cs">
+      <DependentUpon>DetalleCobro.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DetalleCobro.aspx.designer.cs">
+      <DependentUpon>DetalleCobro.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DetalleReservas.aspx.cs">
       <DependentUpon>DetalleReservas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -299,6 +308,13 @@
     </Compile>
     <Compile Include="ReservarClases.aspx.designer.cs">
       <DependentUpon>ReservarClases.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ResumenCaja.aspx.cs">
+      <DependentUpon>ResumenCaja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ResumenCaja.aspx.designer.cs">
+      <DependentUpon>ResumenCaja.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>

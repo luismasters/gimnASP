@@ -60,9 +60,11 @@ namespace Gimn_Asp
                bool miembroAgregado= miembroNegocio.AgregarMiembro(miembro);
 
                 if (miembroAgregado)
-                {
 
-                    Usuario usuario= new Usuario();
+                {
+                    int empleadoID = (int)Session["EmpleadoID"];
+
+                    Usuario usuario = new Usuario();
                     UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
 
                     usuario.NombreUsuario = PN.Email;
@@ -76,6 +78,8 @@ namespace Gimn_Asp
                     CobroNegocio cobroNegocio = new CobroNegocio();
                     cobro.IDPersona = PN.IDPersona;
                     cobro.IDTipoMembresia = miembro.TipoMembresia;
+                    cobro.Empleado = new Empleado { ID = empleadoID }; 
+
                     cobro.FechaCobro = fechahoy;
                     bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
 

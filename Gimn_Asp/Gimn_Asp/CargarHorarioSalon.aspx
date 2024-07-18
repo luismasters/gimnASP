@@ -34,21 +34,24 @@
                     <asp:Button ID="btnFiltrar" runat="server" Text="Filtrar" CssClass="btn btn-primary mt-2" OnClick="btnFiltrar_Click" />
 
                     <asp:GridView ID="gvHorariosClases" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered" DataKeyNames="ID" OnRowDeleting="gvHorariosClases_RowDeleting" Style="color: aliceblue">
-                        <Columns>
-                            <asp:BoundField DataField="ID" HeaderText="ID" />
-                            <asp:BoundField DataField="claseSalon.NombreClase" HeaderText="Clase" />
-                            <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:BoundField DataField="HoraInicio" HeaderText="Hora Inicio" DataFormatString="{0:hh\\:mm}" />
-                            <asp:BoundField DataField="HoraFin" HeaderText="Hora Fin" DataFormatString="{0:hh\\:mm}" />
-                            <asp:BoundField DataField="salon.Nombre" HeaderText="Salón" />
-                            <asp:BoundField DataField="Instructor.NombreCompleto" HeaderText="Instructor" />
-                            <asp:TemplateField>
-                                <ItemTemplate>
-                                    <asp:Button ID="btnEliminarHorarioClase" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar este horario de clase?');" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
+    <Columns>
+        <asp:BoundField DataField="claseSalon.NombreClase" HeaderText="Clase" />
+        <asp:TemplateField HeaderText="Fecha">
+            <ItemTemplate>
+                <%# FormatearFecha(Eval("Fecha")) %>
+            </ItemTemplate>
+        </asp:TemplateField>
+        <asp:BoundField DataField="HoraInicio" HeaderText="Hora Inicio" DataFormatString="{0:hh\\:mm}" />
+        <asp:BoundField DataField="HoraFin" HeaderText="Hora Fin" DataFormatString="{0:hh\\:mm}" />
+        <asp:BoundField DataField="salon.Nombre" HeaderText="Salón" />
+        <asp:BoundField DataField="Instructor.NombreCompleto" HeaderText="Instructor" />
+        <asp:TemplateField>
+            <ItemTemplate>
+                <asp:Button ID="btnEliminarHorarioClase" runat="server" CommandName="Delete" CommandArgument='<%# Eval("ID") %>' Text="Eliminar" CssClass="btn btn-danger" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar este horario de clase?');" />
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+</asp:GridView>
 
 
                     <div class="mt-4">

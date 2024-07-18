@@ -11,8 +11,22 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                // Verificar si los datos del empleado están en la sesión
+                if (Session["Nombre"] != null && Session["Apellido"] != null && Session["CargoEmpleado"] != null)
+                {
+                    string nombreCompleto = $"{Session["Nombre"]} {Session["Apellido"]}";
+                    string cargoEmpleado = Session["CargoEmpleado"].ToString();
+                    sidebarTitle.InnerText = $"{nombreCompleto} - {cargoEmpleado}";
+                }
+                else
+                {
+                    sidebarTitle.InnerText = "Sidebar";
+                }
+            }
         }
+
         protected void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             // Limpiar la sesión
@@ -22,7 +36,5 @@ namespace Gimn_Asp
             // Redirigir al login
             Response.Redirect("Login.aspx");
         }
-
-       
     }
 }

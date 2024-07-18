@@ -80,7 +80,8 @@ namespace Negocio
                             INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
                             INNER JOIN Salones S ON H.IDSalon = S.ID
                             INNER JOIN Empleados E ON H.IDInstructor = E.ID
-                            INNER JOIN Personas P ON E.IDPersona = P.ID");
+                            INNER JOIN Personas P ON E.IDPersona = P.ID
+                            ORDER BY H.Fecha ASC, H.HoraInicio ASC");
                 DT.ejecutarLectura();
                 while (DT.Lector.Read())
                 {
@@ -116,6 +117,7 @@ namespace Negocio
 
 
 
+
         public List<HorarioClase> ListarHorariosClasesPorSemana(DateTime fechaInicio, DateTime fechaFin)
         {
             List<HorarioClase> horariosClases = new List<HorarioClase>();
@@ -128,7 +130,8 @@ namespace Negocio
                             INNER JOIN Salones S ON H.IDSalon = S.ID
                             INNER JOIN Empleados E ON H.IDInstructor = E.ID
                             INNER JOIN Personas P ON E.IDPersona = P.ID
-                            WHERE H.Fecha BETWEEN @FechaInicio AND @FechaFin");
+                            WHERE H.Fecha BETWEEN @FechaInicio AND @FechaFin
+                            ORDER BY H.Fecha ASC, H.HoraInicio ASC");
                 DT.agregarParametro("@FechaInicio", fechaInicio);
                 DT.agregarParametro("@FechaFin", fechaFin);
                 DT.ejecutarLectura();
@@ -162,6 +165,7 @@ namespace Negocio
             }
             return horariosClases;
         }
+
 
         public HorarioClase ObtenerHorarioClasePorId(int id)
         {
@@ -224,19 +228,20 @@ namespace Negocio
             try
             {
                 DT.setearConsulta(@"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
-                            S.Nombre AS NombreSalon, S.Capacidad, 
-                            (S.Capacidad - COUNT(R.ID)) AS CapacidadRestante,
-                            P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor,
-                            H.IDClaseSalon, H.IDSalon
-                            FROM HorariosClases H 
-                            INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
-                            INNER JOIN Salones S ON H.IDSalon = S.ID
-                            LEFT JOIN Reservas R ON H.ID = R.IDHorarioClase
-                            INNER JOIN Empleados E ON H.IDInstructor = E.ID
-                            INNER JOIN Personas P ON E.IDPersona = P.ID
-                            WHERE H.Fecha >= GETDATE()
-                            GROUP BY H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion, 
-                                     S.Nombre, S.Capacidad, P.Nombre, P.Apellido, H.IDClaseSalon, H.IDSalon");
+                     S.Nombre AS NombreSalon, S.Capacidad, 
+                     (S.Capacidad - COUNT(R.ID)) AS CapacidadRestante,
+                     P.Nombre AS NombreInstructor, P.Apellido AS ApellidoInstructor,
+                     H.IDClaseSalon, H.IDSalon
+                     FROM HorariosClases H 
+                     INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                     INNER JOIN Salones S ON H.IDSalon = S.ID
+                     LEFT JOIN Reservas R ON H.ID = R.IDHorarioClase
+                     INNER JOIN Empleados E ON H.IDInstructor = E.ID
+                     INNER JOIN Personas P ON E.IDPersona = P.ID
+                     WHERE CAST(H.Fecha AS DATE) >= CAST(GETDATE() AS DATE)
+                     GROUP BY H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion, 
+                              S.Nombre, S.Capacidad, P.Nombre, P.Apellido, H.IDClaseSalon, H.IDSalon
+                     ORDER BY H.Fecha ASC, H.HoraInicio ASC");
                 DT.ejecutarLectura();
                 while (DT.Lector.Read())
                 {
@@ -247,9 +252,12 @@ namespace Negocio
                         HoraInicio = DT.Lector["HoraInicio"].ToString(),
                         HoraFin = DT.Lector["HoraFin"].ToString(),
                         claseSalon = new ClaseSalon { ID = Convert.ToInt32(DT.Lector["IDClaseSalon"]), NombreClase = DT.Lector["NombreClase"].ToString() },
-                        salon = new Salon { ID = Convert.ToInt32(DT.Lector["IDSalon"]),
+                        salon = new Salon
+                        {
+                            ID = Convert.ToInt32(DT.Lector["IDSalon"]),
                             Nombre = DT.Lector["NombreSalon"].ToString(),
-                            capacidad = Convert.ToInt32(DT.Lector["Capacidad"]) },
+                            capacidad = Convert.ToInt32(DT.Lector["Capacidad"])
+                        },
                         CapacidadRestante = Convert.ToInt32(DT.Lector["CapacidadRestante"]),
                         Instructor = new Empleado
                         {
@@ -262,12 +270,7 @@ namespace Negocio
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al listar los horarios de clases disponibles", ex);
-            }
-            finally
-            {
-                DT.cerrarConexion();
-                DT.limpiarParametros();
+                // Manejo de excepciones
             }
             return horariosClases;
         }

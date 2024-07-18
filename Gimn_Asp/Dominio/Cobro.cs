@@ -15,5 +15,7 @@ namespace Dominio
 
         public DateTime FechaCobro { get; set; }
 
+        public Empleado Empleado { get; set; }
+
     }
 }

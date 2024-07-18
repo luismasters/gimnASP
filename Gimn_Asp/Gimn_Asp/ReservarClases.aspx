@@ -9,8 +9,11 @@
                 <asp:GridView ID="gvHorariosDisponibles" runat="server" AutoGenerateColumns="False" CssClass="table table-bordered text-light" DataKeyNames="ID,IDClaseSalon,IDSalon" OnRowCommand="gvHorariosDisponibles_RowCommand">
                     <Columns>
                         <asp:BoundField DataField="claseSalon.NombreClase" HeaderText="Clase" />
-                        <asp:BoundField DataField="Fecha" HeaderText="Fecha" DataFormatString="{0:dd/MM/yyyy}" />
-                        <asp:BoundField DataField="HoraInicio" HeaderText="Hora Inicio" />
+<asp:TemplateField HeaderText="Fecha">
+    <ItemTemplate>
+        <%# FormatearFecha(Eval("Fecha")) %>
+    </ItemTemplate>
+</asp:TemplateField>                        <asp:BoundField DataField="HoraInicio" HeaderText="Hora Inicio" />
                         <asp:BoundField DataField="HoraFin" HeaderText="Hora Fin" />
                         <asp:BoundField DataField="salon.Nombre" HeaderText="Salón" />
                         <asp:BoundField DataField="CapacidadRestante" HeaderText="Capacidad Restante" />
