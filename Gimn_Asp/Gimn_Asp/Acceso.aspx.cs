@@ -9,6 +9,16 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+            if (Convert.ToInt32 (Session["Role"]) !=2)
+            {
+                Response.Redirect("Login.aspx");
+
+
+            }
+
+
         }
 
         protected void Acceso_Click(object sender, EventArgs e)

@@ -45,6 +45,44 @@ namespace Negocio
             }
             return personas;
         }
+
+
+        public bool AgregarPersona(Persona persona)
+        {
+
+            try
+            {
+                DT.setearConsulta("insert into Personas(DNI,Nombre,Apellido,Email,FechaNacimiento) OUTPUT INSERTED.Id VALUES (@DNIP,@Nombre,@Apellido,@Email,@FechaNacimiento)");
+                DT.agregarParametro("@DNIP", persona.DNI);
+                DT.agregarParametro("@Nombre", persona.Nombre);
+                DT.agregarParametro("@Apellido", persona.Apellido);
+                DT.agregarParametro("@Email", persona.Email);
+                DT.agregarParametro("@FechaNacimiento", persona.FechaNacimiento);
+
+                return DT.ejecutarAccion();
+            }
+            catch (SqlException ex)
+            {
+                // Error number for unique constraint violation
+                if (ex.Number == 2627 || ex.Number == 2601)
+                {
+                    return false;
+                }
+                // Propagate other SQL exceptions
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de otras excepciones
+                return false;
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+        }
+
+
         public bool AgregarPersona(Persona persona, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -147,9 +185,61 @@ namespace Negocio
             return persona; // Devuelve la persona o null si no se encuentra
         }
 
-        public void AgregarPersona(Persona persona, out object errorMessage)
+        public bool ActualizarPersona(Persona persona, out string errorMessage)
         {
-            throw new NotImplementedException();
+            errorMessage = string.Empty;
+            try
+            {
+                DT.setearConsulta(@"UPDATE Personas
+                                    SET Nombre = @Nombre,
+                                        Apellido = @Apellido,
+                                        Email = @Email
+                                    WHERE ID = @ID");
+                DT.agregarParametro("@Nombre", persona.Nombre);
+                DT.agregarParametro("@Apellido", persona.Apellido);
+                DT.agregarParametro("@Email", persona.Email);
+                DT.agregarParametro("@ID", persona.IDPersona);
+
+                return DT.ejecutarAccion();
+            }
+            catch (SqlException ex)
+            {
+                errorMessage = "Error al actualizar la persona: " + ex.Message;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Error general: " + ex.Message;
+                return false;
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+        }
+
+        // Método para eliminar una persona por ID
+        public bool EliminarPersona(int idPersona)
+        {
+            try
+            {
+                DT.setearConsulta("DELETE FROM Personas WHERE ID = @ID");
+                DT.agregarParametro("@ID", idPersona);
+
+                return DT.ejecutarAccion();
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Error al eliminar la persona: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error general: " + ex.Message);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
         }
     }
 }

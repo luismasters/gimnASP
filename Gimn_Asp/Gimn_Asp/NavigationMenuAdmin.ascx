@@ -1,5 +1,4 @@
-﻿
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NavigationMenuAdmin.ascx.cs" Inherits="Gimn_Asp.NavigationMenuAdmin" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NavigationMenuAdmin.ascx.cs" Inherits="Gimn_Asp.NavigationMenuAdmin" %>
 
 <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
     <span class="fs-4" id="sidebarTitle" runat="server" style="color: aliceblue;"></span>
@@ -19,6 +18,11 @@
     <li class="nav-item">
         <asp:HyperLink ID="linkResumenCaja" runat="server" CssClass="nav-link" NavigateUrl="ResumenCaja.aspx" Style="color: aliceblue;">
             <i class="bi bi-cash"></i> Resumen de Caja
+        </asp:HyperLink>
+    </li>
+    <li class="nav-item">
+        <asp:HyperLink ID="linkMetricasIngreso" runat="server" CssClass="nav-link" NavigateUrl="MetricasIngresos.aspx" Style="color: aliceblue;">
+            <i class="bi bi-graph-up"></i> Métricas de Ingreso
         </asp:HyperLink>
     </li>
     <li>

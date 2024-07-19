@@ -107,6 +107,7 @@
     <Content Include="AgragarActividades.aspx" />
     <Content Include="AgregarEmpleados.aspx" />
     <Content Include="AgregarSocio.aspx" />
+    <Content Include="BajaModSocio.aspx" />
     <Content Include="CargarHorarioSalon.aspx" />
     <Content Include="Config.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -134,6 +135,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="MetricasIngresos.aspx" />
     <Content Include="NavigationMenu.ascx" />
     <Content Include="NavigationMenuAdmin.ascx" />
     <Content Include="Pago.aspx" />
@@ -243,6 +245,13 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BajaModSocio.aspx.cs">
+      <DependentUpon>BajaModSocio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BajaModSocio.aspx.designer.cs">
+      <DependentUpon>BajaModSocio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CargarHorarioSalon.aspx.cs">
       <DependentUpon>CargarHorarioSalon.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -287,6 +296,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MetricasIngresos.aspx.cs">
+      <DependentUpon>MetricasIngresos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MetricasIngresos.aspx.designer.cs">
+      <DependentUpon>MetricasIngresos.aspx</DependentUpon>
     </Compile>
     <Compile Include="NavigationMenu.ascx.cs">
       <DependentUpon>NavigationMenu.ascx</DependentUpon>

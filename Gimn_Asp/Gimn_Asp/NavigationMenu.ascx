@@ -39,28 +39,7 @@
             </li>
         </ul>
     </li>
-    <li>
-        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="color: aliceblue;">
-            <i class="bi bi-briefcase"></i>
-            Empleados
-        </a>
-        <ul class="dropdown-menu bg-c" style="background-color: rgba(30, 30, 30, 255);">
-            <li>
-                <a class="dropdown-item" href="AgregarEmpleados.aspx" style="color: aliceblue;" 
-                   onmouseover="this.style.backgroundColor='aliceblue';this.style.color='rgba(30, 30, 30, 255)';" 
-                   onmouseout="this.style.backgroundColor='rgba(30, 30, 30, 255)';this.style.color='aliceblue';">
-                    Agregar Empleado
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="BMEmpleados.aspx" style="color: aliceblue;" 
-                   onmouseover="this.style.backgroundColor='aliceblue';this.style.color='rgba(30, 30, 30, 255)';" 
-                   onmouseout="this.style.backgroundColor='rgba(30, 30, 30, 255)';this.style.color='aliceblue';">
-                    Gestionar Registros de Empleados
-                </a>
-            </li>
-        </ul>
-    </li>
+  
     <li>
         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="color: aliceblue;">
             <i class="bi bi-calendar-event"></i>

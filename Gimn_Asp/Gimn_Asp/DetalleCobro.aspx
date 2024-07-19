@@ -12,9 +12,9 @@
                     <h1>Detalle de Cobro - <asp:Label ID="lblFecha" runat="server"></asp:Label></h1>
                     <asp:GridView ID="gvDetalleCobro" runat="server" AutoGenerateColumns="false" CssClass="table" style="color:aliceblue">
                         <Columns>
-                            <asp:BoundField DataField="ID" HeaderText="ID Cobro" />
-                            <asp:BoundField DataField="IDPersona" HeaderText="ID Persona" />
-                            <asp:BoundField DataField="IDTipoMembresia" HeaderText="ID Tipo Membresía" />
+                            <asp:BoundField DataField="Apellido" HeaderText="Apellido" />
+                            <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
+                            <asp:BoundField DataField="Membresia" HeaderText="Tipo Membresía" />
                             <asp:BoundField DataField="FechaCobro" HeaderText="Fecha Cobro" DataFormatString="{0:dd/MM/yyyy}" />
                             <asp:BoundField DataField="Precio" HeaderText="Monto" DataFormatString="{0:C}" />
                         </Columns>

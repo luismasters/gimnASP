@@ -13,6 +13,12 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+
+
+
+
             if (!IsPostBack)
             {
                 CargarTiposMembresias();
@@ -21,151 +27,130 @@ namespace Gimn_Asp
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-
-            string DNI = txtDNI.Text;
-
-
+            string errorMessage = string.Empty;
             PersonaNegocio personaNegocio = new PersonaNegocio();
-            Persona persona = new Persona();
-
-            persona.DNI = txtDNIUser.Text;
-            persona.Nombre = txtNombre.Text;
-            persona.Apellido= txtApellido.Text;
-            persona.Email = txtEmail.Text;
+            MiembroNegocio miembroNegocio = new MiembroNegocio();
+            UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+            CobroNegocio cobroNegocio = new CobroNegocio();
+            ImagenNegocio negocioImagen = new ImagenNegocio();
             DateTime FN;
             DateTime.TryParse(txtFechaNacimiento.Text, out FN);
-            persona.FechaNacimiento = FN;
-            string errorMessage;
 
-
-
-            if (personaNegocio.AgregarPersona(persona, out errorMessage))
+            // Crear el objeto Miembro con los datos del formulario
+            Miembro miembro = new Miembro
             {
+                DNI = txtDNIUser.Text,
+                Nombre = txtNombre.Text,
+                Apellido = txtApellido.Text,
+                Email = txtEmail.Text,
+                FechaNacimiento =FN,
+                TipoMembresia = Convert.ToInt32(DropDownListMembresia.SelectedValue)
+            };
 
-
-
-                Miembro miembro = new Miembro();
-                MiembroNegocio miembroNegocio = new MiembroNegocio();
-
-                int idTipoMembresiaSeleccionado = Convert.ToInt32(DropDownListMembresia.SelectedValue);
-                DateTime fechahoy = DateTime.Today;
-
-                Persona PN = new Persona();
-
-                PN=personaNegocio.BuscarPersona(DNI);
-
-                miembro.IDPersona = PN.IDPersona;
-                miembro.TipoMembresia = idTipoMembresiaSeleccionado;
-
-               bool miembroAgregado= miembroNegocio.AgregarMiembro(miembro);
-
-                if (miembroAgregado)
-
+            // Verificar si la persona ya existe
+            Persona personaExistente = personaNegocio.BuscarPersona(miembro.DNI);
+            if (personaExistente == null)
+            {
+                // Si no existe, crear un objeto Persona con los datos de Miembro
+                Persona nuevaPersona = new Persona
                 {
-                    int empleadoID = (int)Session["EmpleadoID"];
+                    DNI = miembro.DNI,
+                    Nombre = miembro.Nombre,
+                    Apellido = miembro.Apellido,
+                    Email = miembro.Email,
+                    FechaNacimiento = FN
+                };
 
-                    Usuario usuario = new Usuario();
-                    UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-
-                    usuario.NombreUsuario = PN.Email;
-                    usuario.Clave = PN.DNI;
-                    usuario.IDRol = 3;
-                    usuario.IDPersona = PN.IDPersona;
-
-                    usuarioNegocio.AgregarUsuario(usuario,out errorMessage) ;
-
-                    Cobro cobro = new Cobro();
-                    CobroNegocio cobroNegocio = new CobroNegocio();
-                    cobro.IDPersona = PN.IDPersona;
-                    cobro.IDTipoMembresia = miembro.TipoMembresia;
-                    cobro.Empleado = new Empleado { ID = empleadoID }; 
-
-                    cobro.FechaCobro = fechahoy;
-                    bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
-
-                    if (cobroAgregado)
-                    {
-                        // Éxito: mostrar un mensaje de éxito
-                        string script1 = "alert('Miembro y cobro registrados correctamente.');";
-                        ClientScript.RegisterStartupScript(this.GetType(), "RegistroExitoso", script1, true);
-                    }
-                    else
-                    {
-                        // Error al agregar el cobro
-                        string script1 = "alert('Error al registrar el cobro.');";
-                        ClientScript.RegisterStartupScript(this.GetType(), "ErrorRegistroCobro", script1, true);
-                    }
-
-
-                }
-                else
+                // Agregar la persona
+                bool personaAgregada = personaNegocio.AgregarPersona(nuevaPersona, out errorMessage);
+                if (!personaAgregada)
                 {
-
-
+                    lblMensaje.Text = errorMessage;
+                    return;
                 }
 
+                // Recuperar el IDPersona de la persona recién agregada
+                personaExistente = personaNegocio.BuscarPersona(miembro.DNI);
+                miembro.IDPersona = personaExistente.IDPersona;
             }
             else
             {
-
-                string script = "alert('El mail ya esa regisrado');";
-                ClientScript.RegisterStartupScript(this.GetType(), "AlertaMembresiaActiva", script, true);
+                // Si la persona ya existe, usar su ID
+                miembro.IDPersona = personaExistente.IDPersona;
             }
 
-
-
-            persona = personaNegocio.BuscarPersona(DNI);
-
-            if (persona != null)
+            // Agregar el miembro
+            bool miembroAgregado = miembroNegocio.AgregarMiembro(miembro);
+            if (!miembroAgregado)
             {
-                // Verificar si se seleccionó un archivo
-                if (fileUploadImagen.HasFile)
-                {
-                    // Obtener los datos binarios de la imagen
-                    byte[] datosImagen = fileUploadImagen.FileBytes;
+                lblMensaje.Text = errorMessage;
+                return;
+            }
 
-                    // Obtener el ID de la persona desde algún lugar, por ejemplo, un control TextBox
+            // Crear y agregar el usuario
+            Persona p2 = new Persona();
+            p2 = personaNegocio.BuscarPersona(miembro.DNI);
+ 
+            Usuario usuario = new Usuario
+           
 
+            {
+                NombreUsuario = p2.Email,
+                Clave = miembro.DNI,
+                IDRol = 3,
+                IDPersona = miembro.IDPersona
+            };
 
+            bool usuarioAgregado = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
+            if (!usuarioAgregado)
+            {
+                lblMensaje.Text = errorMessage;
+                return;
+            }
 
+            // Registro de cobro
+            int empleadoID = (int)Session["EmpleadoID"];
+            Cobro cobro = new Cobro
+            {
+                IDPersona = miembro.IDPersona,
+                IDTipoMembresia = miembro.TipoMembresia,
+                Empleado = new Empleado { ID = empleadoID },
+                FechaCobro = DateTime.Today
+            };
 
-
-                    int idPersona = persona.IDPersona;
-
-                    // Instanciar la clase ImagenNegocio
-                    ImagenNegocio negocioImagen = new ImagenNegocio();
-
-                    try
-                    {
-                        // Insertar la imagen en la base de datos
-                        negocioImagen.InsertarImagen(idPersona, datosImagen);
-                        lblMensaje.Text = "La imagen se guardó correctamente en la base de datos.";
-
-                        Response.Redirect("Acceso.aspx");
-
-                    }
-                    catch (Exception ex)
-                    {
-                        lblMensaje.Text = "Error al guardar la imagen: " + ex.Message;
-                    }
-                }
-                else
-                {
-                    // Mostrar un mensaje de error si no se seleccionó un archivo
-                    lblMensaje.Text = "Por favor seleccione un archivo.";
-                }
-
-
-
-
-
+            bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
+            if (cobroAgregado)
+            {
+                // Éxito: mostrar un mensaje de éxito
+                string script1 = "alert('Miembro y cobro registrados correctamente.');";
+                ClientScript.RegisterStartupScript(this.GetType(), "RegistroExitoso", script1, true);
             }
             else
             {
-
+                // Error al agregar el cobro
+                string script1 = "alert('Error al registrar el cobro.');";
+                ClientScript.RegisterStartupScript(this.GetType(), "ErrorRegistroCobro", script1, true);
             }
 
-
+            // Manejo de la imagen del miembro
+            if (fileUploadImagen.HasFile)
+            {
+                byte[] datosImagen = fileUploadImagen.FileBytes;
+                try
+                {
+                    negocioImagen.InsertarImagen(miembro.IDPersona, datosImagen);
+                    lblMensaje.Text = "La imagen se guardó correctamente en la base de datos.";
+                    Response.Redirect("Acceso.aspx");
+                }
+                catch (Exception ex)
+                {
+                    lblMensaje.Text = "Error al guardar la imagen: " + ex.Message;
+                }
+            }
+            else
+            {
+                lblMensaje.Text = "Por favor seleccione un archivo.";
+            }
         }
 
         protected void DropDownListMembresia_SelectedIndexChanged(object sender, EventArgs e)
@@ -191,37 +176,27 @@ namespace Gimn_Asp
             DropDownListMembresia.DataBind();
         }
 
-
         protected void BuscarUsuario_Click(object sender, EventArgs e)
         {
-
-           string DNI= txtDNI.Text;
-           
+            string DNI = txtDNI.Text;
             PersonaNegocio personaNegocio = new PersonaNegocio();
+            MiembroNegocio miembroNegocio1 = new MiembroNegocio();
 
-
-          if(personaNegocio.DNIRegistrado(DNI))
+            if (miembroNegocio1.BuscarUltimoRegMiembro(DNI) != null)
             {
                 string script = "alert('Usuario ya es Socio.');";
                 ClientScript.RegisterStartupScript(this.GetType(), "AlertaMembresiaActiva", script, true);
-
-            }else 
+            }
+            else
             {
                 panel.Visible = true;
-
                 txtDNIUser.Text = DNI;
 
                 DateTime nuevafechafin = DateTime.Today.AddDays(30);
                 DateTime fechahoy = DateTime.Today;
-                txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
-
-
-
+                txtFechaActual.Text = fechahoy.ToString("dd/MM/yyyy");
+                txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MM/yyyy");
             }
-          
-
-
         }
     }
 }

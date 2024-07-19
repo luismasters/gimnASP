@@ -48,17 +48,38 @@ namespace Negocio
         }
 
 
-
-
         public bool AgregarMiembro(Miembro miembro)
         {
             try
             {
+                // Verificar si la persona existe
+                PersonaNegocio personaNegocio = new PersonaNegocio();
+                Persona personaExistente = personaNegocio.BuscarPersona(miembro.DNI);
+
+                if (personaExistente == null)
+                {
+                    // Si no existe, agregar la persona
+                    bool personaAgregada = personaNegocio.AgregarPersona(miembro);
+                    if (!personaAgregada)
+                    {
+                        return false;
+                    }
+
+                    // Recuperar el IDPersona de la persona recién agregada
+                    personaExistente = personaNegocio.BuscarPersona(miembro.DNI);
+                    miembro.IDPersona = personaExistente.IDPersona;
+                }
+                else
+                {
+                    // Si la persona ya existe, usar su ID
+                    miembro.IDPersona = personaExistente.IDPersona;
+                }
+
                 // Establecer la consulta para insertar un nuevo miembro
-                DT.setearConsulta("INSERT INTO Miembros (IDPersona, IDTipoMembresia) OUTPUT INSERTED.ID VALUES (@IDPer, @IDTipoMembresia)");
+                DT.setearConsulta("INSERT INTO Miembros (IDPersona, IDTipoMembresia) OUTPUT INSERTED.ID VALUES (@IDPersona, @IDTipoMembresia)");
 
                 // Agregar parámetros a la consulta
-                DT.agregarParametro("@IDPer", miembro.IDPersona);
+                DT.agregarParametro("@IDPersona", miembro.IDPersona);
                 DT.agregarParametro("@IDTipoMembresia", miembro.TipoMembresia);
 
                 // Ejecutar la acción de inserción y obtener el resultado
@@ -73,7 +94,7 @@ namespace Negocio
             {
                 // Registro de error
                 Console.WriteLine($"Error al agregar el miembro: {ex.Message}");
-                throw new Exception("Error al agregar el miembro", ex);
+                return false;
             }
             finally
             {
@@ -82,8 +103,49 @@ namespace Negocio
             }
         }
 
+      
 
 
+        public Miembro BuscarUltimoRegMiembro(string DNI)
+        {
+            Miembro miembro = null;
+            try
+            {
+                DT.setearConsulta(@"SELECT TOP 1 M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin, 
+                            P.DNI, P.Nombre, P.Apellido, T.Descripcion AS TipoMembresiaDescripcion 
+                            FROM Miembros M
+                            INNER JOIN Personas P ON M.IDPersona = P.ID
+                            INNER JOIN TiposMembresias T ON M.IDTipoMembresia = T.ID
+                            WHERE P.DNI = @DNI 
+                            ORDER BY M.FechaInicio DESC");
+                DT.agregarParametro("@DNI", DNI);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    miembro = new Miembro
+                    {
+                        IDMiembro = Convert.ToInt32(DT.Lector["ID"]),
+                        IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]),
+                        TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]),
+                        FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]),
+                        FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"]),
+                        DNI = DT.Lector["DNI"].ToString(),
+                        Nombre = DT.Lector["Nombre"].ToString(),
+                        Apellido = DT.Lector["Apellido"].ToString(),
+                        TipoMembresiaDescripcion = DT.Lector["TipoMembresiaDescripcion"].ToString()
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar el miembro", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return miembro;
+        }
 
 
 

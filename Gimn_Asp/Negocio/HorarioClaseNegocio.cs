@@ -22,11 +22,11 @@ namespace Negocio
             {
                 if (ExisteClaseEnFranjaHoraria(horarioClase))
                 {
-                    errorMessage = "Ya existe una clase en la misma franja horaria para la fecha especificada en el mismo salón.";
+                    errorMessage = "Ya existe una clase en la misma franja horaria para la fecha especificada en el mismo salón o el instructor ya tiene una clase en otra sala en la misma franja horaria.";
                     return false;
                 }
 
-                DT.setearConsulta("INSERT INTO HorariosClases (IDClaseSalon, Fecha, HoraInicio, HoraFin, IDSalon,IDInstructor) OUTPUT INSERTED.ID VALUES (@IDClaseSalon, @Fecha, @HoraInicio, @HoraFin, @IDSalon,@IDInstructor)");
+                DT.setearConsulta("INSERT INTO HorariosClases (IDClaseSalon, Fecha, HoraInicio, HoraFin, IDSalon, IDInstructor) OUTPUT INSERTED.ID VALUES (@IDClaseSalon, @Fecha, @HoraInicio, @HoraFin, @IDSalon, @IDInstructor)");
                 DT.agregarParametro("@IDClaseSalon", horarioClase.claseSalon.ID);
                 DT.agregarParametro("@Fecha", horarioClase.Fecha);
                 DT.agregarParametro("@HoraInicio", horarioClase.HoraInicio);
@@ -52,11 +52,12 @@ namespace Negocio
         {
             try
             {
-                DT.setearConsulta("SELECT COUNT(*) FROM HorariosClases WHERE Fecha = @Fecha AND IDSalon = @IDSalon AND ((HoraInicio <= @HoraInicio AND HoraFin > @HoraInicio) OR (HoraInicio < @HoraFin AND HoraFin >= @HoraFin) OR (HoraInicio >= @HoraInicio AND HoraFin <= @HoraFin))");
+                DT.setearConsulta("SELECT COUNT(*) FROM HorariosClases WHERE Fecha = @Fecha AND (IDSalon = @IDSalon OR IDInstructor = @IDInstructor) AND ((HoraInicio <= @HoraInicio AND HoraFin > @HoraInicio) OR (HoraInicio < @HoraFin AND HoraFin >= @HoraFin) OR (HoraInicio >= @HoraInicio AND HoraFin <= @HoraFin))");
                 DT.agregarParametro("@Fecha", horarioClase.Fecha);
                 DT.agregarParametro("@HoraInicio", horarioClase.HoraInicio);
                 DT.agregarParametro("@HoraFin", horarioClase.HoraFin);
                 DT.agregarParametro("@IDSalon", horarioClase.salon.ID);
+                DT.agregarParametro("@IDInstructor", horarioClase.Instructor.ID);
                 DT.ejecutarLectura();
                 DT.Lector.Read();
                 int count = (int)DT.Lector[0];
@@ -114,10 +115,6 @@ namespace Negocio
             return horariosClases;
         }
 
-
-
-
-
         public List<HorarioClase> ListarHorariosClasesPorSemana(DateTime fechaInicio, DateTime fechaFin)
         {
             List<HorarioClase> horariosClases = new List<HorarioClase>();
@@ -165,7 +162,6 @@ namespace Negocio
             }
             return horariosClases;
         }
-
 
         public HorarioClase ObtenerHorarioClasePorId(int id)
         {
@@ -274,7 +270,6 @@ namespace Negocio
             }
             return horariosClases;
         }
-
 
         public bool EliminarHorarioClase(int id)
         {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj": {}
+    "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj": {}
   },
   "projects": {
-    "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj": {
+    "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj",
+        "projectUniqueName": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj",
         "projectName": "Consolegymn",
-        "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj",
+        "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Consolegymn\\Consolegymn.csproj",
         "packagesPath": "C:\\Users\\luism\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Consolegymn\\obj\\",
+        "outputPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Consolegymn\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,11 +32,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj": {
-                "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj"
+              "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj": {
+                "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj"
               },
-              "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Negocio\\Negocio.csproj": {
-                "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Negocio\\Negocio.csproj"
+              "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Negocio\\Negocio.csproj": {
+                "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Negocio\\Negocio.csproj"
               }
             }
           }
@@ -70,11 +70,11 @@
         }
       }
     },
-    "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj": {
+    "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj",
+        "projectUniqueName": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj",
         "projectName": "Dominio",
-        "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj",
+        "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj",
         "frameworks": {
           "net472": {
             "projectReferences": {}
@@ -85,16 +85,16 @@
         "net472": {}
       }
     },
-    "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Negocio\\Negocio.csproj": {
+    "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Negocio\\Negocio.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Negocio\\Negocio.csproj",
+        "projectUniqueName": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Negocio\\Negocio.csproj",
         "projectName": "Negocio",
-        "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Negocio\\Negocio.csproj",
+        "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Negocio\\Negocio.csproj",
         "frameworks": {
           "net472": {
             "projectReferences": {
-              "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj": {
-                "projectPath": "C:\\Users\\luism\\Desktop\\UTN\\3erCuatrimestre\\Programacion3\\Gimn_Asp\\Gimn_Asp\\Dominio\\Dominio.csproj"
+              "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj": {
+                "projectPath": "C:\\Users\\luism\\Desktop\\finalProgra\\gimnASP\\Gimn_Asp\\Dominio\\Dominio.csproj"
               }
             }
           }

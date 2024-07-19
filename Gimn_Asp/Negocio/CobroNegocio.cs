@@ -26,7 +26,7 @@ namespace Negocio
                 {
                     Cobro cobro = new Cobro();
                     cobro.ID = Convert.ToInt32(DT.Lector["ID"]);
-                    cobro.Empleado.ID= Convert.ToInt32(DT.Lector["IDEmpleado"]);
+                    cobro.Empleado.ID = Convert.ToInt32(DT.Lector["IDEmpleado"]);
                     cobro.IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]);
                     cobro.IDTipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]);
                     cobro.FechaCobro = Convert.ToDateTime(DT.Lector["FechaCobro"]);
@@ -115,14 +115,16 @@ namespace Negocio
             return resumenCobros;
         }
 
+
         public List<CobroDetalle> ObtenerDetalleCobros(int idEmpleado, DateTime fecha)
         {
             List<CobroDetalle> detalleCobros = new List<CobroDetalle>();
             try
             {
-                DT.setearConsulta("SELECT C.ID, C.IDPersonas, C.IDTipoMembresia, C.FechaCobro, TM.Precio " +
+                DT.setearConsulta("SELECT C.ID, P.Nombre, P.Apellido, TM.Descripcion, C.FechaCobro, TM.Precio " +
                                   "FROM Cobros C " +
                                   "INNER JOIN TiposMembresias TM ON C.IDTipoMembresia = TM.ID " +
+                                  "INNER JOIN Personas P ON C.IDPersonas = P.ID " + // Asegúrate de que 'IDPersonas' es el nombre correcto de la columna
                                   "WHERE C.IDEmpleado = @IDEmpleado AND CAST(C.FechaCobro AS DATE) = @Fecha");
                 DT.agregarParametro("@IDEmpleado", idEmpleado);
                 DT.agregarParametro("@Fecha", fecha);
@@ -132,8 +134,9 @@ namespace Negocio
                     CobroDetalle cobro = new CobroDetalle
                     {
                         ID = Convert.ToInt32(DT.Lector["ID"]),
-                        IDPersona = Convert.ToInt32(DT.Lector["IDPersonas"]),
-                        IDTipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]),
+                        Nombre = DT.Lector["Nombre"].ToString(),
+                        Apellido = DT.Lector["Apellido"].ToString(),
+                        Membresia = DT.Lector["Descripcion"].ToString(),
                         FechaCobro = Convert.ToDateTime(DT.Lector["FechaCobro"]),
                         Precio = Convert.ToDecimal(DT.Lector["Precio"])
                     };
@@ -150,21 +153,117 @@ namespace Negocio
             }
             return detalleCobros;
         }
-    }
+        public List<ResumenCobro> ObtenerResumenCobrosPorRango(DateTime fechaInicio, DateTime fechaFin)
+        {
+            List<ResumenCobro> resumenCobros = new List<ResumenCobro>();
+            try
+            {
+                DT.setearConsulta("SELECT E.ID AS IDEmpleado, P.Nombre + ' ' + P.Apellido AS NombreCompleto, SUM(TM.Precio) AS MontoTotal " +
+                                  "FROM Cobros C " +
+                                  "INNER JOIN Empleados E ON C.IDEmpleado = E.ID " +
+                                  "INNER JOIN Personas P ON E.IDPersona = P.ID " +
+                                  "INNER JOIN TiposMembresias TM ON C.IDTipoMembresia = TM.ID " +
+                                  "WHERE C.FechaCobro BETWEEN @FechaInicio AND @FechaFin " +
+                                  "GROUP BY E.ID, P.Nombre, P.Apellido");
+                DT.agregarParametro("@FechaInicio", fechaInicio);
+                DT.agregarParametro("@FechaFin", fechaFin);
+                DT.ejecutarLectura();
+                while (DT.Lector.Read())
+                {
+                    ResumenCobro resumen = new ResumenCobro
+                    {
+                        IDEmpleado = Convert.ToInt32(DT.Lector["IDEmpleado"]),
+                        NombreCompleto = DT.Lector["NombreCompleto"].ToString(),
+                        MontoTotal = Convert.ToDecimal(DT.Lector["MontoTotal"])
+                    };
+                    resumenCobros.Add(resumen);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener el resumen de cobros por rango", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return resumenCobros;
+        }
 
-    public class ResumenCobro
-    {
-        public int IDEmpleado { get; set; }
-        public string NombreCompleto { get; set; }
-        public decimal MontoTotal { get; set; }
-    }
+        public decimal ObtenerIngresosTotales(DateTime fecha)
+        {
+            decimal ingresosTotales = 0;
+            try
+            {
+                DT.setearConsulta("SELECT SUM(TM.Precio) AS IngresosTotales " +
+                                  "FROM Cobros C " +
+                                  "INNER JOIN TiposMembresias TM ON C.IDTipoMembresia = TM.ID " +
+                                  "WHERE CAST(C.FechaCobro AS DATE) = @Fecha");
+                DT.agregarParametro("@Fecha", fecha);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    ingresosTotales = Convert.ToDecimal(DT.Lector["IngresosTotales"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los ingresos totales", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return ingresosTotales;
+        }
 
-    public class CobroDetalle
-    {
-        public int ID { get; set; }
-        public int IDPersona { get; set; }
-        public int IDTipoMembresia { get; set; }
-        public DateTime FechaCobro { get; set; }
-        public decimal Precio { get; set; }
+        public decimal ObtenerIngresosTotalesPorRango(DateTime fechaInicio, DateTime fechaFin)
+        {
+            decimal ingresosTotales = 0;
+            try
+            {
+                DT.setearConsulta("SELECT ISNULL(SUM(TM.Precio), 0) AS IngresosTotales " +
+                                  "FROM Cobros C " +
+                                  "INNER JOIN TiposMembresias TM ON C.IDTipoMembresia = TM.ID " +
+                                  "WHERE C.FechaCobro BETWEEN @FechaInicio AND @FechaFin");
+                DT.agregarParametro("@FechaInicio", fechaInicio);
+                DT.agregarParametro("@FechaFin", fechaFin);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    // Utiliza el método ISNULL en SQL para manejar valores nulos
+                    ingresosTotales = Convert.ToDecimal(DT.Lector["IngresosTotales"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener los ingresos totales por rango", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return ingresosTotales;
+        }
+
+
+
+
+        public class ResumenCobro
+        {
+            public int IDEmpleado { get; set; }
+            public string NombreCompleto { get; set; }
+            public decimal MontoTotal { get; set; }
+        }
+
+        public class CobroDetalle
+        {
+            public int ID { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
+            public string Membresia { get; set; }
+            public DateTime FechaCobro { get; set; }
+            public decimal Precio { get; set; }
+        }
     }
 }
