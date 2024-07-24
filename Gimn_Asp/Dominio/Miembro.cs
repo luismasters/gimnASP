@@ -14,6 +14,9 @@ namespace Dominio
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public bool EstadoActivo { get; set; }
+        public Rol rol { get; set; }
+        public Usuario usuario { get; set; }
+
         public string TipoMembresiaDescripcion { get; set; } // Nueva propiedad
 
 

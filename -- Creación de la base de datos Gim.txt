@@ -1,14 +1,12 @@
 -- Creación de la base de datos Gimnasio
 USE master;
 GO
-drop database Gimnasio1;
+DROP DATABASE IF EXISTS Gimnasio2;
 GO
-create DATABASE Gimnasio1;
+CREATE DATABASE Gimnasio2;
 GO
-USE Gimnasio1;
+USE Gimnasio2;
 GO
-
-
 
 -- Tabla TiposMembresias
 CREATE TABLE TiposMembresias (
@@ -29,6 +27,9 @@ CREATE TABLE Personas (
 );
 GO
 
+INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
+VALUES ('12345678', 'Admin', 'Admin', 'admin@example.com', '1990-01-01');
+
 -- Tabla CargosEmpleados
 CREATE TABLE CargosEmpleados (
     ID INT IDENTITY(1,1) PRIMARY KEY,
@@ -40,65 +41,121 @@ GO
 CREATE TABLE Empleados (
     ID INT IDENTITY(1,1) PRIMARY KEY,
     IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
-    IDCargoEmpleado INT FOREIGN KEY REFERENCES CargosEmpleados(ID),
-    NombreUsuario VARCHAR(50) UNIQUE,
-    Clave VARCHAR(50)
+    IDCargoEmpleado INT FOREIGN KEY REFERENCES CargosEmpleados(ID)
 );
-GO
+GO		
 
 -- Tabla Miembros
 CREATE TABLE Miembros (
     ID INT IDENTITY(1,1) PRIMARY KEY,
     IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
     IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
-    FechaInicio DATE,
-    FechaFin DATE,
-    NombreUsuario VARCHAR(50),
+    FechaInicio DATE DEFAULT GETDATE(), -- Valor predeterminado configurado a la fecha actual
+    FechaFin DATE default DATEADD(DAY, 30,GETDATE()),
+    EstadoActivo BIT
+);
+GO
+
+-- Tabla Roles
+CREATE TABLE Roles (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(50) UNIQUE
+);
+GO
+
+-- Tabla Usuarios
+CREATE TABLE Usuarios (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
+    IDRol INT FOREIGN KEY REFERENCES Roles(ID),
+    NombreUsuario VARCHAR(50) UNIQUE,
     Clave VARCHAR(50)
 );
 GO
 
-
 -- Tabla Cobros
 CREATE TABLE Cobros (
     ID INT IDENTITY(1,1) PRIMARY KEY,
-    IDMiembro INT FOREIGN KEY REFERENCES Miembros(ID),
+    IDPersonas INT FOREIGN KEY REFERENCES Personas(ID),
+	IDEmpleado INT FOREIGN KEY REFERENCES Empleados(ID),
     IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
     FechaCobro DATE
+
 );
 GO
 
-INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
-VALUES
-('95996162', 'Juan', 'Pérez', 'juan.perez@example.com', '1990-01-15'),
-('96011491', 'María', 'González', 'maria.gonzalez@example.com', '1985-05-22'),
-('17245319', 'Pedro', 'López', 'pedro.lopez@example.com', '1993-03-10');
-GO
+CREATE TABLE Imagenes (
+    ID INT PRIMARY KEY identity(1,1),
+    IDPersona INT foreign key references Personas(ID),
+    Archivo VARBINARY(MAX)
+);
+go
+create table ClasesSalon(
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) unique
+	);
 
--- Insertar 2 tipos de membresía en la tabla TiposMembresias
+	create table Salones(
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) unique,
+	Capacidad int not null,
+	);
+
+CREATE TABLE HorariosClases (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDClaseSalon INT FOREIGN KEY REFERENCES ClasesSalon(ID),
+    IDSalon INT FOREIGN KEY REFERENCES Salones(ID),
+    Fecha DATE,
+    HoraInicio TIME,
+    HoraFin TIME,
+    IDInstructor INT FOREIGN KEY REFERENCES Empleados(ID) -- Nueva columna para el instructor
+);
+
+	create table Reservas(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	IDClaseSalon INT FOREIGN KEY REFERENCES ClasesSalon(ID),
+	IDSalone INT FOREIGN KEY REFERENCES Salones(ID),
+	IDMiembro INT FOREIGN KEY REFERENCES Miembros(ID),
+	IDHorarioClase INT FOREIGN KEY REFERENCES HorariosClases(ID),
+	)
+	
+ALTER TABLE HorariosClases
+ALTER COLUMN HoraInicio VARCHAR(8);
+
+ALTER TABLE HorariosClases
+ALTER COLUMN HoraFin VARCHAR(8);
+
+UPDATE HorariosClases
+SET HoraInicio = LEFT(CONVERT(VARCHAR, HoraInicio, 108), 5),
+    HoraFin = LEFT(CONVERT(VARCHAR, HoraFin, 108), 5);
+
 INSERT INTO TiposMembresias (Descripcion, Precio)
 VALUES
-('Básica', 20.00),
-('Premium', 50.00);
+('Musculacion', 25000.00),
+('Clases de Salon',20000.00),
+('Pase Dorado',35000.00);
 GO
 
-select * from Personas
-
-
-INSERT INTO Miembros (IDPersona, IDTipoMembresia, FechaInicio, FechaFin, NombreUsuario, Clave)
+INSERT INTO Roles (Nombre)
 VALUES
-(1, 1, '2024-05-01', '2025-05-01', 'juan.perez', 'password123'),
-(2, 2, '2024-05-01', '2025-05-01', 'maria.gonzalez', 'password456'),
-(3, 1, '2024-05-01', '2025-05-01', 'pedro.lopez', 'password789');
+('Administrador'),
+('Empleado Recepcion'),
+('Cliente'),
+('Instructor Salon'),
+('Instructor Musculacion');
+
 GO
 
-update  Miembros
-set  FechaFin= '2024-05-01'  where IDPersona=3
+SELECT * FROM roles;
+SELECT * FROM Personas ;
+select * from Empleados;
+SELECT * FROM Usuarios;
+select * from HorariosClases;
 
-select * from Personas
-select * from Miembros
-select * from Cobros
+--update Miembros set FechaInicio= '2024-03-30' , FechaFin='2024-04-30' where IDPersona= 9;
+--INSERT INTO Miembros (IDPersona, IDTipoMembresia) OUTPUT INSERTED.ID VALUES (1, 1)
 
-UPDATE Miembros SET FechaFin = @NuevaFechaFin WHERE IDPersona = @IDMiembro
 
-SELECT ID, DNI, Nombre, Apellido, Email, FechaNacimiento FROM Personas WHERE DNI ='31'
+insert into Usuarios(IDPersona,IDRol,NombreUsuario,Clave ) values (1,1,'Admin','Admin');
+
+

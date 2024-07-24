@@ -36,6 +36,29 @@ namespace Gimn_Asp
             DateTime FN;
             DateTime.TryParse(txtFechaNacimiento.Text, out FN);
 
+            // Crear el objeto Usuario con los datos del formulario
+            Usuario usuario = new Usuario
+            {
+                NombreUsuario = txtEmail.Text,
+                Clave = txtDNIUser.Text
+            };
+
+            // Agregar el usuario
+            bool usuarioAgregado = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
+            if (!usuarioAgregado)
+            {
+                lblMensaje.Text = errorMessage;
+                return;
+            }
+
+            // Buscar el usuario recién creado
+            Usuario usuarioCreado = usuarioNegocio.BuscarUsuarioPorNombre(usuario.NombreUsuario);
+            if (usuarioCreado == null)
+            {
+                lblMensaje.Text = "Error al obtener el usuario recién creado.";
+                return;
+            }
+
             // Crear el objeto Miembro con los datos del formulario
             Miembro miembro = new Miembro
             {
@@ -43,8 +66,13 @@ namespace Gimn_Asp
                 Nombre = txtNombre.Text,
                 Apellido = txtApellido.Text,
                 Email = txtEmail.Text,
-                FechaNacimiento =FN,
-                TipoMembresia = Convert.ToInt32(DropDownListMembresia.SelectedValue)
+                FechaNacimiento = FN,
+                TipoMembresia = Convert.ToInt32(DropDownListMembresia.SelectedValue),
+                usuario = usuarioCreado,
+                rol = ObtenerRolPorTipoMembresia(Convert.ToInt32(DropDownListMembresia.SelectedValue)),
+                EstadoActivo = true, // o el valor que corresponda
+                FechaInicio = DateTime.Today,
+                FechaFin = DateTime.Today.AddMonths(1) // o el valor que corresponda
             };
 
             // Verificar si la persona ya existe
@@ -82,27 +110,6 @@ namespace Gimn_Asp
             // Agregar el miembro
             bool miembroAgregado = miembroNegocio.AgregarMiembro(miembro);
             if (!miembroAgregado)
-            {
-                lblMensaje.Text = errorMessage;
-                return;
-            }
-
-            // Crear y agregar el usuario
-            Persona p2 = new Persona();
-            p2 = personaNegocio.BuscarPersona(miembro.DNI);
- 
-            Usuario usuario = new Usuario
-           
-
-            {
-                NombreUsuario = p2.Email,
-                Clave = miembro.DNI,
-                IDRol = 3,
-                IDPersona = miembro.IDPersona
-            };
-
-            bool usuarioAgregado = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
-            if (!usuarioAgregado)
             {
                 lblMensaje.Text = errorMessage;
                 return;
@@ -151,6 +158,26 @@ namespace Gimn_Asp
             {
                 lblMensaje.Text = "Por favor seleccione un archivo.";
             }
+        }
+
+
+        private Rol ObtenerRolPorTipoMembresia(int tipoMembresiaId)
+        {
+            // Define la lógica para obtener el ID del rol basado en el tipo de membresía
+            Rol rol = new Rol();
+            switch (tipoMembresiaId)
+            {
+                case 1: // Musculación
+                    rol.ID = 6;
+                    break;
+                case 2: // Clases de Salón
+                    rol.ID = 5;
+                    break;
+                case 3: // Pase Dorado
+                    rol.ID = 7;
+                    break;
+            }
+            return rol;
         }
 
         protected void DropDownListMembresia_SelectedIndexChanged(object sender, EventArgs e)

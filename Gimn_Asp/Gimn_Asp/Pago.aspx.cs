@@ -12,6 +12,9 @@ namespace Gimn_Asp
     {
         private PersonaNegocio personaNegocio = new PersonaNegocio();
         private MiembroNegocio miembroNegocio = new MiembroNegocio();
+        private TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
+        private RolNegocio rolNegocio = new RolNegocio();
+        private CobroNegocio cobroNegocio = new CobroNegocio();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,19 +66,12 @@ namespace Gimn_Asp
 
                 if (miembro != null)
                 {
-                    TipoMembresia tipoMembresia = new TipoMembresia();
-                    TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
-                    tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
+                    TipoMembresia tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
 
                     lblNombre.Text = $"{miembro.Nombre} {miembro.Apellido}";
                     lblTipoMembresia.Text = tipoMembresia.Descripcion;
                     lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                     lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");
-
-                    Dominio.Imagen imagen = new Imagen();
-                    ImagenNegocio imagenNegocio = new ImagenNegocio();
-                    imagen = imagenNegocio.CargarImagenPorIDPersona(miembro.IDPersona);
-                    imgFoto.ImageUrl = imagenNegocio.UrlPerfilImagen(imagen);
 
                     DateTime nuevafechafin = DateTime.Today.AddDays(30);
                     DateTime fechahoy = DateTime.Today;
@@ -104,7 +100,6 @@ namespace Gimn_Asp
 
         private void CargarTiposMembresias()
         {
-            TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
             List<TipoMembresia> tipoMembresias = tipoMembresiaNegocio.ListarTiposMembresias();
 
             DropDownListMembresia.DataSource = tipoMembresias;
@@ -116,20 +111,11 @@ namespace Gimn_Asp
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             string DNI = lstPersonas.SelectedValue;
-            Persona persona = new Persona();
-            PersonaNegocio personaNegocio = new PersonaNegocio();
-
-            Miembro miembro, miembroNuevo = new Miembro();
-            MiembroNegocio miembroNegocio = new MiembroNegocio();
-
-            TipoMembresia tipoMembresia = new TipoMembresia();
-            TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
-
-            persona = personaNegocio.BuscarPersona(DNI);
+            Persona persona = personaNegocio.BuscarPersona(DNI);
 
             if (persona != null)
             {
-                miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
+                Miembro miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
                 if (miembro != null)
                 {
                     if (miembro.FechaFin < DateTime.Today)
@@ -138,7 +124,7 @@ namespace Gimn_Asp
                         lblFechaInicio.Text = miembro.FechaInicio.ToString("dd/MMMM/yyyy");
                         lblFechaVencimiento.Text = miembro.FechaFin.ToString("dd/MMMM/yyyy");
 
-                        tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
+                        TipoMembresia tipoMembresia = tipoMembresiaNegocio.BuscarMembresia(miembro.TipoMembresia);
                         lblTipoMembresia.Text = tipoMembresia.Descripcion;
 
                         DateTime nuevafechafin = DateTime.Today.AddDays(30);
@@ -158,7 +144,6 @@ namespace Gimn_Asp
         protected void DropDownListMembresia_SelectedIndexChanged(object sender, EventArgs e)
         {
             int idTipoMembresiaSeleccionado = Convert.ToInt32(DropDownListMembresia.SelectedValue);
-            TipoMembresiaNegocio tipoMembresiaNegocio = new TipoMembresiaNegocio();
             TipoMembresia tipoMembresiaSeleccionado = tipoMembresiaNegocio.BuscarMembresia(idTipoMembresiaSeleccionado);
 
             if (tipoMembresiaSeleccionado != null)
@@ -171,71 +156,92 @@ namespace Gimn_Asp
         {
             try
             {
-                Cobro cobro = new Cobro();
-                CobroNegocio cobroNegocio = new CobroNegocio();
-
-                Miembro miembro = new Miembro();
-                MiembroNegocio miembroNegocio = new MiembroNegocio();
-
-                Persona persona = new Persona();
-                PersonaNegocio personaNegocio = new PersonaNegocio();
                 string DNI = lstPersonas.SelectedValue;
-                persona = personaNegocio.BuscarPersona(DNI);
+                Persona persona = personaNegocio.BuscarPersona(DNI);
 
                 if (persona != null)
                 {
-                    int idTipoMembresiaSeleccionado = Convert.ToInt32(DropDownListMembresia.SelectedValue);
-                    DateTime fechahoy = DateTime.Today;
+                    Miembro miembro = miembroNegocio.BuscarUltimoRegMiembro(persona.IDPersona);
+                 
 
-                    miembro.IDPersona = persona.IDPersona;
-                    miembro.TipoMembresia = idTipoMembresiaSeleccionado;
-
-                    bool miembroAgregado = miembroNegocio.AgregarMiembro(miembro);
-                    if (miembroAgregado)
+                    if (miembro != null && miembro.FechaFin < DateTime.Today)
                     {
-                        // Recuperar el ID del empleado de la sesión
-                        int empleadoID = (int)Session["EmpleadoID"];
+                        miembro.TipoMembresia = Convert.ToInt32(DropDownListMembresia.SelectedValue);
+                        miembro.FechaInicio = DateTime.Today;
+                        miembro.FechaFin = DateTime.Today.AddMonths(1);
+                        miembro.rol = ObtenerIDRolSegunMembresia(Convert.ToInt32(DropDownListMembresia.SelectedValue));
+                        miembro.EstadoActivo = true;
+                        miembro.usuario.ID = miembro.usuario.ID;
 
-                        cobro.IDPersona = persona.IDPersona;
-                        cobro.IDTipoMembresia = miembro.TipoMembresia;
-                        cobro.FechaCobro = fechahoy;
-                        cobro.Empleado = new Empleado { ID = empleadoID }; // Asignar el ID del empleado
 
-                        bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
 
-                        if (cobroAgregado)
+
+
+                        bool miembroActualizado = miembroNegocio.AgregarMiembroExistente(miembro);
+                        if (miembroActualizado)
                         {
-                            // Éxito: mostrar un mensaje de éxito
-                            string script = "alert('Miembro y cobro registrados correctamente.');";
-                            ClientScript.RegisterStartupScript(this.GetType(), "RegistroExitoso", script, true);
+                            int empleadoID = (int)Session["EmpleadoID"];
+                            Cobro cobro = new Cobro
+                            {
+                                IDPersona = miembro.IDPersona,
+                                IDTipoMembresia = miembro.TipoMembresia,
+                                Empleado = new Empleado { ID = empleadoID },
+                                FechaCobro = DateTime.Today
+                            };
+
+                            bool cobroAgregado = cobroNegocio.AgregarCobro(cobro);
+                            if (cobroAgregado)
+                            {
+                                string script = "alert('Pago registrado correctamente.');";
+                                ClientScript.RegisterStartupScript(this.GetType(), "RegistroExitoso", script, true);
+                            }
+                            else
+                            {
+                                string script = "alert('Error al registrar el cobro.');";
+                                ClientScript.RegisterStartupScript(this.GetType(), "ErrorRegistroCobro", script, true);
+                            }
                         }
                         else
                         {
-                            // Error al agregar el cobro
-                            string script = "alert('Error al registrar el cobro.');";
-                            ClientScript.RegisterStartupScript(this.GetType(), "ErrorRegistroCobro", script, true);
+                            string script = "alert('Error al actualizar el miembro.');";
+                            ClientScript.RegisterStartupScript(this.GetType(), "ErrorActualizarMiembro", script, true);
                         }
                     }
                     else
                     {
-                        // Error al agregar el miembro
-                        string script = "alert('Error al registrar el miembro.');";
-                        ClientScript.RegisterStartupScript(this.GetType(), "ErrorRegistroMiembro", script, true);
+                        string script = "alert('Membresía activa o no encontrada.');";
+                        ClientScript.RegisterStartupScript(this.GetType(), "ErrorMembresiaActiva", script, true);
                     }
                 }
                 else
                 {
-                    // Error: persona no encontrada
-                    string script = "alert('Persona no encontrada.');";
-                    ClientScript.RegisterStartupScript(this.GetType(), "PersonaNoEncontrada", script, true);
+                    string script = "alert('No se encontró la persona.');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "ErrorPersonaNoEncontrada", script, true);
                 }
             }
             catch (Exception ex)
             {
-                // Mostrar el error
-                string script = $"alert('Ocurrió un error: {ex.Message}');";
+                string script = "alert('Ocurrió un error: " + ex.Message + "');";
                 ClientScript.RegisterStartupScript(this.GetType(), "ErrorGeneral", script, true);
             }
+        }
+
+        private Rol ObtenerIDRolSegunMembresia(int tipoMembresia)
+        {
+               Rol rol = new Rol();
+            switch (tipoMembresia)
+            {
+                case 1: // Musculación
+                    rol.ID = 6;
+                    break;
+                case 2: // Clases de Salón
+                    rol.ID = 5;
+                    break;
+                case 3: // Pase Dorado
+                    rol.ID = 7;
+                    break;
+            }
+            return rol;
         }
     }
 }

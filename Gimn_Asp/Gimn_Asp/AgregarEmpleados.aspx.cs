@@ -13,6 +13,7 @@ namespace Gimn_Asp
             if (!IsPostBack)
             {
                 CargarCargos();
+                CargarRoles();
             }
         }
 
@@ -33,12 +34,55 @@ namespace Gimn_Asp
             }
         }
 
-        protected void btnAgregarEmpleado_Click(object sender, EventArgs e)
+        private void CargarRoles()
         {
-
-
             try
             {
+                RolNegocio rolNegocio = new RolNegocio();
+                List<Rol> roles = rolNegocio.ListarRoles();
+                ddlRoles.DataSource = roles;
+                ddlRoles.DataTextField = "Descripcion";
+                ddlRoles.DataValueField = "ID";
+                ddlRoles.DataBind();
+            }
+            catch (Exception ex)
+            {
+                lblMensaje.Text = "Error al cargar los roles: " + ex.Message;
+            }
+        }
+
+        protected void btnAgregarEmpleado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Crear el usuario primero
+                Usuario usuario = new Usuario
+                {
+                    NombreUsuario = txtNombreUsuario.Text,
+                    Clave = txtClave.Text
+                };
+
+                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+                string errorMessage;
+                bool usuarioExito = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
+
+                if (!usuarioExito)
+                {
+                    lblMensaje.ForeColor = System.Drawing.Color.Red;
+                    lblMensaje.Text = "Error al crear el usuario: " + errorMessage;
+                    return;
+                }
+
+                // Recuperar el ID del usuario recién creado
+                Usuario usuarioCreado = usuarioNegocio.BuscarUsuarioPorNombre(usuario.NombreUsuario);
+                if (usuarioCreado == null)
+                {
+                    lblMensaje.ForeColor = System.Drawing.Color.Red;
+                    lblMensaje.Text = "No se pudo recuperar el usuario creado.";
+                    return;
+                }
+
+                // Crear el empleado
                 Empleado empleado = new Empleado
                 {
                     DNI = txtDNI.Text,
@@ -46,46 +90,19 @@ namespace Gimn_Asp
                     Apellido = txtApellido.Text,
                     Email = txtEmail.Text,
                     FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text),
-                    cargoEmpleado = new CargoEmpleado { ID = int.Parse(ddlCargos.SelectedValue) }
+                    cargoEmpleado = new CargoEmpleado { ID = int.Parse(ddlCargos.SelectedValue) },
+                    rol = new Rol { ID = int.Parse(ddlRoles.SelectedValue) },
+                    usuario = usuarioCreado, // Asignar el usuario creado al empleado
+                    EstadoActivo = true
                 };
 
-
-
-
-
-
                 EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
-
-
-                if (empleadoNegocio.BuscarEmpleadoPorIDPersona(empleado.DNI) == null)
+                if (empleadoNegocio.BuscarEmpleadoPorDNI(empleado.DNI) == null)
                 {
-
-                    string errorMessage;
                     bool exito = empleadoNegocio.AgregarEmpleado(empleado, out errorMessage);
-
                     if (exito)
                     {
-                        // Asignar usuario y clave al empleado
-                        string nombreUsuario = empleado.Email + ".Emp";
-                        string clave = empleado.DNI;
-                        Usuario usuario = new Usuario
-                        {
-                            IDPersona = empleado.IDPersona,
-                            IDRol = 2, // Rol de Empleado
-                            NombreUsuario = nombreUsuario,
-                            Clave = clave
-                        };
-
-                        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                        bool usuarioExito = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
-
-                        if (!usuarioExito)
-                        {
-                            lblMensaje.ForeColor = System.Drawing.Color.Red;
-                            lblMensaje.Text = "Empleado agregado, pero error al crear el usuario: " + errorMessage;
-                            return;
-                        }
-
+                        // Guardar imagen si se ha cargado
                         if (fileUploadImagen.HasFile)
                         {
                             byte[] datosImagen = fileUploadImagen.FileBytes;
@@ -111,15 +128,11 @@ namespace Gimn_Asp
                         lblMensaje.ForeColor = System.Drawing.Color.Red;
                         lblMensaje.Text = errorMessage;
                     }
-
-
                 }
                 else
                 {
                     lblMensaje.Text = "Empleado ya registrado";
-
                 }
-
             }
             catch (Exception ex)
             {
@@ -136,6 +149,9 @@ namespace Gimn_Asp
             txtEmail.Text = string.Empty;
             txtFechaNacimiento.Text = string.Empty;
             ddlCargos.SelectedIndex = 0;
+            ddlRoles.SelectedIndex = 0;
+            txtNombreUsuario.Text = string.Empty;
+            txtClave.Text = string.Empty;
             imgPreview.ImageUrl = string.Empty;
         }
     }

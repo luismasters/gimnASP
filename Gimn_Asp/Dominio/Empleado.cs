@@ -10,6 +10,11 @@ namespace Dominio
     {
         public int ID { get; set; }
         public CargoEmpleado cargoEmpleado { get; set; }
+        public Rol rol { get; set; }
+        public bool EstadoActivo { get; set; }
+
+        public Usuario usuario { get; set; }
+
         public string NombreCompleto
         {
             get { return $"{Nombre} {Apellido}"; }

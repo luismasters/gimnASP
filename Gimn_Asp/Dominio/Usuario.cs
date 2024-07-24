@@ -10,8 +10,6 @@ namespace Dominio
     {
 
         public int ID { get; set; }
-        public int IDPersona { get; set; }
-        public int IDRol { get; set; }
         public string NombreUsuario { get; set; }
         public string Clave { get; set; }
 

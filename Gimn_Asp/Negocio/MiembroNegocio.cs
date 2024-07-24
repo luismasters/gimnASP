@@ -76,11 +76,16 @@ namespace Negocio
                 }
 
                 // Establecer la consulta para insertar un nuevo miembro
-                DT.setearConsulta("INSERT INTO Miembros (IDPersona, IDTipoMembresia) OUTPUT INSERTED.ID VALUES (@IDPersona, @IDTipoMembresia)");
+                DT.setearConsulta("INSERT INTO Miembros (IDPersona, IDTipoMembresia, IDUsuario, IDRol, EstadoActivo, FechaInicio, FechaFin) OUTPUT INSERTED.ID VALUES (@IDPersona, @IDTipoMembresia, @IDUsuario, @IDRol, @EstadoActivo, @FechaInicio, @FechaFin)");
 
                 // Agregar parámetros a la consulta
                 DT.agregarParametro("@IDPersona", miembro.IDPersona);
                 DT.agregarParametro("@IDTipoMembresia", miembro.TipoMembresia);
+                DT.agregarParametro("@IDUsuario", miembro.usuario.ID);
+                DT.agregarParametro("@IDRol", miembro.rol.ID);
+                DT.agregarParametro("@EstadoActivo", miembro.EstadoActivo);
+                DT.agregarParametro("@FechaInicio", miembro.FechaInicio);
+                DT.agregarParametro("@FechaFin", miembro.FechaFin);
 
                 // Ejecutar la acción de inserción y obtener el resultado
                 int insertedId = DT.ejecutarAccionReturn();
@@ -103,7 +108,51 @@ namespace Negocio
             }
         }
 
-      
+        public bool AgregarMiembroExistente(Miembro miembro)
+        {
+            // Validate member object (implement validation logic here)
+
+            try
+            {
+                // Use descriptive variable names
+                int memberId = miembro.IDPersona;
+                int membershipTypeId = miembro.TipoMembresia;
+                int userId = miembro.usuario.ID;
+                int roleId = miembro.rol.ID;
+                bool isActive = miembro.EstadoActivo;
+                DateTime startDate = miembro.FechaInicio;
+                DateTime endDate = miembro.FechaFin;
+
+                // Set parameterized query
+                DT.setearConsulta("INSERT INTO Miembros (IDPersona, IDTipoMembresia, IDUsuario, IDRol, EstadoActivo, FechaInicio, FechaFin) OUTPUT INSERTED.ID VALUES (@memberId, @membershipTypeId, @userId, @roleId, @isActive, @startDate, @endDate)");
+
+                // Add parameters
+                DT.agregarParametro("@memberId", memberId);
+                DT.agregarParametro("@membershipTypeId", membershipTypeId);
+                DT.agregarParametro("@userId", userId);
+                DT.agregarParametro("@roleId", roleId);
+                DT.agregarParametro("@isActive", isActive);
+                DT.agregarParametro("@startDate", startDate);
+                DT.agregarParametro("@endDate", endDate);
+
+                // Execute and handle potential errors
+                DT.ejecutarAccion();
+
+                return true; // Or return a more meaningful value based on success/failure
+            }
+            catch (Exception ex)
+            {
+                // Log the error
+                Console.WriteLine($"Error adding member: {ex.Message}");
+
+                // Provide informative message to user (optional)
+                // ...
+
+                // Decide on appropriate action (e.g., retry, rollback)
+                return false; // Or throw an exception
+            }
+        }
+
 
 
         public Miembro BuscarUltimoRegMiembro(string DNI)
@@ -154,15 +203,23 @@ namespace Negocio
             Miembro miembro = null;
             try
             {
-                DT.setearConsulta(@"SELECT TOP 1 M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin, 
-                            P.DNI, P.Nombre, P.Apellido, T.Descripcion AS TipoMembresiaDescripcion 
-                            FROM Miembros M
-                            INNER JOIN Personas P ON M.IDPersona = P.ID
-                            INNER JOIN TiposMembresias T ON M.IDTipoMembresia = T.ID
-                            WHERE M.IDPersona = @IDPersona 
-                            ORDER BY M.FechaInicio DESC");
+                // Configurar la consulta SQL para buscar el miembro por IDPersona
+                DT.setearConsulta(@"SELECT TOP 1 M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin, M.IDRol, M.IDUsuario,
+            P.DNI, P.Nombre, P.Apellido, T.Descripcion AS TipoMembresiaDescripcion 
+            FROM Miembros M
+            INNER JOIN Personas P ON M.IDPersona = P.ID
+            INNER JOIN TiposMembresias T ON M.IDTipoMembresia = T.ID
+            INNER JOIN Usuarios U ON M.IDUsuario = U.ID
+            WHERE M.IDPersona = @IDPersona 
+            ORDER BY M.FechaInicio DESC");
+
+                // Agregar el parámetro a la consulta
                 DT.agregarParametro("@IDPersona", IDPersona);
+
+                // Ejecutar la lectura
                 DT.ejecutarLectura();
+
+                // Leer los datos del miembro
                 if (DT.Lector.Read())
                 {
                     miembro = new Miembro
@@ -175,7 +232,15 @@ namespace Negocio
                         DNI = DT.Lector["DNI"].ToString(),
                         Nombre = DT.Lector["Nombre"].ToString(),
                         Apellido = DT.Lector["Apellido"].ToString(),
-                        TipoMembresiaDescripcion = DT.Lector["TipoMembresiaDescripcion"].ToString()
+                        TipoMembresiaDescripcion = DT.Lector["TipoMembresiaDescripcion"].ToString(),
+                        rol = new Rol
+                        {
+                            ID = Convert.ToInt32(DT.Lector["IDRol"])
+                        },
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(DT.Lector["IDUsuario"])
+                        }
                     };
                 }
             }
@@ -185,6 +250,7 @@ namespace Negocio
             }
             finally
             {
+                // Cerrar la conexión a la base de datos
                 DT.cerrarConexion();
             }
             return miembro;
@@ -262,6 +328,63 @@ namespace Negocio
                 DT.cerrarConexion();
             }
             return miembros;
+        }
+        public Miembro BuscarUltimoRegMiembroPorUsername(string username)
+        {
+            Miembro miembro = null;
+            try
+            {
+                // Configurar la consulta SQL para buscar el miembro por nombre de usuario
+                DT.setearConsulta(@"SELECT TOP 1 M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin, M.IDRol, M.IDUsuario,
+            P.DNI, P.Nombre, P.Apellido, T.Descripcion AS TipoMembresiaDescripcion 
+            FROM Miembros M
+            INNER JOIN Personas P ON M.IDPersona = P.ID
+            INNER JOIN TiposMembresias T ON M.IDTipoMembresia = T.ID
+            INNER JOIN Usuarios U ON M.IDUsuario = U.ID
+            WHERE U.NombreUsuario = @Username 
+            ORDER BY M.FechaInicio DESC");
+
+                // Agregar el parámetro a la consulta
+                DT.agregarParametro("@Username", username);
+
+                // Ejecutar la lectura
+                DT.ejecutarLectura();
+
+                // Leer los datos del miembro
+                if (DT.Lector.Read())
+                {
+                    miembro = new Miembro
+                    {
+                        IDMiembro = Convert.ToInt32(DT.Lector["ID"]),
+                        IDPersona = Convert.ToInt32(DT.Lector["IDPersona"]),
+                        TipoMembresia = Convert.ToInt32(DT.Lector["IDTipoMembresia"]),
+                        FechaInicio = Convert.ToDateTime(DT.Lector["FechaInicio"]),
+                        FechaFin = Convert.ToDateTime(DT.Lector["FechaFin"]),
+                        DNI = DT.Lector["DNI"].ToString(),
+                        Nombre = DT.Lector["Nombre"].ToString(),
+                        Apellido = DT.Lector["Apellido"].ToString(),
+                        TipoMembresiaDescripcion = DT.Lector["TipoMembresiaDescripcion"].ToString(),
+                        rol = new Rol
+                        {
+                            ID = Convert.ToInt32(DT.Lector["IDRol"])
+                        },
+                        usuario = new Usuario
+                        {
+                            ID = Convert.ToInt32(DT.Lector["IDUsuario"])
+                        }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar el miembro por nombre de usuario", ex);
+            }
+            finally
+            {
+                // Cerrar la conexión a la base de datos
+                DT.cerrarConexion();
+            }
+            return miembro;
         }
 
         public List<Miembro> ListarUltimosMiembros()

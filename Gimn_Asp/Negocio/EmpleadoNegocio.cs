@@ -55,15 +55,16 @@ namespace Negocio
             return empleados;
         }
 
-
-
-
         public List<Empleado> ListarInstructores()
         {
             List<Empleado> instructores = new List<Empleado>();
             try
             {
-                Dt.setearConsulta("SELECT E.ID, P.Nombre, P.Apellido FROM Empleados E INNER JOIN Personas P ON E.IDPersona = P.ID INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID WHERE C.Descripcion = 'Instructor de salon'");
+                Dt.setearConsulta("SELECT E.ID, P.Nombre, P.Apellido " +
+                                  "FROM Empleados E " +
+                                  "INNER JOIN Personas P ON E.IDPersona = P.ID " +
+                                  "WHERE E.IDRol = @IDRol");
+                Dt.agregarParametro("@IDRol", 3); // Filtrar por IDRol = 3
                 Dt.ejecutarLectura();
                 while (Dt.Lector.Read())
                 {
@@ -87,8 +88,6 @@ namespace Negocio
             }
             return instructores;
         }
-
-
 
         public Empleado BuscarEmpleadoPorIDPersona(int idPersona)
         {
@@ -132,8 +131,7 @@ namespace Negocio
             return empleado;
         }
 
-
-        public Empleado BuscarEmpleadoPorIDPersona(string DNI)
+        public Empleado BuscarEmpleadoPorDNI(string DNI)
         {
             Empleado empleado = null;
             try
@@ -175,10 +173,6 @@ namespace Negocio
             return empleado;
         }
 
-
-
-
-
         public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
         {
             errorMessage = string.Empty;
@@ -207,10 +201,17 @@ namespace Negocio
                     empleado.IDPersona = personaExistente.IDPersona;
                 }
 
+       
                 // Agregar el empleado
-                Dt.setearConsulta("INSERT INTO Empleados(IDPersona, IDCargoEmpleado) OUTPUT INSERTED.Id VALUES (@IDPersona, @IDCargoEmpleado)");
+                Dt.setearConsulta(@"
+            INSERT INTO Empleados (IDPersona, IDCargoEmpleado, IDRol, IDUsuario, EstadoActivo) 
+            OUTPUT INSERTED.ID 
+            VALUES (@IDPersona, @IDCargoEmpleado, @IDRol, @IDUsuario, @EstadoActivo)");
                 Dt.agregarParametro("@IDPersona", empleado.IDPersona);
                 Dt.agregarParametro("@IDCargoEmpleado", empleado.cargoEmpleado.ID);
+                Dt.agregarParametro("@IDRol", empleado.rol.ID); 
+                Dt.agregarParametro("@IDUsuario", empleado.usuario.ID); 
+                Dt.agregarParametro("@EstadoActivo", empleado.EstadoActivo); 
 
                 return Dt.ejecutarAccion();
             }
@@ -224,5 +225,76 @@ namespace Negocio
                 Dt.cerrarConexion();
             }
         }
+
+
+        public Empleado BuscarEmpleadoPorUsuario(string nombreUsuario)
+        {
+            Empleado empleado = null;
+            try
+            {
+                Dt.setearConsulta(@"
+            SELECT 
+                E.ID AS EmpleadoID, 
+                E.IDPersona, 
+                E.IDCargoEmpleado, 
+                E.EstadoActivo, 
+                P.DNI, 
+                P.Nombre, 
+                P.Apellido, 
+                P.Email, 
+                P.FechaNacimiento, 
+                C.Descripcion AS CargoDescripcion, 
+                R.ID AS RolID, 
+                R.Nombre AS RolDescripcion
+            FROM 
+                Empleados E
+            INNER JOIN 
+                Personas P ON E.IDPersona = P.ID
+            INNER JOIN 
+                CargosEmpleados C ON E.IDCargoEmpleado = C.ID
+            INNER JOIN 
+                Usuarios U ON E.IDUsuario = U.ID
+            INNER JOIN 
+                Roles R ON R.ID = E.IDRol
+            WHERE 
+                U.NombreUsuario = @NombreUsuario");
+                Dt.agregarParametro("@NombreUsuario", nombreUsuario);
+                Dt.ejecutarLectura();
+                if (Dt.Lector.Read())
+                {
+                    empleado = new Empleado
+                    {
+                        ID = Convert.ToInt32(Dt.Lector["EmpleadoID"]),
+                        IDPersona = Convert.ToInt32(Dt.Lector["IDPersona"]),
+                        DNI = Dt.Lector["DNI"].ToString(),
+                        Nombre = Dt.Lector["Nombre"].ToString(),
+                        Apellido = Dt.Lector["Apellido"].ToString(),
+                        Email = Dt.Lector["Email"].ToString(),
+                        FechaNacimiento = Convert.ToDateTime(Dt.Lector["FechaNacimiento"]),
+                        cargoEmpleado = new CargoEmpleado
+                        {
+                            ID = Convert.ToInt32(Dt.Lector["IDCargoEmpleado"]),
+                            Descripcion = Dt.Lector["CargoDescripcion"].ToString()
+                        },
+                        rol = new Rol
+                        {
+                            ID = Convert.ToInt32(Dt.Lector["RolID"]),
+                            Descripcion = Dt.Lector["RolDescripcion"].ToString()
+                        },
+                        EstadoActivo = Convert.ToBoolean(Dt.Lector["EstadoActivo"])
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar el empleado por nombre de usuario", ex);
+            }
+            finally
+            {
+                Dt.cerrarConexion();
+            }
+            return empleado;
+        }
+
     }
 }

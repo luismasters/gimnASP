@@ -5,16 +5,16 @@ namespace Negocio
 {
     public class AccesoDatos
     {
-        private SqlConnection conexion; // para conectarse a la base de datos
-        private SqlCommand comando; // para ejecutar comandos SQL
-        private SqlDataReader lector; // para leer datos de la base de datos
+        private SqlConnection conexion;
+        private SqlCommand comando;
+        private SqlDataReader lector;
 
-        public SqlDataReader Lector // propiedad para devolver el lector
+        public SqlDataReader Lector
         {
             get { return lector; }
         }
 
-        public AccesoDatos() // constructor
+        public AccesoDatos()
         {
             conexion = new SqlConnection("server=.\\SQLEXPRESS; database=Gimnasio2; integrated security=true");
             comando = new SqlCommand();
@@ -38,7 +38,7 @@ namespace Negocio
             {
                 conexion.Open();
                 comando.ExecuteNonQuery();
-                return true; // La operación fue exitosa
+                return true;
             }
             catch (Exception ex)
             {
@@ -47,7 +47,26 @@ namespace Negocio
             finally
             {
                 conexion.Close();
-                comando.Parameters.Clear(); // Limpiar los parámetros después de ejecutar la acción
+                comando.Parameters.Clear();
+            }
+        }
+
+        public object ejecutarEscalar()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                return comando.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al ejecutar el escalar", ex);
+            }
+            finally
+            {
+                conexion.Close();
+                comando.Parameters.Clear();
             }
         }
 
@@ -64,6 +83,30 @@ namespace Negocio
                 throw new Exception("Error al ejecutar la lectura", ex);
             }
         }
+        public int ejecutarAccionReturn()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                // Ejecuta la consulta y obtiene el ID insertado
+                object resultado = comando.ExecuteScalar();
+                if (resultado != null && int.TryParse(resultado.ToString(), out int id))
+                {
+                    return id;
+                }
+                return 0; // o manejar el caso donde no se obtiene un ID válido
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al ejecutar la acción y obtener el ID", ex);
+            }
+            finally
+            {
+                conexion.Close();
+                comando.Parameters.Clear();
+            }
+        }
 
         public void cerrarConexion()
         {
@@ -77,26 +120,5 @@ namespace Negocio
         {
             comando.Parameters.Clear();
         }
-
-        public int ejecutarAccionReturn()
-        {
-            try
-            {
-                comando.Connection = conexion;
-                conexion.Open();
-                return (int)comando.ExecuteScalar();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al ejecutar la acción y retornar el valor", ex);
-            }
-            finally
-            {
-                conexion.Close();
-                comando.Parameters.Clear(); // Limpiar los parámetros después de ejecutar la acción
-            }
-        }
-      
-
     }
 }

@@ -15,6 +15,15 @@ namespace Gimn_Asp
     {
 
         /// <summary>
+        /// Control UserNav1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Gimn_Asp.UserNav UserNav1;
+
+        /// <summary>
         /// Control gvReservas.
         /// </summary>
         /// <remarks>

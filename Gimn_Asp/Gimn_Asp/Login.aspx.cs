@@ -15,23 +15,73 @@ namespace Gimn_Asp
         {
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
+            bool esEmpleado = chkEmpleado.Checked;
             UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-            Usuario usuario = usuarioNegocio.AutenticarUsuario(username, password);
+            Usuario usuario;
 
-            if (usuario != null)
+            if (esEmpleado)
             {
-                // Autenticación exitosa
-                Session["Username"] = username;
-                Session["Role"] = usuario.IDRol; // Guarda el ID del rol en la sesión
+                usuario = usuarioNegocio.AutenticarEmpleado(username, password);
 
-                if (usuario.IDRol == 3) // Asumiendo que el rol de Cliente tiene ID 3
+                if (usuario != null)
                 {
+                    Session["Username"] = username;
+                    Session["TipoUsuario"] = "Empleado";
+
+                    EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
+                    Empleado empleado = empleadoNegocio.BuscarEmpleadoPorUsuario(username);
+
+                    if (empleado != null)
+                    {
+                        Session["EmpleadoID"] = empleado.ID;
+                        Session["IDPersona"] = empleado.IDPersona;
+                        Session["CargoEmpleado"] = empleado.cargoEmpleado.Descripcion;
+                        Session["DNI"] = empleado.DNI;
+                        Session["Nombre"] = empleado.Nombre;
+                        Session["Apellido"] = empleado.Apellido;
+                        Session["Rol"] = empleado.rol.ID;
+
+                        switch (empleado.rol.ID)
+                        {
+                            case 1: // Administrador
+                                Response.Redirect("AgregarEmpleados.aspx");
+                                break;
+                            case 2: // Empleado Recepcion
+                                Response.Redirect("Acceso.aspx");
+                                break;
+                            case 3: // Instructor Salon
+                            case 4: // Instructor Musculacion
+                                Response.Redirect("InstructorDashboard.aspx");
+                                break;
+                            default:
+                                Response.Redirect("Default.aspx");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        lblMessage.Text = "No se encontró la información del empleado.";
+                    }
+                }
+                else
+                {
+                    lblMessage.Text = "Usuario o contraseña incorrectos.";
+                }
+            }
+            else
+            {
+                usuario = usuarioNegocio.AutenticarMiembro(username, password);
+
+                if (usuario != null)
+                {
+                    Session["Username"] = username;
+                    Session["TipoUsuario"] = "Miembro";
+
                     MiembroNegocio miembroNegocio = new MiembroNegocio();
-                    Miembro miembro = miembroNegocio.BuscarUltimoRegMiembro(usuario.IDPersona);
+                    Miembro miembro = miembroNegocio.BuscarUltimoRegMiembroPorUsername(username);
 
                     if (miembro != null)
                     {
-                        // Almacenar los datos del miembro en la sesión
                         Session["MiembroID"] = miembro.IDMiembro;
                         Session["IDPersona"] = miembro.IDPersona;
                         Session["TipoMembresia"] = miembro.TipoMembresiaDescripcion;
@@ -40,44 +90,29 @@ namespace Gimn_Asp
                         Session["DNI"] = miembro.DNI;
                         Session["Nombre"] = miembro.Nombre;
                         Session["Apellido"] = miembro.Apellido;
+                        Session["Rol"] = miembro.rol.ID;
+
+                        switch (miembro.rol.ID)
+                        {
+                            case 5:
+                            case 6:
+                            case 7:
+                                Response.Redirect("UserDashboar.aspx");
+                                break;
+                            default:
+                                Response.Redirect("Default.aspx");
+                                break;
+                        }
                     }
-
-                    // Redirigir al panel de usuario
-                    Response.Redirect("UserDashboar.aspx");
-                }
-                else if (usuario.IDRol == 1) // Asumiendo que el rol de Administrador tiene ID 1
-                {
-                    Response.Redirect("AgregarEmpleados.aspx");
-                }
-                else if (usuario.IDRol == 2) // Asumiendo que el rol de Empleado tiene ID 2
-                {
-                    EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
-                    Empleado empleado = empleadoNegocio.BuscarEmpleadoPorIDPersona(usuario.IDPersona);
-
-                    if (empleado != null)
+                    else
                     {
-                        // Almacenar los datos del empleado en la sesión
-                        Session["EmpleadoID"] = empleado.ID;
-                        Session["IDPersona"] = empleado.IDPersona;
-                        Session["CargoEmpleado"] = empleado.cargoEmpleado.Descripcion;
-                        Session["DNI"] = empleado.DNI;
-                        Session["Nombre"] = empleado.Nombre;
-                        Session["Apellido"] = empleado.Apellido;
+                        lblMessage.Text = "No se encontró la información del miembro.";
                     }
-
-                    // Redirigir al panel de empleado
-                    Response.Redirect("Acceso.aspx");
                 }
                 else
                 {
-                    // Redirigir a una página por defecto o mostrar un mensaje si el rol no está manejado
-                    Response.Redirect("Default.aspx");
+                    lblMessage.Text = "Usuario o contraseña incorrectos.";
                 }
-            }
-            else
-            {
-                // Error de autenticación
-                lblMessage.Text = "Usuario o contraseña incorrectos.";
             }
         }
     }
