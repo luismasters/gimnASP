@@ -270,6 +270,60 @@ namespace Negocio
             }
             return horariosClases;
         }
+        public List<HorarioClase> ListarHorariosClasesPorInstructor(int idInstructor, DateTime? fechaInicio = null, DateTime? fechaFin = null)
+        {
+            List<HorarioClase> horariosClases = new List<HorarioClase>();
+            try
+            {
+                string query = @"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
+                         S.Nombre AS NombreSalon
+                         FROM HorariosClases H 
+                         INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                         INNER JOIN Salones S ON H.IDSalon = S.ID
+                         WHERE H.IDInstructor = @IDInstructor";
+
+                if (fechaInicio.HasValue && fechaFin.HasValue)
+                {
+                    query += " AND H.Fecha BETWEEN @FechaInicio AND @FechaFin";
+                }
+
+                query += " ORDER BY H.Fecha ASC, H.HoraInicio ASC";
+
+                DT.setearConsulta(query);
+                DT.agregarParametro("@IDInstructor", idInstructor);
+
+                if (fechaInicio.HasValue && fechaFin.HasValue)
+                {
+                    DT.agregarParametro("@FechaInicio", fechaInicio.Value);
+                    DT.agregarParametro("@FechaFin", fechaFin.Value);
+                }
+
+                DT.ejecutarLectura();
+                while (DT.Lector.Read())
+                {
+                    HorarioClase horarioClase = new HorarioClase
+                    {
+                        ID = Convert.ToInt32(DT.Lector["ID"]),
+                        Fecha = Convert.ToDateTime(DT.Lector["Fecha"]),
+                        HoraInicio = DT.Lector["HoraInicio"].ToString(),
+                        HoraFin = DT.Lector["HoraFin"].ToString(),
+                        claseSalon = new ClaseSalon { NombreClase = DT.Lector["NombreClase"].ToString() },
+                        salon = new Salon { Nombre = DT.Lector["NombreSalon"].ToString() }
+                    };
+                    horariosClases.Add(horarioClase);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar los horarios de clases del instructor", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+                DT.limpiarParametros();
+            }
+            return horariosClases;
+        }
 
         public bool EliminarHorarioClase(int id)
         {

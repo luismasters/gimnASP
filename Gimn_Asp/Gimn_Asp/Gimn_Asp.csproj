@@ -134,6 +134,7 @@
     <Content Include="DetalleReservas.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="HorarioInstructor.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="MetricasIngresos.aspx" />
     <Content Include="NavigationMenu.ascx" />
@@ -289,6 +290,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HorarioInstructor.aspx.cs">
+      <DependentUpon>HorarioInstructor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HorarioInstructor.aspx.designer.cs">
+      <DependentUpon>HorarioInstructor.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

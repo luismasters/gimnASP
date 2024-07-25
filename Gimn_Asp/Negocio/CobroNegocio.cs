@@ -195,7 +195,7 @@ namespace Negocio
             decimal ingresosTotales = 0;
             try
             {
-                DT.setearConsulta("SELECT SUM(TM.Precio) AS IngresosTotales " +
+                DT.setearConsulta("SELECT ISNULL(SUM(TM.Precio), 0) AS IngresosTotales " +
                                   "FROM Cobros C " +
                                   "INNER JOIN TiposMembresias TM ON C.IDTipoMembresia = TM.ID " +
                                   "WHERE CAST(C.FechaCobro AS DATE) = @Fecha");
@@ -216,7 +216,6 @@ namespace Negocio
             }
             return ingresosTotales;
         }
-
         public decimal ObtenerIngresosTotalesPorRango(DateTime fechaInicio, DateTime fechaFin)
         {
             decimal ingresosTotales = 0;
@@ -231,7 +230,6 @@ namespace Negocio
                 DT.ejecutarLectura();
                 if (DT.Lector.Read())
                 {
-                    // Utiliza el método ISNULL en SQL para manejar valores nulos
                     ingresosTotales = Convert.ToDecimal(DT.Lector["IngresosTotales"]);
                 }
             }
@@ -245,7 +243,6 @@ namespace Negocio
             }
             return ingresosTotales;
         }
-
 
 
 

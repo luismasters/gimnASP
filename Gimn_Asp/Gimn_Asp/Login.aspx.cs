@@ -51,7 +51,7 @@ namespace Gimn_Asp
                                 break;
                             case 3: // Instructor Salon
                             case 4: // Instructor Musculacion
-                                Response.Redirect("InstructorDashboard.aspx");
+                                Response.Redirect("HorarioInstructor.aspx");
                                 break;
                             default:
                                 Response.Redirect("Default.aspx");
