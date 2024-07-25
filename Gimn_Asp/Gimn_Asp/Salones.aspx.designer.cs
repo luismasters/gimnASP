@@ -11,79 +11,61 @@ namespace Gimn_Asp
 {
 
 
-    public partial class NavigationMenuAdmin
+    public partial class Salones
     {
 
         /// <summary>
-        /// Control sidebarTitle.
+        /// Control NavigationMenuAdmin1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sidebarTitle;
+        protected global::Gimn_Asp.NavigationMenuAdmin NavigationMenuAdmin1;
 
         /// <summary>
-        /// Control linkAgregarEmpleados.
+        /// Control gvSalones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkAgregarEmpleados;
+        protected global::System.Web.UI.WebControls.GridView gvSalones;
 
         /// <summary>
-        /// Control linkCargosEmpleados.
+        /// Control lblMensajeSalon.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkCargosEmpleados;
+        protected global::System.Web.UI.WebControls.Label lblMensajeSalon;
 
         /// <summary>
-        /// Control linkSalones.
+        /// Control txtNombreSalon.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkSalones;
+        protected global::System.Web.UI.WebControls.TextBox txtNombreSalon;
 
         /// <summary>
-        /// Control linkTiposMembresia.
+        /// Control txtCapacidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkTiposMembresia;
+        protected global::System.Web.UI.WebControls.TextBox txtCapacidad;
 
         /// <summary>
-        /// Control linkResumenCaja.
+        /// Control btnAgregarSalon.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkResumenCaja;
-
-        /// <summary>
-        /// Control linkMetricasIngreso.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkMetricasIngreso;
-
-        /// <summary>
-        /// Control btnCerrarSesion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCerrarSesion;
+        protected global::System.Web.UI.WebControls.Button btnAgregarSalon;
     }
 }

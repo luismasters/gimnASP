@@ -11,7 +11,7 @@ namespace Gimn_Asp
 {
 
 
-    public partial class MetricasIngresos
+    public partial class CargosEmpleados
     {
 
         /// <summary>
@@ -24,66 +24,39 @@ namespace Gimn_Asp
         protected global::Gimn_Asp.NavigationMenuAdmin NavigationMenuAdmin1;
 
         /// <summary>
-        /// Control lblIngresosDiarios.
+        /// Control gvCargosEmpleados.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIngresosDiarios;
+        protected global::System.Web.UI.WebControls.GridView gvCargosEmpleados;
 
         /// <summary>
-        /// Control lblIngresosMensuales.
+        /// Control lblMensajeCargoEmpleado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIngresosMensuales;
+        protected global::System.Web.UI.WebControls.Label lblMensajeCargoEmpleado;
 
         /// <summary>
-        /// Control lblCuentasOperativas.
+        /// Control txtDescripcionCargoEmpleado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCuentasOperativas;
+        protected global::System.Web.UI.WebControls.TextBox txtDescripcionCargoEmpleado;
 
         /// <summary>
-        /// Control txtFechaInicio.
+        /// Control btnAgregarCargoEmpleado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaInicio;
-
-        /// <summary>
-        /// Control txtFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaFin;
-
-        /// <summary>
-        /// Control btnFiltrar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrar;
-
-        /// <summary>
-        /// Control lblIngresosFiltrados.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIngresosFiltrados;
+        protected global::System.Web.UI.WebControls.Button btnAgregarCargoEmpleado;
     }
 }

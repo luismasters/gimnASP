@@ -1,135 +1,116 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AgregarSocio.aspx.cs" Inherits="Gimn_Asp.AgregarSocio" %>
-    <%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
+<%@ Register Src="~/NavigationMenu.ascx" TagPrefix="uc" TagName="NavigationMenu" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
-
-
-
     <main>
-        <div class="container ">
-       
-      <div class="row bg-c mt-3" >
-         
-<div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c">
-
-  <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
-
-
-                              </div>
-
-
+        <div class="container">
+            <div class="row bg-c mt-3">
+                <div class="col-3 border-L d-flex flex-column flex-shrink-0 p-3 bg-c">
+                    <uc:NavigationMenu ID="NavigationMenu1" runat="server" />
+                </div>
 
                 <div class="col-9">
+                    <h2 class="mb-4">Agregar Nuevo Socio</h2>
 
+                    <div class="mb-4">
+                        <h4>Control de acceso</h4>
+                        <div class="input-group">
+                            <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" MaxLength="8" />
+                            <asp:Button Text="Buscar" runat="server" OnClick="BuscarUsuario_Click" CssClass="btn btn-primary" />
+                        </div>
+                        <asp:RegularExpressionValidator ID="revDNI" runat="server" 
+                            ControlToValidate="txtDNI" 
+                            ErrorMessage="El DNI debe contener solo números" 
+                            ValidationExpression="^\d+$" 
+                            Display="Dynamic" 
+                            CssClass="text-danger" />
+                    </div>
 
-
-                    <div>
-                        <h2>Agregar Nuevo Socio</h2>
-
-                        <div class="mt-5 d-flex">
-                            <div style="margin: auto">
-                                <h4>Control de acceso</h4>
-                                <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" Width="800px"></asp:TextBox>
-                                <asp:Button Text="Enviar" runat="server" OnClick="BuscarUsuario_Click" />
+                    <asp:Panel runat="server" ID="panel" Visible="false">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="txtNombre" class="form-label">Nombre:</label>
+                                <asp:TextBox ID="txtNombre" runat="server" CssClass="form-control" required="required" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="txtApellido" class="form-label">Apellido:</label>
+                                <asp:TextBox ID="txtApellido" runat="server" CssClass="form-control" required="required" />
                             </div>
                         </div>
 
-                        <asp:Panel runat="server" ID="panel" Visible="false">
-                            <table>
-                                <tr>
-                                    <td>Nombre:</td>
-                                    <td>
-                                        <asp:TextBox ID="txtNombre" runat="server" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Apellido:</td>
-                                    <td>
-                                        <asp:TextBox ID="txtApellido" runat="server" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha de Nacimiento:</td>
-                                    <td>
-                                        <asp:TextBox ID="txtFechaNacimiento" runat="server" TextMode="Date" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Email:</td>
-                                    <td>
-                                        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" /></td>
-                                </tr>
-                                <tr>
-                                    <td>DNI:</td>
-                                    <td>
-                                        <asp:TextBox ID="txtDNIUser" runat="server" /></td>
-                                </tr>
-                                <tr>
-                                    <td>Inicio Nuevo Periodo</td>
-                                    <td>     <asp:TextBox runat="server" CssClass="form-control" ID="txtFechaActual" />
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="txtFechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                                <asp:TextBox ID="txtFechaNacimiento" runat="server" TextMode="Date" CssClass="form-control" required="required" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="txtEmail" class="form-label">Email:</label>
+                                <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-control" required="required" />
+                            </div>
+                        </div>
 
-                                       </td>
-                                </tr>
-                                <tr>
-                                    <td>Inicio Nuevo Periodo</td>
-                                    <td>
-                                             <asp:TextBox runat="server" CssClass="form-control" ID="txtfinNuevoPeriodo" /></td>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="txtDNIUser" class="form-label">DNI:</label>
+                                <asp:TextBox ID="txtDNIUser" runat="server" CssClass="form-control" required="required" MaxLength="8" />
+                                <asp:RegularExpressionValidator ID="revDNIUser" runat="server" 
+                                    ControlToValidate="txtDNIUser" 
+                                    ErrorMessage="El DNI debe contener solo números" 
+                                    ValidationExpression="^\d+$" 
+                                    Display="Dynamic" 
+                                    CssClass="text-danger" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="txtFechaActual" class="form-label">Inicio Nuevo Periodo:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="txtFechaActual" TextMode="Date" required="required" />
+                            </div>
+                        </div>
 
-                                </tr>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="txtfinNuevoPeriodo" class="form-label">Fin Nuevo Periodo:</label>
+                                <asp:TextBox runat="server" CssClass="form-control" ID="txtfinNuevoPeriodo" TextMode="Date" required="required" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="DropDownListMembresia" class="form-label">Tipo de membresía:</label>
+                                <asp:DropDownList ID="DropDownListMembresia" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMembresia_SelectedIndexChanged" CssClass="form-select" required="required">
+                                </asp:DropDownList>
+                            </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="lblPrecio" class="form-label" style="color:aliceblue">Precio:</label>
+                                <asp:Label runat="server" ID="lblPrecio" CssClass="form-control-plaintext" />
+                            </div>
+                        </div>
 
-                            </table>
-
-                     <div class="col-md-6">
-     <label for="inputMembershipType" class="form-label">Tipo de membresía</label>
-     <asp:DropDownList ID="DropDownListMembresia" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMembresia_SelectedIndexChanged">
-     </asp:DropDownList>
- </div>
-
- <div class="col-md-6">
-     <label for="inputPrice" class="form-label">Precio</label>
-     <asp:Label runat="server" ID="lblPrecio" />
- </div>
-                  
-
-
-
-
-
-
-
-                    <script type="text/javascript">
-                        function previewImage(input) {
-                            var preview = document.getElementById('<%= imgPreview.ClientID %>');
-                            var file = input.files[0];
-                            var reader = new FileReader();
-
-                            reader.onload = function (e) {
-                                preview.src = e.target.result;
-                            };
-
-                            if (file) {
-                                reader.readAsDataURL(file);
-                            }
-                        }
-    </script>
-
-
-
-                    <div>
-                        <h2>Subir Imagen</h2>
-                        <asp:FileUpload ID="fileUploadImagen" runat="server" OnChange="previewImage(this)" />
-                        <br />
-                        <asp:Image ID="imgPreview" runat="server" Width="200px" Height="200px" />
-                        <br />
-                        <asp:Button ID="btnGuardar" runat="server" Text="Guardar Imagen" OnClick="btnGuardar_Click" />
-                        <br />
-                        <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
-                    </div>
-
-
-    </asp:Panel>
-
+                        <div class="mb-4">
+                            <h4>Subir Imagen</h4>
+                            <asp:FileUpload ID="fileUploadImagen" runat="server" OnChange="previewImage(this)" CssClass="form-control" />
+                            <asp:Image ID="imgPreview" runat="server" Width="200px" Height="200px" CssClass="mt-3 mb-3" />
+                            <asp:Button ID="btnGuardar" runat="server" Text="Guardar Socio" OnClick="btnGuardar_Click" CssClass="btn btn-primary" />
+                            <asp:Label ID="lblMensaje" runat="server" Text="" CssClass="d-block mt-2"></asp:Label>
+                        </div>
+                    </asp:Panel>
                 </div>
             </div>
-  </div>
-        
+        </div>
+    </main>
+
+    <script type="text/javascript">
+        function previewImage(input) {
+            var preview = document.getElementById('<%= imgPreview.ClientID %>');
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </asp:Content>

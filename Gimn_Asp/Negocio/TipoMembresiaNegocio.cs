@@ -74,7 +74,37 @@ namespace Negocio
 
             return ti;
         }
+        public bool EliminarTipoMembresia(int id)
+        {
+            try
+            {
+                Dt.setearConsulta("DELETE FROM TiposMembresias WHERE ID = @ID");
+                Dt.agregarParametro("@ID", id);
+                return Dt.ejecutarAccion();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally { Dt.cerrarConexion(); }
+        }
 
+        public bool ModificarTipoMembresia(TipoMembresia tipoMembresia)
+        {
+            try
+            {
+                Dt.setearConsulta("UPDATE TiposMembresias SET Descripcion = @Descripcion, Precio = @Precio WHERE ID = @ID");
+                Dt.agregarParametro("@ID", tipoMembresia.ID);
+                Dt.agregarParametro("@Descripcion", tipoMembresia.Descripcion);
+                Dt.agregarParametro("@Precio", tipoMembresia.Precio);
+                return Dt.ejecutarAccion();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally { Dt.cerrarConexion(); }
+        }
 
         public bool AgregarTipoMembresia(TipoMembresia tipoMembresia)
         {

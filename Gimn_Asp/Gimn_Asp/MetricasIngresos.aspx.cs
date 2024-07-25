@@ -18,7 +18,7 @@ namespace Gimn_Asp
         {
             CobroNegocio cobroNegocio = new CobroNegocio();
             decimal ingresosDiarios = cobroNegocio.ObtenerIngresosTotales(DateTime.Today);
-            lblIngresosDiarios.Text = $"Ingresos Totales del Día: {ingresosDiarios:C}";
+            lblIngresosDiarios.Text = $"Total: {ingresosDiarios:C}";
         }
 
         private void CargarResumenMensual()
@@ -27,7 +27,7 @@ namespace Gimn_Asp
             DateTime inicioMes = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             decimal ingresosMensuales = cobroNegocio.ObtenerIngresosTotalesPorRango(inicioMes, DateTime.Today);
             string nombreMes = DateTime.Today.ToString("MMMM");
-            lblIngresosMensuales.Text = $"Ingresos durante el mes de {nombreMes}: {ingresosMensuales:C}";
+            lblIngresosMensuales.Text = $"Total mes de {nombreMes}: {ingresosMensuales:C}";
         }
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
