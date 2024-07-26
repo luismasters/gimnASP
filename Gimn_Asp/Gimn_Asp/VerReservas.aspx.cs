@@ -10,6 +10,15 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+
+            if (Convert.ToInt32(Session["Rol"]) != 2)
+            {
+                Response.Redirect("Login.aspx");
+
+
+            }
             if (!IsPostBack)
             {
                 CargarReservas();

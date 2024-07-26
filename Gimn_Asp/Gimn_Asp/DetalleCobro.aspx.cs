@@ -11,8 +11,21 @@ namespace Gimn_Asp
 {
     public partial class DetalleCobro : System.Web.UI.Page
     {
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+            if (Convert.ToInt32(Session["Rol"]) != 1)
+            {
+                Response.Redirect("Login.aspx");
+
+
+            }
+
+
+
             if (!IsPostBack)
             {
                 DateTime fecha = DateTime.Parse(Request.QueryString["fecha"]);

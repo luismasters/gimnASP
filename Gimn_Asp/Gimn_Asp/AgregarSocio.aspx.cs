@@ -16,6 +16,13 @@ namespace Gimn_Asp
 
 
 
+            if (Convert.ToInt32(Session["Rol"]) != 2)
+            {
+                Response.Redirect("Login.aspx");
+
+
+            }
+
 
 
 

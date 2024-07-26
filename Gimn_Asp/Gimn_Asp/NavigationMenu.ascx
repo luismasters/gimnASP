@@ -67,13 +67,7 @@
                     Horario de las Actividades de Salon
                 </a>
             </li>
-            <li>
-                <a class="dropdown-item" href="AgregarEmpleados.aspx" style="color: aliceblue;" 
-                   onmouseover="this.style.backgroundColor='aliceblue';this.style.color='rgba(30, 30, 30, 255)';" 
-                   onmouseout="this.style.backgroundColor='rgba(30, 30, 30, 255)';this.style.color='aliceblue';">
-                    Agregar Empleado
-                </a>
-            </li>
+           
         </ul>
     </li>
     <li>
