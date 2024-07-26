@@ -13,7 +13,7 @@
                     <h2 class="mb-4">Baja/Modificación de Socio</h2>
 
                     <div class="mb-4">
-                        <h4>Control de acceso</h4>
+                        <h4>Ingrese DNI</h4>
                         <div class="input-group">
                             <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" MaxLength="8" />
                             <asp:Button Text="Buscar" runat="server" OnClick="btnBuscar_Click" CssClass="btn btn-primary" />

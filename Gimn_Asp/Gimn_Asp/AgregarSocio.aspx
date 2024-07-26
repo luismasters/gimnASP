@@ -13,7 +13,7 @@
                     <h2 class="mb-4">Agregar Nuevo Socio</h2>
 
                     <div class="mb-4">
-                        <h4>Control de acceso</h4>
+                        <h4>Ingrese DNI</h4>
                         <div class="input-group">
                             <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" MaxLength="8" />
                             <asp:Button Text="Buscar" runat="server" OnClick="BuscarUsuario_Click" CssClass="btn btn-primary" />
@@ -60,17 +60,11 @@
                                     Display="Dynamic" 
                                     CssClass="text-danger" />
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="txtFechaActual" class="form-label">Inicio Nuevo Periodo:</label>
-                                <asp:TextBox runat="server" CssClass="form-control" ID="txtFechaActual" TextMode="Date" required="required" />
-                            </div>
+                           
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="txtfinNuevoPeriodo" class="form-label">Fin Nuevo Periodo:</label>
-                                <asp:TextBox runat="server" CssClass="form-control" ID="txtfinNuevoPeriodo" TextMode="Date" required="required" />
-                            </div>
+                         
                             <div class="col-md-6 mb-3">
                                 <label for="DropDownListMembresia" class="form-label">Tipo de membresía:</label>
                                 <asp:DropDownList ID="DropDownListMembresia" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMembresia_SelectedIndexChanged" CssClass="form-select" required="required">

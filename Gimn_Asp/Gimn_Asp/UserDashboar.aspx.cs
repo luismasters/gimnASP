@@ -36,12 +36,19 @@ namespace Gimn_Asp
                     lblFechaProximoVencimiento.Text = "Fecha del próximo vencimiento: " + fechaFin.ToString("yyyy-MM-dd");
                     panelVencimiento.Visible = true;
                     lblEstadoMembresia.CssClass = "text-success";
+                    Session["vencido"] = false;
+
+
                 }
                 else
                 {
                     lblEstadoMembresia.Text = "Tu membresía expiró el " + fechaFin.ToString("yyyy-MM-dd") + ". Te esperamos para mejorar tu salud física.";
                     panelVencimiento.Visible = false;
                     lblEstadoMembresia.CssClass = "text-danger";
+                    Session["vencido"] = true;
+
+
+
                 }
             }
         }

@@ -228,8 +228,6 @@ namespace Gimn_Asp
 
                 DateTime nuevafechafin = DateTime.Today.AddDays(30);
                 DateTime fechahoy = DateTime.Today;
-                txtFechaActual.Text = fechahoy.ToString("dd/MM/yyyy");
-                txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MM/yyyy");
             }
         }
     }

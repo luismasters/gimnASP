@@ -101,6 +101,13 @@ namespace Gimn_Asp
                         lblAcceso.ForeColor = System.Drawing.Color.Red;
                     }
 
+                    Dominio.Imagen imagen = new Imagen();
+                    ImagenNegocio imagenNegocio = new ImagenNegocio();
+
+                    imagen = imagenNegocio.CargarImagenPorIDPersona(miembro.IDPersona);
+
+                    imgFoto.ImageUrl = imagenNegocio.UrlPerfilImagen(imagen);
+
                     pnlCard.Visible = true;
                 }
                 else

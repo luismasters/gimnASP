@@ -10,8 +10,33 @@ namespace Gimn_Asp
 {
     public partial class ReservarClases : System.Web.UI.Page
     {
+
+
+
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+            
+                if (Convert.ToBoolean(Session["vencido"]) == true)
+                {
+                    string script = "alert('No puedes realizar reservas. Por favor, renueva tu suscripción para disfrutar de nuestras actividades.'); window.location.href='UserDashboar.aspx';";
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, true);
+                }
+
+            if (Convert.ToInt32(Session["Rol"]) != 5  && Convert.ToInt32(Session["Rol"]) != 7)
+            {
+
+                string script = "alert('No puedes realizar reservas. tu membresia no incluye actividades de Salon.'); window.location.href='UserDashboar.aspx';";
+                ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, true);
+
+            }
+
+
+
+
             if (!IsPostBack)
             {
                 CargarHorariosDisponibles();

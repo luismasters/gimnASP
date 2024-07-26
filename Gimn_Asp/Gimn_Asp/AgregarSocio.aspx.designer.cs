@@ -105,24 +105,6 @@ namespace Gimn_Asp
         protected global::System.Web.UI.WebControls.RegularExpressionValidator revDNIUser;
 
         /// <summary>
-        /// Control txtFechaActual.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaActual;
-
-        /// <summary>
-        /// Control txtfinNuevoPeriodo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtfinNuevoPeriodo;
-
-        /// <summary>
         /// Control DropDownListMembresia.
         /// </summary>
         /// <remarks>
