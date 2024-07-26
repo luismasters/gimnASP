@@ -136,8 +136,10 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="HorarioInstructor.aspx" />
+    <Content Include="ListarEmpleados.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="MetricasIngresos.aspx" />
+    <Content Include="ModificarEmpleado.aspx" />
     <Content Include="NavigationMenu.ascx" />
     <Content Include="NavigationMenuAdmin.ascx" />
     <Content Include="Pago.aspx" />
@@ -308,6 +310,13 @@
     <Compile Include="HorarioInstructor.aspx.designer.cs">
       <DependentUpon>HorarioInstructor.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ListarEmpleados.aspx.cs">
+      <DependentUpon>ListarEmpleados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ListarEmpleados.aspx.designer.cs">
+      <DependentUpon>ListarEmpleados.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -321,6 +330,13 @@
     </Compile>
     <Compile Include="MetricasIngresos.aspx.designer.cs">
       <DependentUpon>MetricasIngresos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ModificarEmpleado.aspx.cs">
+      <DependentUpon>ModificarEmpleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ModificarEmpleado.aspx.designer.cs">
+      <DependentUpon>ModificarEmpleado.aspx</DependentUpon>
     </Compile>
     <Compile Include="NavigationMenu.ascx.cs">
       <DependentUpon>NavigationMenu.ascx</DependentUpon>

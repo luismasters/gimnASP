@@ -59,16 +59,7 @@
             </div>
         </asp:Panel>
                     
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="txtFechaActual" class="form-label">Inicio Nuevo Periodo</label>
-                            <asp:TextBox ID="txtFechaActual" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="txtfinNuevoPeriodo" class="form-label">Próximo Vencimiento</label>
-                            <asp:TextBox ID="txtfinNuevoPeriodo" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                        </div>
-                    </div>
+                   
                     
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -76,9 +67,9 @@
                             <asp:DropDownList ID="DropDownListMembresia" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="DropDownListMembresia_SelectedIndexChanged">
                             </asp:DropDownList>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="color:aliceblue">
                             <label for="lblPrecio" class="form-label">Precio</label>
-                            <asp:Label ID="lblPrecio" runat="server" CssClass="form-control-plaintext"></asp:Label>
+                            <asp:Label ID="lblPrecio" runat="server" CssClass="form-control-plaintext" style="color:aliceblue"></asp:Label>
                         </div>
                     </div>
                     

@@ -22,7 +22,10 @@ namespace Gimn_Asp
             {
                 LoadPersonas();
                 CargarTiposMembresias();
+
+
             }
+
         }
 
         protected void LoadPersonas()
@@ -75,10 +78,8 @@ namespace Gimn_Asp
 
                     DateTime nuevafechafin = DateTime.Today.AddDays(30);
                     DateTime fechahoy = DateTime.Today;
-                    txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                    txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
 
-                    if (miembro.FechaFin >= DateTime.Now)
+                    if (miembro.FechaFin >= DateTime.Today)
                     {
                         lblAcceso.Text = "Acceso permitido";
                         lblAcceso.ForeColor = System.Drawing.Color.Green;
@@ -129,8 +130,6 @@ namespace Gimn_Asp
 
                         DateTime nuevafechafin = DateTime.Today.AddDays(30);
                         DateTime fechahoy = DateTime.Today;
-                        txtFechaActual.Text = fechahoy.ToString("dd/MMMM/yyyy");
-                        txtfinNuevoPeriodo.Text = nuevafechafin.ToString("dd/MMMM/yyyy");
                     }
                     else
                     {
@@ -224,6 +223,9 @@ namespace Gimn_Asp
                 string script = "alert('Ocurrió un error: " + ex.Message + "');";
                 ClientScript.RegisterStartupScript(this.GetType(), "ErrorGeneral", script, true);
             }
+
+         LoadPersonas();
+
         }
 
         private Rol ObtenerIDRolSegunMembresia(int tipoMembresia)

@@ -24,13 +24,13 @@ namespace Gimn_Asp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl sidebarTitle;
 
         /// <summary>
-        /// Control linkAgregarEmpleados.
+        /// Control linkMetricasIngreso.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkAgregarEmpleados;
+        protected global::System.Web.UI.WebControls.HyperLink linkMetricasIngreso;
 
         /// <summary>
         /// Control linkCargosEmpleados.
@@ -60,6 +60,24 @@ namespace Gimn_Asp
         protected global::System.Web.UI.WebControls.HyperLink linkTiposMembresia;
 
         /// <summary>
+        /// Control linkAgregarEmpleados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink linkAgregarEmpleados;
+
+        /// <summary>
+        /// Control linkListarEmpleados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink linkListarEmpleados;
+
+        /// <summary>
         /// Control linkResumenCaja.
         /// </summary>
         /// <remarks>
@@ -67,15 +85,6 @@ namespace Gimn_Asp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink linkResumenCaja;
-
-        /// <summary>
-        /// Control linkMetricasIngreso.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink linkMetricasIngreso;
 
         /// <summary>
         /// Control btnCerrarSesion.

@@ -16,33 +16,33 @@ namespace Negocio
 
         public List<Empleado> ListarEmpleados()
         {
-            List<Empleado> empleados = new List<Empleado>();
+            List<Empleado> lista = new List<Empleado>();
+            AccesoDatos datos = new AccesoDatos();
+
             try
             {
-                Dt.setearConsulta("SELECT E.ID, E.IDPersona, E.IDCargoEmpleado, P.DNI, P.Nombre, P.Apellido, P.Email, P.FechaNacimiento, C.Descripcion AS CargoDescripcion " +
-                                  "FROM Empleados E " +
-                                  "INNER JOIN Personas P ON E.IDPersona = P.ID " +
-                                  "INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID");
-                Dt.ejecutarLectura();
-                while (Dt.Lector.Read())
+                datos.setearConsulta("SELECT E.ID, P.DNI, P.Nombre, P.Apellido, P.Email, C.Descripcion as Cargo, E.EstadoActivo " +
+                                     "FROM Empleados E " +
+                                     "INNER JOIN Personas P ON E.IDPersona = P.ID " +
+                                     "INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID");
+                datos.ejecutarLectura();
+
+                while (datos.Lector.Read())
                 {
-                    Empleado empleado = new Empleado
+                    Empleado emp = new Empleado
                     {
-                        ID = Convert.ToInt32(Dt.Lector["ID"]),
-                        IDPersona = Convert.ToInt32(Dt.Lector["IDPersona"]),
-                        DNI = Dt.Lector["DNI"].ToString(),
-                        Nombre = Dt.Lector["Nombre"].ToString(),
-                        Apellido = Dt.Lector["Apellido"].ToString(),
-                        Email = Dt.Lector["Email"].ToString(),
-                        FechaNacimiento = Convert.ToDateTime(Dt.Lector["FechaNacimiento"]),
-                        cargoEmpleado = new CargoEmpleado
-                        {
-                            ID = Convert.ToInt32(Dt.Lector["IDCargoEmpleado"]),
-                            Descripcion = Dt.Lector["CargoDescripcion"].ToString()
-                        }
+                        ID = (int)datos.Lector["ID"],
+                        DNI = (string)datos.Lector["DNI"],
+                        Nombre = (string)datos.Lector["Nombre"],
+                        Apellido = (string)datos.Lector["Apellido"],
+                        Email = (string)datos.Lector["Email"],
+                        cargoEmpleado = new CargoEmpleado { Descripcion = (string)datos.Lector["Cargo"] },
+                        EstadoActivo = (bool)datos.Lector["EstadoActivo"]
                     };
-                    empleados.Add(empleado);
+                    lista.Add(emp);
                 }
+
+                return lista;
             }
             catch (Exception ex)
             {
@@ -50,12 +50,56 @@ namespace Negocio
             }
             finally
             {
-                Dt.cerrarConexion();
+                datos.cerrarConexion();
             }
-            return empleados;
         }
 
-        public List<Empleado> ListarInstructores()
+        public bool ObtenerEstadoActivo(int idEmpleado)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT EstadoActivo FROM Empleados WHERE ID = @ID");
+                datos.agregarParametro("@ID", idEmpleado);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    return (bool)datos.Lector["EstadoActivo"];
+                }
+                throw new Exception("Empleado no encontrado");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
+        public void CambiarEstadoActivo(int idEmpleado, bool nuevoEstado)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE Empleados SET EstadoActivo = @Estado WHERE ID = @ID");
+                datos.agregarParametro("@Estado", nuevoEstado);
+                datos.agregarParametro("@ID", idEmpleado);
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+    
+    public List<Empleado> ListarInstructores()
         {
             List<Empleado> instructores = new List<Empleado>();
             try
@@ -176,57 +220,45 @@ namespace Negocio
         public bool AgregarEmpleado(Empleado empleado, out string errorMessage)
         {
             errorMessage = string.Empty;
+            AccesoDatos datos = new AccesoDatos();
             try
             {
-                // Verificar si la persona existe
-                PersonaNegocio personaNegocio = new PersonaNegocio();
-                Persona personaExistente = personaNegocio.BuscarPersona(empleado.DNI);
+                datos.setearProcedimiento("sp_CrearUsuarioYEmpleado");
+                datos.agregarParametro("@NombreUsuario", empleado.usuario.NombreUsuario);
+                datos.agregarParametro("@Clave", empleado.usuario.Clave);
+                datos.agregarParametro("@DNI", empleado.DNI);
+                datos.agregarParametro("@Nombre", empleado.Nombre);
+                datos.agregarParametro("@Apellido", empleado.Apellido);
+                datos.agregarParametro("@Email", empleado.Email);
+                datos.agregarParametro("@FechaNacimiento", empleado.FechaNacimiento);
+                datos.agregarParametro("@IDCargoEmpleado", empleado.cargoEmpleado.ID);
+                datos.agregarParametro("@IDRol", empleado.rol.ID);
+                datos.agregarParametro("@EstadoActivo", empleado.EstadoActivo);
 
-                if (personaExistente == null)
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
                 {
-                    // Si no existe, agregar la persona
-                    bool personaAgregada = personaNegocio.AgregarPersona(empleado, out errorMessage);
-                    if (!personaAgregada)
+                    string resultado = datos.Lector["Resultado"].ToString();
+                    if (resultado.Contains("Error") || resultado.Contains("ya está registrado"))
                     {
+                        errorMessage = resultado;
                         return false;
                     }
-
-                    // Recuperar el IDPersona de la persona recién agregada
-                    personaExistente = personaNegocio.BuscarPersona(empleado.DNI);
-                    empleado.IDPersona = personaExistente.IDPersona;
+                    return true;
                 }
-                else
-                {
-                    // Si la persona ya existe, usar su ID
-                    empleado.IDPersona = personaExistente.IDPersona;
-                }
-
-       
-                // Agregar el empleado
-                Dt.setearConsulta(@"
-            INSERT INTO Empleados (IDPersona, IDCargoEmpleado, IDRol, IDUsuario, EstadoActivo) 
-            OUTPUT INSERTED.ID 
-            VALUES (@IDPersona, @IDCargoEmpleado, @IDRol, @IDUsuario, @EstadoActivo)");
-                Dt.agregarParametro("@IDPersona", empleado.IDPersona);
-                Dt.agregarParametro("@IDCargoEmpleado", empleado.cargoEmpleado.ID);
-                Dt.agregarParametro("@IDRol", empleado.rol.ID); 
-                Dt.agregarParametro("@IDUsuario", empleado.usuario.ID); 
-                Dt.agregarParametro("@EstadoActivo", empleado.EstadoActivo); 
-
-                return Dt.ejecutarAccion();
+                return false;
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
+                errorMessage = "Error inesperado: " + ex.Message;
                 return false;
             }
             finally
             {
-                Dt.cerrarConexion();
+                datos.cerrarConexion();
             }
         }
-
-
         public Empleado BuscarEmpleadoPorUsuario(string nombreUsuario)
         {
             Empleado empleado = null;
@@ -294,6 +326,98 @@ namespace Negocio
                 Dt.cerrarConexion();
             }
             return empleado;
+        }
+
+
+
+        public Empleado ObtenerEmpleado(int idEmpleado)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT E.ID, P.DNI, P.Nombre, P.Apellido, P.Email, P.FechaNacimiento, " +
+                                     "E.IDCargoEmpleado, C.Descripcion as CargoDescripcion, " +
+                                     "E.IDRol, R.Nombre as RolDescripcion, E.EstadoActivo, " +
+                                     "U.ID as IDUsuario, U.NombreUsuario " +
+                                     "FROM Empleados E " +
+                                     "INNER JOIN Personas P ON E.IDPersona = P.ID " +
+                                     "INNER JOIN CargosEmpleados C ON E.IDCargoEmpleado = C.ID " +
+                                     "INNER JOIN Roles R ON E.IDRol = R.ID " +
+                                     "LEFT JOIN Usuarios U ON E.IDUsuario = U.ID " +
+                                     "WHERE E.ID = @ID");
+                datos.agregarParametro("@ID", idEmpleado);
+                datos.ejecutarLectura();
+                if (datos.Lector.Read())
+                {
+                    return new Empleado
+                    {
+                        ID = (int)datos.Lector["ID"],
+                        DNI = (string)datos.Lector["DNI"],
+                        Nombre = (string)datos.Lector["Nombre"],
+                        Apellido = (string)datos.Lector["Apellido"],
+                        Email = (string)datos.Lector["Email"],
+                        FechaNacimiento = (DateTime)datos.Lector["FechaNacimiento"],
+                        cargoEmpleado = new CargoEmpleado
+                        {
+                            ID = (int)datos.Lector["IDCargoEmpleado"],
+                            Descripcion = (string)datos.Lector["CargoDescripcion"]
+                        },
+                        rol = new Rol
+                        {
+                            ID = (int)datos.Lector["IDRol"],
+                            Descripcion = (string)datos.Lector["RolDescripcion"]
+                        },
+                        EstadoActivo = (bool)datos.Lector["EstadoActivo"],
+                        usuario = new Usuario
+                        {
+                            ID = datos.Lector["IDUsuario"] != DBNull.Value ? (int)datos.Lector["IDUsuario"] : 0,
+                            NombreUsuario = datos.Lector["NombreUsuario"] != DBNull.Value ? (string)datos.Lector["NombreUsuario"] : null
+                        }
+                    };
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        public void ModificarEmpleado(Empleado empleado)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("UPDATE Personas SET Nombre = @Nombre, Apellido = @Apellido, " +
+                                     "Email = @Email, FechaNacimiento = @FechaNacimiento " +
+                                     "WHERE DNI = @DNI; " +
+                                     "UPDATE Empleados SET IDCargoEmpleado = @IDCargo, IDRol = @IDRol, " +
+                                     "EstadoActivo = @EstadoActivo " +
+                                     "WHERE ID = @ID");
+
+                datos.agregarParametro("@ID", empleado.ID);
+                datos.agregarParametro("@DNI", empleado.DNI);
+                datos.agregarParametro("@Nombre", empleado.Nombre);
+                datos.agregarParametro("@Apellido", empleado.Apellido);
+                datos.agregarParametro("@Email", empleado.Email);
+                datos.agregarParametro("@FechaNacimiento", empleado.FechaNacimiento);
+                datos.agregarParametro("@IDCargo", empleado.cargoEmpleado.ID);
+                datos.agregarParametro("@IDRol", empleado.rol.ID);
+                datos.agregarParametro("@EstadoActivo", empleado.EstadoActivo);
+
+                datos.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
 
     }

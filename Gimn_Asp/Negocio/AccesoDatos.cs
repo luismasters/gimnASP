@@ -108,6 +108,14 @@ namespace Negocio
             }
         }
 
+        public void setearProcedimiento(string sp)
+        {
+            comando = new SqlCommand();
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.CommandText = sp;
+        }
+
+
         public void cerrarConexion()
         {
             if (lector != null && !lector.IsClosed)

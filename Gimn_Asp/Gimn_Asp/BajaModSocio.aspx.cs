@@ -1,9 +1,6 @@
 ﻿using Dominio;
 using Negocio;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,7 +10,10 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Código para ejecutar al cargar la página, si es necesario
+            if (!IsPostBack)
+            {
+                panel.Visible = false;
+            }
         }
 
         protected void btnBuscar_Click(object sender, EventArgs e)
@@ -33,14 +33,27 @@ namespace Gimn_Asp
                 txtNombre.Text = persona.Nombre;
                 txtApellido.Text = persona.Apellido;
                 txtEmail.Text = persona.Email;
+
+                // Cargar la imagen si existe
+                ImagenNegocio imagenNegocio = new ImagenNegocio();
+                Imagen imagen = imagenNegocio.CargarImagenPorIDPersona(persona.IDPersona);
+                if (imagen != null)
+                {
+                    imgPerfil.ImageUrl = imagenNegocio.UrlPerfilImagen(imagen);
+                }
+                else
+                {
+                    imgPerfil.ImageUrl = "ruta/a/imagen/por/defecto.jpg";
+                }
+
+                panel.Visible = true;
                 lblMensaje.Text = "Persona encontrada.";
             }
             else
             {
                 lblMensaje.Text = "Persona no encontrada.";
-                txtNombre.Text = "";
-                txtApellido.Text = "";
-                txtEmail.Text = "";
+                LimpiarCampos();
+                panel.Visible = false;
             }
         }
 
@@ -67,7 +80,26 @@ namespace Gimn_Asp
 
                 if (success)
                 {
-                    lblMensaje.Text = "Persona actualizada correctamente.";
+                    // Actualizar la imagen si se ha subido una nueva
+                    if (fileUploadImagen.HasFile)
+                    {
+                        ImagenNegocio imagenNegocio = new ImagenNegocio();
+                        byte[] datosImagen = fileUploadImagen.FileBytes;
+                        bool imagenGuardada = imagenNegocio.GuardarOActualizarImagen(persona.IDPersona, datosImagen);
+
+                        if (imagenGuardada)
+                        {
+                            lblMensaje.Text = "Persona e imagen actualizadas correctamente.";
+                        }
+                        else
+                        {
+                            lblMensaje.Text = "Persona actualizada, pero hubo un problema al guardar la imagen.";
+                        }
+                    }
+                    else
+                    {
+                        lblMensaje.Text = "Persona actualizada correctamente.";
+                    }
                 }
                 else
                 {
@@ -79,7 +111,6 @@ namespace Gimn_Asp
                 lblMensaje.Text = "Persona no encontrada.";
             }
         }
-
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             string dni = txtDNI.Text.Trim();
@@ -95,13 +126,11 @@ namespace Gimn_Asp
             if (persona != null)
             {
                 bool success = personaNegocio.EliminarPersona(persona.IDPersona);
-
                 if (success)
                 {
                     lblMensaje.Text = "Persona eliminada correctamente.";
-                    txtNombre.Text = "";
-                    txtApellido.Text = "";
-                    txtEmail.Text = "";
+                    LimpiarCampos();
+                    panel.Visible = false;
                 }
                 else
                 {
@@ -112,6 +141,14 @@ namespace Gimn_Asp
             {
                 lblMensaje.Text = "Persona no encontrada.";
             }
+        }
+
+        private void LimpiarCampos()
+        {
+            txtNombre.Text = "";
+            txtApellido.Text = "";
+            txtEmail.Text = "";
+            imgPerfil.ImageUrl = "";
         }
     }
 }

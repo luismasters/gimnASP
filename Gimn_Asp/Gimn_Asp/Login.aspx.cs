@@ -44,7 +44,7 @@ namespace Gimn_Asp
                         switch (empleado.rol.ID)
                         {
                             case 1: // Administrador
-                                Response.Redirect("AgregarEmpleados.aspx");
+                                Response.Redirect("MetricasIngresos.aspx");
                                 break;
                             case 2: // Empleado Recepcion
                                 Response.Redirect("Acceso.aspx");

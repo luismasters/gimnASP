@@ -36,6 +36,13 @@
                    onmouseout="this.style.backgroundColor='rgba(30, 30, 30, 255)';this.style.color='aliceblue';">
                     Agregar Socio
                 </a>
+                 <li>
+     <a class="dropdown-item" href="BajaModSocio.aspx" style="color: aliceblue;" 
+        onmouseover="this.style.backgroundColor='aliceblue';this.style.color='rgba(30, 30, 30, 255)';" 
+        onmouseout="this.style.backgroundColor='rgba(30, 30, 30, 255)';this.style.color='aliceblue';">
+         Modificar Datos Personales
+     </a>
+ </li>
             </li>
         </ul>
     </li>

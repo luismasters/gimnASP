@@ -55,34 +55,6 @@ namespace Gimn_Asp
         {
             try
             {
-                // Crear el usuario primero
-                Usuario usuario = new Usuario
-                {
-                    NombreUsuario = txtNombreUsuario.Text,
-                    Clave = txtClave.Text
-                };
-
-                UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
-                string errorMessage;
-                bool usuarioExito = usuarioNegocio.AgregarUsuario(usuario, out errorMessage);
-
-                if (!usuarioExito)
-                {
-                    lblMensaje.ForeColor = System.Drawing.Color.Red;
-                    lblMensaje.Text = "Error al crear el usuario: " + errorMessage;
-                    return;
-                }
-
-                // Recuperar el ID del usuario recién creado
-                Usuario usuarioCreado = usuarioNegocio.BuscarUsuarioPorNombre(usuario.NombreUsuario);
-                if (usuarioCreado == null)
-                {
-                    lblMensaje.ForeColor = System.Drawing.Color.Red;
-                    lblMensaje.Text = "No se pudo recuperar el usuario creado.";
-                    return;
-                }
-
-                // Crear el empleado
                 Empleado empleado = new Empleado
                 {
                     DNI = txtDNI.Text,
@@ -92,46 +64,45 @@ namespace Gimn_Asp
                     FechaNacimiento = DateTime.Parse(txtFechaNacimiento.Text),
                     cargoEmpleado = new CargoEmpleado { ID = int.Parse(ddlCargos.SelectedValue) },
                     rol = new Rol { ID = int.Parse(ddlRoles.SelectedValue) },
-                    usuario = usuarioCreado, // Asignar el usuario creado al empleado
+                    usuario = new Usuario
+                    {
+                        NombreUsuario = txtNombreUsuario.Text,
+                        Clave = txtClave.Text
+                    },
                     EstadoActivo = true
                 };
 
                 EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
-                if (empleadoNegocio.BuscarEmpleadoPorDNI(empleado.DNI) == null)
+                string errorMessage;
+                bool exito = empleadoNegocio.AgregarEmpleado(empleado, out errorMessage);
+
+                if (exito)
                 {
-                    bool exito = empleadoNegocio.AgregarEmpleado(empleado, out errorMessage);
-                    if (exito)
+                    // Guardar imagen si se ha cargado
+                    if (fileUploadImagen.HasFile)
                     {
-                        // Guardar imagen si se ha cargado
-                        if (fileUploadImagen.HasFile)
+                        byte[] datosImagen = fileUploadImagen.FileBytes;
+                        ImagenNegocio negocioImagen = new ImagenNegocio();
+                        try
                         {
-                            byte[] datosImagen = fileUploadImagen.FileBytes;
-                            ImagenNegocio negocioImagen = new ImagenNegocio();
-                            try
-                            {
-                                negocioImagen.InsertarImagen(empleado.IDPersona, datosImagen);
-                                lblMensaje.Text = "Empleado, usuario e imagen agregados correctamente.";
-                            }
-                            catch (Exception ex)
-                            {
-                                lblMensaje.Text = "Empleado y usuario agregados, pero error al guardar la imagen: " + ex.Message;
-                            }
+                            negocioImagen.InsertarImagen(empleado.IDPersona, datosImagen);
+                            lblMensaje.Text = "Empleado, usuario e imagen agregados correctamente.";
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            lblMensaje.Text = "Empleado y usuario agregados correctamente, pero no se subió ninguna imagen.";
+                            lblMensaje.Text = "Empleado y usuario agregados, pero error al guardar la imagen: " + ex.Message;
                         }
-                        LimpiarFormulario();
                     }
                     else
                     {
-                        lblMensaje.ForeColor = System.Drawing.Color.Red;
-                        lblMensaje.Text = errorMessage;
+                        lblMensaje.Text = "Empleado y usuario agregados correctamente, pero no se subió ninguna imagen.";
                     }
+                    LimpiarFormulario();
                 }
                 else
                 {
-                    lblMensaje.Text = "Empleado ya registrado";
+                    lblMensaje.ForeColor = System.Drawing.Color.Red;
+                    lblMensaje.Text = errorMessage;
                 }
             }
             catch (Exception ex)

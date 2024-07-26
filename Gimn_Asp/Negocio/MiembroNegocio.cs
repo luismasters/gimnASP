@@ -293,15 +293,15 @@ namespace Negocio
             {
                 // Consulta SQL para obtener miembros con membresía vencida
                 DT.setearConsulta(@"
-            SELECT P.DNI, P.Nombre, P.Apellido, M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin
-            FROM Miembros M
-            INNER JOIN Personas P ON P.ID = M.IDPersona
-            WHERE M.ID IN (
-                SELECT MAX(ID) 
-                FROM Miembros 
-                GROUP BY IDPersona
-            )
-            AND M.FechaFin < GETDATE();
+           SELECT P.DNI, P.Nombre, P.Apellido, M.ID, M.IDPersona, M.IDTipoMembresia, M.FechaInicio, M.FechaFin
+FROM Miembros M
+INNER JOIN Personas P ON P.ID = M.IDPersona
+WHERE M.ID IN (
+    SELECT MAX(ID) 
+    FROM Miembros 
+    GROUP BY IDPersona
+)
+AND M.FechaFin < CONVERT(DATE, GETDATE());;
         ");
                 DT.ejecutarLectura();
 

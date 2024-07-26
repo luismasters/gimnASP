@@ -83,7 +83,7 @@ namespace Gimn_Asp
 
 
 
-                    if (miembro.FechaFin >= DateTime.Now)
+                    if (miembro.FechaFin >= DateTime.Today)
                     {
                         lblAcceso.Text = "Acceso permitido";
                         lblAcceso.ForeColor = System.Drawing.Color.Green;
