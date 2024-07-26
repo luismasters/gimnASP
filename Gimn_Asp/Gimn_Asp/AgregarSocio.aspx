@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="lblPrecio" class="form-label" style="color:aliceblue">Precio:</label>
-                                <asp:Label runat="server" ID="lblPrecio" CssClass="form-control-plaintext" />
+                                <asp:Label runat="server" ID="lblPrecio" CssClass="form-control-plaintext" style="color:aliceblue" />
                             </div>
                         </div>
 
