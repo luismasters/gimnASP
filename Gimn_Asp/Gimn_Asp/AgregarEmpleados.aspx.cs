@@ -14,7 +14,16 @@ namespace Gimn_Asp
 
             if (Convert.ToInt32(Session["Rol"]) != 1)
             {
-                Response.Redirect("Login.aspx");
+
+
+                Session["Mensaje"] = "Solo el Administrador puede Realizar esta accion. por favor inicia sesion nuevamente";
+                Session["URL"] = "Login.aspx";
+
+                Response.Redirect("Error401.aspx");
+
+
+
+
 
 
             }

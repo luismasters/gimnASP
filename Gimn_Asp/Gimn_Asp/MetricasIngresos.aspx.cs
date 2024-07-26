@@ -18,10 +18,29 @@ namespace Gimn_Asp
             {
                 CargarResumenDiario();
                 CargarResumenMensual();
+                CargarMembresiasActivas();
+                CargarMembresiasVencidas();
             }
         }
 
-        private void CargarResumenDiario()
+
+        private void CargarMembresiasActivas()
+        {
+            MiembroNegocio membresiaNegocio = new MiembroNegocio();
+            int membresiasActivas = membresiaNegocio.ObtenerCantidadMembresiasActivas();
+            lblMembresiasActivas.Text = $"Total: {membresiasActivas}";
+        }
+
+        private void CargarMembresiasVencidas()
+        {
+            MiembroNegocio membresiaNegocio = new MiembroNegocio();
+            int membresiasVencidas = membresiaNegocio.ObtenerCantidadMembresiasVencidas();
+            lblMembresiasVencidas.Text = $"Total: {membresiasVencidas}";
+        }
+    
+
+
+    private void CargarResumenDiario()
         {
             CobroNegocio cobroNegocio = new CobroNegocio();
             decimal ingresosDiarios = cobroNegocio.ObtenerIngresosTotales(DateTime.Today);

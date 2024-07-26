@@ -276,21 +276,23 @@ namespace Negocio
             try
             {
                 string query = @"SELECT H.ID, H.Fecha, H.HoraInicio, H.HoraFin, C.Descripcion AS NombreClase, 
-                         S.Nombre AS NombreSalon
-                         FROM HorariosClases H 
-                         INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
-                         INNER JOIN Salones S ON H.IDSalon = S.ID
-                         WHERE H.IDInstructor = @IDInstructor";
+                 S.Nombre AS NombreSalon
+                 FROM HorariosClases H 
+                 INNER JOIN ClasesSalon C ON H.IDClaseSalon = C.ID 
+                 INNER JOIN Salones S ON H.IDSalon = S.ID
+                 WHERE H.IDInstructor = @IDInstructor
+                 AND (H.Fecha > @FechaActual OR (H.Fecha = @FechaActual AND H.HoraFin > @HoraActual))";
 
                 if (fechaInicio.HasValue && fechaFin.HasValue)
                 {
                     query += " AND H.Fecha BETWEEN @FechaInicio AND @FechaFin";
                 }
-
                 query += " ORDER BY H.Fecha ASC, H.HoraInicio ASC";
 
                 DT.setearConsulta(query);
                 DT.agregarParametro("@IDInstructor", idInstructor);
+                DT.agregarParametro("@FechaActual", DateTime.Today);
+                DT.agregarParametro("@HoraActual", DateTime.Now.TimeOfDay);
 
                 if (fechaInicio.HasValue && fechaFin.HasValue)
                 {
@@ -324,7 +326,6 @@ namespace Negocio
             }
             return horariosClases;
         }
-
         public bool EliminarHorarioClase(int id)
         {
             try

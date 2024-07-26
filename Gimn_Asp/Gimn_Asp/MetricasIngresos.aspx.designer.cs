@@ -42,13 +42,22 @@ namespace Gimn_Asp
         protected global::System.Web.UI.WebControls.Label lblIngresosMensuales;
 
         /// <summary>
-        /// Control lblCuentasOperativas.
+        /// Control lblMembresiasActivas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCuentasOperativas;
+        protected global::System.Web.UI.WebControls.Label lblMembresiasActivas;
+
+        /// <summary>
+        /// Control lblMembresiasVencidas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMembresiasVencidas;
 
         /// <summary>
         /// Control txtFechaInicio.

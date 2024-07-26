@@ -49,12 +49,15 @@ namespace Gimn_Asp
                             case 2: // Empleado Recepcion
                                 Response.Redirect("Acceso.aspx");
                                 break;
-                            case 3: // Instructor Salon
+                            case 3:
+                                Response.Redirect("DashboardEmpleado.aspx");
+                                break;
+
                             case 4: // Instructor Musculacion
-                                Response.Redirect("HorarioInstructor.aspx");
+                                Response.Redirect("DashboardEmpleado.aspx");
                                 break;
                             default:
-                                Response.Redirect("Default.aspx");
+                                Response.Redirect("Acceso.aspx");
                                 break;
                         }
                     }

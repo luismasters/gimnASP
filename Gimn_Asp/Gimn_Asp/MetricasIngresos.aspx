@@ -43,18 +43,30 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card metric-card">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <i class="fas fa-wallet me-2"></i>Cuentas Operativas
-                                    </h5>
-                    <p class="card-text">
-                                        <asp:Label ID="lblCuentasOperativas" runat="server"></asp:Label>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                     <div class="col-md-4 mb-4">
+    <div class="card metric-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-user-check me-2"></i>Membresías Activas
+            </h5>
+            <p class="card-text">
+                <asp:Label ID="lblMembresiasActivas" runat="server"></asp:Label>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 mb-4">
+    <div class="card metric-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="fas fa-user-times me-2"></i>Membresías Vencidas
+            </h5>
+            <p class="card-text">
+                <asp:Label ID="lblMembresiasVencidas" runat="server"></asp:Label>
+            </p>
+        </div>
+    </div>
+</div>
                     </div>
 
                     <h4 class="mt-4">Resumen Filtrado por Fechas</h4>

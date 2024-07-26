@@ -15,33 +15,41 @@ namespace Gimn_Asp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
-            if (Convert.ToInt32(Session["Rol"]) != 1)
+            try
             {
-                Response.Redirect("Login.aspx");
+                if (Convert.ToInt32(Session["Rol"]) != 1)
+                {
+                    Response.Redirect("Login.aspx");
+                }
 
-
+                if (!IsPostBack)
+                {
+                    DateTime fecha = DateTime.Parse(Request.QueryString["fecha"]);
+                    lblFecha.Text = fecha.ToString("dd/MM/yyyy");
+                    int idEmpleado = int.Parse(Request.QueryString["idEmpleado"]);
+                    CargarDetalleCobro(idEmpleado, fecha);
+                }
             }
-
-
-
-            if (!IsPostBack)
+            catch (Exception ex)
             {
-                DateTime fecha = DateTime.Parse(Request.QueryString["fecha"]);
-                lblFecha.Text = fecha.ToString("dd/MM/yyyy");
-                int idEmpleado = int.Parse(Request.QueryString["idEmpleado"]);
-                CargarDetalleCobro(idEmpleado, fecha);
+                // Manejar la excepción
             }
         }
 
         private void CargarDetalleCobro(int idEmpleado, DateTime fecha)
         {
-            CobroNegocio cobroNegocio = new CobroNegocio();
-            List<CobroDetalle> detalleCobros = cobroNegocio.ObtenerDetalleCobros(idEmpleado, fecha);
+            try
+            {
+                CobroNegocio cobroNegocio = new CobroNegocio();
+                List<CobroDetalle> detalleCobros = cobroNegocio.ObtenerDetalleCobros(idEmpleado, fecha);
 
-            gvDetalleCobro.DataSource = detalleCobros;
-            gvDetalleCobro.DataBind();
+                gvDetalleCobro.DataSource = detalleCobros;
+                gvDetalleCobro.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción
+            }
         }
     }
 }

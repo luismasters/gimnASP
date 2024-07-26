@@ -11,7 +11,7 @@ namespace Gimn_Asp
 {
 
 
-    public partial class HorarioInstructor
+    public partial class DashboardEmpleado
     {
 
         /// <summary>
@@ -24,48 +24,57 @@ namespace Gimn_Asp
         protected global::Gimn_Asp.InstructorNav InstructorNav1;
 
         /// <summary>
-        /// Control txtFechaInicio.
+        /// Control imgPerfil.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaInicio;
+        protected global::System.Web.UI.WebControls.Image imgPerfil;
 
         /// <summary>
-        /// Control txtFechaFin.
+        /// Control lblNombre.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaFin;
+        protected global::System.Web.UI.WebControls.Label lblNombre;
 
         /// <summary>
-        /// Control btnFiltrar.
+        /// Control lblCargo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltrar;
+        protected global::System.Web.UI.WebControls.Label lblCargo;
 
         /// <summary>
-        /// Control gvHorarioInstructor.
+        /// Control lblDNI.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvHorarioInstructor;
+        protected global::System.Web.UI.WebControls.Label lblDNI;
 
         /// <summary>
-        /// Control lblError.
+        /// Control lblEmail.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected global::System.Web.UI.WebControls.Label lblEmail;
+
+        /// <summary>
+        /// Control lblFechaNacimiento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFechaNacimiento;
     }
 }

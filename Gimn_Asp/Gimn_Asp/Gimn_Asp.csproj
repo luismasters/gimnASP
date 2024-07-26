@@ -127,15 +127,19 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Imagen\Captura de pantalla 2024-07-26 134724.png" />
     <Content Include="Content\Imagen\gymn.jpg" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\StyleSheet.css" />
+    <Content Include="DashboardEmpleado.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="DetalleCobro.aspx" />
     <Content Include="DetalleReservas.aspx" />
+    <Content Include="Error401.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="HorarioInstructor.aspx" />
+    <Content Include="InstructorNav.ascx" />
     <Content Include="ListarEmpleados.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="MetricasIngresos.aspx" />
@@ -279,6 +283,13 @@
     <Compile Include="Config.aspx.designer.cs">
       <DependentUpon>Config.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DashboardEmpleado.aspx.cs">
+      <DependentUpon>DashboardEmpleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DashboardEmpleado.aspx.designer.cs">
+      <DependentUpon>DashboardEmpleado.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -300,6 +311,13 @@
     <Compile Include="DetalleReservas.aspx.designer.cs">
       <DependentUpon>DetalleReservas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Error401.aspx.cs">
+      <DependentUpon>Error401.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error401.aspx.designer.cs">
+      <DependentUpon>Error401.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -309,6 +327,13 @@
     </Compile>
     <Compile Include="HorarioInstructor.aspx.designer.cs">
       <DependentUpon>HorarioInstructor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="InstructorNav.ascx.cs">
+      <DependentUpon>InstructorNav.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InstructorNav.ascx.designer.cs">
+      <DependentUpon>InstructorNav.ascx</DependentUpon>
     </Compile>
     <Compile Include="ListarEmpleados.aspx.cs">
       <DependentUpon>ListarEmpleados.aspx</DependentUpon>

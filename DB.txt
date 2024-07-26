@@ -1,0 +1,305 @@
+-- Creación de la base de datos Gimnasio
+USE master;
+GO
+DROP DATABASE IF EXISTS Gimnasio2;
+GO
+CREATE DATABASE Gimnasio2;
+GO
+USE Gimnasio2;
+GO
+
+CREATE TABLE Roles (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(50) UNIQUE
+);
+GO
+-- Tabla Usuarios
+CREATE TABLE Usuarios (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    NombreUsuario VARCHAR(50) UNIQUE,
+    Clave VARCHAR(50)
+);
+GO
+
+
+-- Tabla TiposMembresias
+CREATE TABLE TiposMembresias (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100),
+    Precio MONEY
+);
+GO
+
+-- Tabla Personas
+CREATE TABLE Personas (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    DNI VARCHAR(10) UNIQUE,
+    Nombre VARCHAR(50),
+    Apellido VARCHAR(50),
+    Email VARCHAR(70) UNIQUE,
+    FechaNacimiento DATE
+);
+GO
+
+INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
+VALUES ('12345678', 'Admin', 'Admin', 'admin@example.com', '1990-01-01');
+
+-- Tabla CargosEmpleados
+CREATE TABLE CargosEmpleados (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) UNIQUE
+);
+GO
+
+-- Tabla Empleados
+CREATE TABLE Empleados (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
+    IDCargoEmpleado INT FOREIGN KEY REFERENCES CargosEmpleados(ID),
+	IDRol INT FOREIGN KEY REFERENCES roles(ID),
+	IDUsuario INT FOREIGN KEY REFERENCES Usuarios(ID),
+	EstadoActivo bit
+
+);
+GO		
+
+-- Tabla Miembros
+CREATE TABLE Miembros (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersona INT FOREIGN KEY REFERENCES Personas(ID),
+    IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
+    FechaInicio DATE DEFAULT GETDATE(), -- Valor predeterminado configurado a la fecha actual
+    FechaFin DATE default DATEADD(DAY, 30,GETDATE()),
+    EstadoActivo BIT,
+	IDRol INT FOREIGN KEY REFERENCES Roles(ID),
+	IDUsuario INT FOREIGN KEY REFERENCES Usuarios(ID),
+
+
+);
+GO
+
+
+
+-- Tabla Cobros
+CREATE TABLE Cobros (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDPersonas INT FOREIGN KEY REFERENCES Personas(ID),
+	IDEmpleado INT FOREIGN KEY REFERENCES Empleados(ID),
+    IDTipoMembresia INT FOREIGN KEY REFERENCES TiposMembresias(ID),
+    FechaCobro DATE
+
+);
+GO
+
+CREATE TABLE Imagenes (
+    ID INT PRIMARY KEY identity(1,1),
+    IDPersona INT foreign key references Personas(ID),
+    Archivo VARBINARY(MAX)
+);
+go
+create table ClasesSalon(
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) unique
+	);
+
+	create table Salones(
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) unique,
+	Capacidad int not null,
+	);
+
+CREATE TABLE HorariosClases (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    IDClaseSalon INT FOREIGN KEY REFERENCES ClasesSalon(ID),
+    IDSalon INT FOREIGN KEY REFERENCES Salones(ID),
+    Fecha DATE,
+    HoraInicio TIME,
+    HoraFin TIME,
+    IDInstructor INT FOREIGN KEY REFERENCES Empleados(ID) -- Nueva columna para el instructor
+);
+
+	create table Reservas(
+	ID INT IDENTITY(1,1) PRIMARY KEY,
+	IDClaseSalon INT FOREIGN KEY REFERENCES ClasesSalon(ID),
+	IDSalone INT FOREIGN KEY REFERENCES Salones(ID),
+	IDMiembro INT FOREIGN KEY REFERENCES Miembros(ID),
+	IDHorarioClase INT FOREIGN KEY REFERENCES HorariosClases(ID),
+	)
+
+
+
+	
+ALTER TABLE HorariosClases
+ALTER COLUMN HoraInicio VARCHAR(8);
+
+ALTER TABLE HorariosClases
+ALTER COLUMN HoraFin VARCHAR(8);
+
+UPDATE HorariosClases
+SET HoraInicio = LEFT(CONVERT(VARCHAR, HoraInicio, 108), 5),
+    HoraFin = LEFT(CONVERT(VARCHAR, HoraFin, 108), 5);
+
+INSERT INTO TiposMembresias (Descripcion, Precio)
+VALUES
+('Musculacion', 25000.00),
+('Clases de Salon',20000.00),
+('Pase Dorado',35000.00);
+GO
+insert into CargosEmpleados(Descripcion) values('Administrador')
+go
+
+INSERT INTO Roles (Nombre)
+VALUES
+('Administrador'),
+('Empleado Recepcion'),
+('Instructor Salon'),
+('Instructor Musculacion'),
+('UserSalon'),
+('UserMusculacion'),
+('UserPremiun');
+
+GO
+
+SELECT * FROM roles;
+SELECT * FROM CargosEmpleados ;
+select * from Empleados;
+select * from Miembros;
+select * from Personas;
+SELECT * FROM Empleados;
+select * from Usuarios;
+go
+CREATE PROCEDURE sp_CrearUsuarioYEmpleado
+    @NombreUsuario VARCHAR(50),
+    @Clave VARCHAR(50),
+    @DNI VARCHAR(10),
+    @Nombre VARCHAR(50),
+    @Apellido VARCHAR(50),
+    @Email VARCHAR(70),
+    @FechaNacimiento DATE,
+    @IDCargoEmpleado INT,
+    @IDRol INT,
+    @EstadoActivo BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- Verificar DNI duplicado
+        IF EXISTS (SELECT 1 FROM Personas WHERE DNI = @DNI)
+        BEGIN
+            THROW 50001, 'El DNI ya está registrado.', 1;
+        END
+
+        -- Verificar Email duplicado
+        IF EXISTS (SELECT 1 FROM Personas WHERE Email = @Email)
+        BEGIN
+            THROW 50002, 'El Email ya está registrado.', 1;
+        END
+
+        -- Verificar NombreUsuario duplicado
+        IF EXISTS (SELECT 1 FROM Usuarios WHERE NombreUsuario = @NombreUsuario)
+        BEGIN
+            THROW 50003, 'El Nombre de Usuario ya está registrado.', 1;
+        END
+
+        -- Insertar el usuario
+        INSERT INTO Usuarios (NombreUsuario, Clave)
+        VALUES (@NombreUsuario, @Clave);
+        
+        DECLARE @IDUsuario INT = SCOPE_IDENTITY();
+
+        -- Insertar la persona
+        INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
+        VALUES (@DNI, @Nombre, @Apellido, @Email, @FechaNacimiento);
+        
+        DECLARE @IDPersona INT = SCOPE_IDENTITY();
+
+        -- Insertar el empleado
+        INSERT INTO Empleados (IDPersona, IDCargoEmpleado, IDRol, IDUsuario, EstadoActivo)
+        VALUES (@IDPersona, @IDCargoEmpleado, @IDRol, @IDUsuario, @EstadoActivo);
+
+        COMMIT TRANSACTION;
+        SELECT 'Usuario y empleado creados con éxito' AS Resultado;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        
+        DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+        DECLARE @ErrorNumber INT = ERROR_NUMBER();
+
+        IF @ErrorNumber IN (50001, 50002, 50003)
+        BEGIN
+            SELECT @ErrorMessage AS Resultado;
+        END
+        ELSE
+        BEGIN
+            SELECT 'Error: ' + @ErrorMessage AS Resultado;
+        END
+    END CATCH;
+END
+go
+
+--update Miembros set FechaInicio= '2024-03-30' , FechaFin='2024-04-30' where IDPersona= 9;
+--INSERT INTO Miembros (IDPersona, IDTipoMembresia) OUTPUT INSERTED.ID VALUES (1, 1)
+
+insert into Usuarios(NombreUsuario,Clave ) values ('Admin','Admin');
+
+insert into Empleados(IDPersona,IDCargoEmpleado,IDRol,IDUsuario,EstadoActivo) values(1,1,1,1,1)
+
+
+INSERT INTO Personas (DNI, Nombre, Apellido, Email, FechaNacimiento)
+VALUES 
+('23456789', 'Juan', 'Pérez', 'juan.perez@example.com', '1985-06-15'),
+('34567890', 'Ana', 'García', 'ana.garcia@example.com', '1990-08-22'),
+('45678901', 'Luis', 'Martínez', 'luis.martinez@example.com', '1978-11-30'),
+('56789012', 'María', 'Rodríguez', 'maria.rodriguez@example.com', '1982-01-10'),
+('67890123', 'Carlos', 'Hernández', 'carlos.hernandez@example.com', '1995-03-17'),
+('78901234', 'Laura', 'Sánchez', 'laura.sanchez@example.com', '1993-12-05'),
+('89012345', 'Miguel', 'Gómez', 'miguel.gomez@example.com', '1987-07-25'),
+('90123456', 'Carmen', 'Díaz', 'carmen.diaz@example.com', '1992-05-11'),
+('01234567', 'Pedro', 'Morales', 'pedro.morales@example.com', '1980-09-29'),
+('12345644', 'Sara', 'Castro', 'sara.castro@example.com', '1991-04-20'),
+('23456780', 'Jorge', 'Alonso', 'jorge.alonso@example.com', '1989-02-12'),
+('34567891', 'Beatriz', 'Fernández', 'beatriz.fernandez@example.com', '1986-10-01'),
+('45678912', 'Sofía', 'García', 'sofia.garcia@example.com', '1994-07-08'),
+('56789023', 'Andrés', 'Lopez', 'andres.lopez@example.com', '1983-11-22'),
+('67890134', 'Valeria', 'Romero', 'valeria.romero@example.com', '1988-03-03');
+
+-- Insertar usuarios
+INSERT INTO Usuarios (NombreUsuario, Clave)
+VALUES 
+('juanp', 'pass123'),
+('anag', 'pass234'),
+('luism', 'pass345'),
+('mariar', 'pass456'),
+('carlosh', 'pass567'),
+('lauras', 'pass678'),
+('miguelg', 'pass789'),
+('carmend', 'pass890'),
+('pedrom', 'pass901'),
+('sara_c', 'pass012'),
+('jorgea', 'pass123'),
+('beatrizf', 'pass234'),
+('sofiag', 'pass345'),
+('andresl', 'pass456'),
+('valeriar', 'pass567');
+
+-- Insertar miembros con fechas variadas
+INSERT INTO Miembros (IDPersona, IDTipoMembresia, FechaInicio, FechaFin, EstadoActivo, IDRol, IDUsuario)
+VALUES
+(2, 1, DATEADD(DAY, -30, GETDATE()), DATEADD(DAY, 0, GETDATE()), 1, 7, 2), -- Vencido hoy
+(3, 2, DATEADD(DAY, -20, GETDATE()), DATEADD(DAY, 10, GETDATE()), 1, 7, 3), -- 20 días atrás, activo
+(4, 2, DATEADD(DAY, -10, GETDATE()), DATEADD(DAY, 20, GETDATE()), 1, 7, 4), -- 10 días atrás, activo
+(5, 3, DATEADD(DAY, -15, GETDATE()), DATEADD(DAY, 15, GETDATE()), 1, 7, 5), -- 15 días atrás, activo
+(6, 3, DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, 25, GETDATE()), 1, 7, 6), -- 5 días atrás, activo
+(7, 1, DATEADD(DAY, -25, GETDATE()), DATEADD(DAY, 5, GETDATE()), 1, 7, 7), -- 25 días atrás, activo
+(8, 1, DATEADD(DAY, -33, GETDATE()), DATEADD(DAY, -3, GETDATE()), 1, 7, 8), -- 10 días atrás, activo
+(9, 2, DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, 25, GETDATE()), 1, 7, 9), -- 5 días atrás, activo
+(10, 2, DATEADD(DAY, -37, GETDATE()), DATEADD(DAY, -7, GETDATE()), 1, 7, 10), -- 15 días atrás, activo
+(11, 3, DATEADD(DAY, -35, GETDATE()), DATEADD(DAY, -5, GETDATE()), 1, 7, 11), -- 35 días atrás, vencido
+(12, 3, DATEADD(DAY, -30, GETDATE()), DATEADD(DAY, 0, GETDATE()), 1, 7, 12), -- Vencido hoy
+(13, 1, DATEADD(DAY, -20, GETDATE()), DATEADD(DAY, 10, GETDATE()), 1, 7, 13), -- 20 días atrás, activo
+(14, 1, DATEADD(DAY, -10, GETDATE()), DATEADD(DAY, 20, GETDATE()), 1, 7, 14), -- 10 días atrás, activo
+(15, 2, DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, 25, GETDATE()), 1, 7, 15); -- 5 días atrás, activo

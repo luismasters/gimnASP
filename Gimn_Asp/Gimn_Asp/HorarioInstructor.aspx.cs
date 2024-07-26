@@ -10,16 +10,6 @@ namespace Gimn_Asp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
-
-
-            if (Convert.ToInt32(Session["Rol"]) != 2)
-            {
-                Response.Redirect("Login.aspx");
-
-
-            }
             if (!IsPostBack)
             {
                 CargarHorarioInstructor();
@@ -28,37 +18,58 @@ namespace Gimn_Asp
 
         private void CargarHorarioInstructor(DateTime? fechaInicio = null, DateTime? fechaFin = null)
         {
-            // Aquí deberías obtener el ID del instructor actual (por ejemplo, de la sesión)
-            int idInstructorActual = ObtenerIdInstructorActual();
-
-            HorarioClaseNegocio horarioClaseNegocio = new HorarioClaseNegocio();
-            List<HorarioClase> horariosInstructor;
-
-            if (fechaInicio.HasValue && fechaFin.HasValue)
+            try
             {
-                horariosInstructor = horarioClaseNegocio.ListarHorariosClasesPorInstructor(idInstructorActual, fechaInicio.Value, fechaFin.Value);
-            }
-            else
-            {
-                horariosInstructor = horarioClaseNegocio.ListarHorariosClasesPorInstructor(idInstructorActual);
-            }
+                int idInstructorActual = ObtenerIdInstructorActual();
+                HorarioClaseNegocio horarioClaseNegocio = new HorarioClaseNegocio();
+                List<HorarioClase> horariosInstructor;
 
-            gvHorarioInstructor.DataSource = horariosInstructor;
-            gvHorarioInstructor.DataBind();
+                if (fechaInicio.HasValue && fechaFin.HasValue)
+                {
+                    horariosInstructor = horarioClaseNegocio.ListarHorariosClasesPorInstructor(idInstructorActual, fechaInicio.Value, fechaFin.Value);
+                }
+                else
+                {
+                    horariosInstructor = horarioClaseNegocio.ListarHorariosClasesPorInstructor(idInstructorActual);
+                }
+
+                gvHorarioInstructor.DataSource = horariosInstructor;
+                gvHorarioInstructor.DataBind();
+
+                lblError.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Error al cargar el horario: " + ex.Message;
+                lblError.Visible = true;
+            }
         }
 
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
-            DateTime fechaInicio = DateTime.Parse(txtFechaInicio.Text);
-            DateTime fechaFin = DateTime.Parse(txtFechaFin.Text);
-            CargarHorarioInstructor(fechaInicio, fechaFin);
+            try
+            {
+                DateTime fechaInicio = DateTime.Parse(txtFechaInicio.Text);
+                DateTime fechaFin = DateTime.Parse(txtFechaFin.Text);
+                CargarHorarioInstructor(fechaInicio, fechaFin);
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Error al filtrar: " + ex.Message;
+                lblError.Visible = true;
+            }
         }
 
         private int ObtenerIdInstructorActual()
         {
-            // Implementa la lógica para obtener el ID del instructor actual
-            // Por ejemplo, podrías obtenerlo de la sesión si lo has guardado allí al iniciar sesión
-            return Convert.ToInt32(Session["EmpleadoID"]);
+            try
+            {
+                return Convert.ToInt32(Session["EmpleadoID"]);
+            }
+            catch (Exception)
+            {
+                throw new Exception("No se pudo obtener el ID del instructor. Por favor, inicie sesión nuevamente.");
+            }
         }
     }
 }

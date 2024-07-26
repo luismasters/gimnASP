@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
 
 namespace Gimn_Asp
 {
@@ -21,17 +22,25 @@ namespace Gimn_Asp
 
             
                 if (Convert.ToBoolean(Session["vencido"]) == true)
-                {
-                    string script = "alert('No puedes realizar reservas. Por favor, renueva tu suscripción para disfrutar de nuestras actividades.'); window.location.href='UserDashboar.aspx';";
-                    ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, true);
+            {
+
+                Session["Mensaje"] = "No puedes realizar reservas.Por favor, renueva tu suscripción para disfrutar de nuestras actividades.";
+                Session["URL"] = "UserDashboar.aspx";
+
+                Response.Redirect("Error401.aspx");
+
+
+                    //string script = "alert('No puedes realizar reservas. Por favor, renueva tu suscripción para disfrutar de nuestras actividades.'); window.location.href='UserDashboar.aspx';";
+                   // ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, true);
                 }
 
             if (Convert.ToInt32(Session["Rol"]) != 5  && Convert.ToInt32(Session["Rol"]) != 7)
             {
 
-                string script = "alert('No puedes realizar reservas. tu membresia no incluye actividades de Salon.'); window.location.href='UserDashboar.aspx';";
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, true);
+                Session["Mensaje"] = "No puedes realizar reservas, Tu membresia no contempla actividades de salon";
+                Session["URL"] = "UserDashboar.aspx";
 
+                Response.Redirect("Error401.aspx");
             }
 
 

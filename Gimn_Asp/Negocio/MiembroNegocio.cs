@@ -430,6 +430,69 @@ WHERE M.ID IN (
             return miembros;
         }
 
+        public int ObtenerCantidadMembresiasActivas()
+        {
+            int cantidad = 0;
+            try
+            {
+                string consulta = @"
+            SELECT COUNT(*) 
+            FROM (
+                SELECT IDPersona, MAX(FechaFin) as UltimaFechaFin
+                FROM Miembros
+                GROUP BY IDPersona
+            ) AS UltimasMembresiasPorMiembro
+            WHERE UltimaFechaFin >= CONVERT(DATE, GETDATE())";
+
+                DT.setearConsulta(consulta);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    cantidad = Convert.ToInt32(DT.Lector[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la cantidad de miembros con membresías activas", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return cantidad;
+        }
+
+        public int ObtenerCantidadMembresiasVencidas()
+        {
+            int cantidad = 0;
+            try
+            {
+                string consulta = @"
+            SELECT COUNT(*) 
+            FROM (
+                SELECT IDPersona, MAX(FechaFin) as UltimaFechaFin
+                FROM Miembros
+                GROUP BY IDPersona
+            ) AS UltimasMembresiasPorMiembro
+            WHERE UltimaFechaFin < CONVERT(DATE, GETDATE())";
+
+                DT.setearConsulta(consulta);
+                DT.ejecutarLectura();
+                if (DT.Lector.Read())
+                {
+                    cantidad = Convert.ToInt32(DT.Lector[0]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la cantidad de miembros con membresías vencidas", ex);
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+            return cantidad;
+        }
 
     }
 }
