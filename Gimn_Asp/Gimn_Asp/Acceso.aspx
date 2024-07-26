@@ -24,7 +24,7 @@
                         <div style="margin: auto">
                             <h4>Control de acceso</h4>
                             <asp:TextBox ID="txtDNI" runat="server" placeholder="Ingrese DNI del Usuario" CssClass="form-control" Width="800px"></asp:TextBox>
-                            <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="Acceso_Click" CssClass="btn-success" />
+                            <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="Acceso_Click" CssClass="btn-primary" />
                         </div>
                     </div>
 

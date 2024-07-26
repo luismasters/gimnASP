@@ -25,45 +25,52 @@ namespace Gimn_Asp
 
                 if (usuario != null)
                 {
-                    Session["Username"] = username;
-                    Session["TipoUsuario"] = "Empleado";
-
                     EmpleadoNegocio empleadoNegocio = new EmpleadoNegocio();
                     Empleado empleado = empleadoNegocio.BuscarEmpleadoPorUsuario(username);
 
                     if (empleado != null)
                     {
-                        Session["EmpleadoID"] = empleado.ID;
-                        Session["IDPersona"] = empleado.IDPersona;
-                        Session["CargoEmpleado"] = empleado.cargoEmpleado.Descripcion;
-                        Session["DNI"] = empleado.DNI;
-                        Session["Nombre"] = empleado.Nombre;
-                        Session["Apellido"] = empleado.Apellido;
-                        Session["Rol"] = empleado.rol.ID;
-
-                        switch (empleado.rol.ID)
+                        if (empleado.EstadoActivo)
                         {
-                            case 1: // Administrador
-                                Response.Redirect("MetricasIngresos.aspx");
-                                break;
-                            case 2: // Empleado Recepcion
-                                Response.Redirect("Acceso.aspx");
-                                break;
-                            case 3:
-                                Response.Redirect("DashboardEmpleado.aspx");
-                                break;
+                            Session["Username"] = username;
+                            Session["TipoUsuario"] = "Empleado";
 
-                            case 4: // Instructor Musculacion
-                                Response.Redirect("DashboardEmpleado.aspx");
-                                break;
-                            default:
-                                Response.Redirect("Acceso.aspx");
-                                break;
+                            Session["EmpleadoID"] = empleado.ID;
+                            Session["IDPersona"] = empleado.IDPersona;
+                            Session["CargoEmpleado"] = empleado.cargoEmpleado.Descripcion;
+                            Session["DNI"] = empleado.DNI;
+                            Session["Nombre"] = empleado.Nombre;
+                            Session["Apellido"] = empleado.Apellido;
+                            Session["Rol"] = empleado.rol.ID;
+
+                            switch (empleado.rol.ID)
+                            {
+                                case 1: // Administrador
+                                    Response.Redirect("MetricasIngresos.aspx");
+                                    break;
+                                case 2: // Empleado Recepcion
+                                    Response.Redirect("Acceso.aspx");
+                                    break;
+                                case 3:
+                                    Response.Redirect("DashboardEmpleado.aspx");
+                                    break;
+
+                                case 4: // Instructor Musculacion
+                                    Response.Redirect("DashboardEmpleado.aspx");
+                                    break;
+                                default:
+                                    Response.Redirect("Acceso.aspx");
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            lblMessage.Text = "El empleado no está activo.";
                         }
                     }
                     else
                     {
-                        lblMessage.Text = "No se encontró la información del empleado.";
+                        lblMessage.Text = "el empleado perdio los permisos de acceso.";
                     }
                 }
                 else

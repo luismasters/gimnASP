@@ -265,31 +265,31 @@ namespace Negocio
             try
             {
                 Dt.setearConsulta(@"
-            SELECT 
-                E.ID AS EmpleadoID, 
-                E.IDPersona, 
-                E.IDCargoEmpleado, 
-                E.EstadoActivo, 
-                P.DNI, 
-                P.Nombre, 
-                P.Apellido, 
-                P.Email, 
-                P.FechaNacimiento, 
-                C.Descripcion AS CargoDescripcion, 
-                R.ID AS RolID, 
-                R.Nombre AS RolDescripcion
-            FROM 
-                Empleados E
-            INNER JOIN 
-                Personas P ON E.IDPersona = P.ID
-            INNER JOIN 
-                CargosEmpleados C ON E.IDCargoEmpleado = C.ID
-            INNER JOIN 
-                Usuarios U ON E.IDUsuario = U.ID
-            INNER JOIN 
-                Roles R ON R.ID = E.IDRol
-            WHERE 
-                U.NombreUsuario = @NombreUsuario");
+        SELECT 
+            E.ID AS EmpleadoID, 
+            E.IDPersona, 
+            E.IDCargoEmpleado, 
+            E.EstadoActivo, 
+            P.DNI, 
+            P.Nombre, 
+            P.Apellido, 
+            P.Email, 
+            P.FechaNacimiento, 
+            C.Descripcion AS CargoDescripcion, 
+            R.ID AS RolID, 
+            R.Nombre AS RolDescripcion
+        FROM 
+            Empleados E
+        INNER JOIN 
+            Personas P ON E.IDPersona = P.ID
+        INNER JOIN 
+            CargosEmpleados C ON E.IDCargoEmpleado = C.ID
+        INNER JOIN 
+            Usuarios U ON E.IDUsuario = U.ID
+        INNER JOIN 
+            Roles R ON R.ID = E.IDRol
+        WHERE 
+            U.NombreUsuario = @NombreUsuario AND E.EstadoActivo = 1"); // Agregué la condición E.EstadoActivo = 1
                 Dt.agregarParametro("@NombreUsuario", nombreUsuario);
                 Dt.ejecutarLectura();
                 if (Dt.Lector.Read())
@@ -327,7 +327,6 @@ namespace Negocio
             }
             return empleado;
         }
-
 
 
         public Empleado ObtenerEmpleado(int idEmpleado)

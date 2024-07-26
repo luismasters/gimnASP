@@ -123,37 +123,6 @@ namespace Gimn_Asp
                 lblMensaje.Text = "Persona no encontrada.";
             }
         }
-        protected void btnEliminar_Click(object sender, EventArgs e)
-        {
-            string dni = txtDNI.Text.Trim();
-            if (string.IsNullOrEmpty(dni))
-            {
-                lblMensaje.Text = "Por favor, ingrese un DNI.";
-                return;
-            }
-
-            PersonaNegocio personaNegocio = new PersonaNegocio();
-            Persona persona = personaNegocio.BuscarPersona(dni);
-
-            if (persona != null)
-            {
-                bool success = personaNegocio.EliminarPersona(persona.IDPersona);
-                if (success)
-                {
-                    lblMensaje.Text = "Persona eliminada correctamente.";
-                    LimpiarCampos();
-                    panel.Visible = false;
-                }
-                else
-                {
-                    lblMensaje.Text = "Error al eliminar la persona.";
-                }
-            }
-            else
-            {
-                lblMensaje.Text = "Persona no encontrada.";
-            }
-        }
 
         private void LimpiarCampos()
         {

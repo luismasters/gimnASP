@@ -10,7 +10,7 @@
                 </div>
 
                 <div class="col-9">
-                    <h2 class="mb-4">Baja/Modificación de Socio</h2>
+                    <h2 class="mb-4">Modificación de Socio</h2>
 
                     <div class="mb-4">
                         <h4>Ingrese DNI</h4>
@@ -53,7 +53,6 @@
 
                         <div class="mb-3">
                             <asp:Button ID="btnModificar" runat="server" Text="Modificar" OnClick="btnModificar_Click" CssClass="btn btn-primary" />
-                            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" OnClick="btnEliminar_Click" CssClass="btn btn-danger" />
                         </div>
 
                         <asp:Label ID="lblMensaje" runat="server" CssClass="d-block mt-2"></asp:Label>

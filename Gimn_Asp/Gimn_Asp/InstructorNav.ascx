@@ -7,25 +7,24 @@
     <hr style="border-color: rgb(146, 146, 146);">
     <ul class="nav nav-pills flex-column mb-auto">
 
-    
         <li>
-    <a href="DashboardEmpleado.aspx" class="nav-link" style="color: aliceblue;">
-        <i class="bi bi-credit-card"></i>
-        Panel Empleado
-    </a>
-</li>
+            <a href="DashboardEmpleado.aspx" class="nav-link" style="color: aliceblue;">
+                <i class="bi bi-speedometer2"></i>
+                Panel Empleado
+            </a>
+        </li>
         <li>
-    <a href="HorarioInstructor.aspx" class="nav-link" style="color: aliceblue;">
-        <i class="bi bi-credit-card"></i>
-        Clases Asignadas
-    </a>
-</li>
-    <li>
-    <a href="Acceso.aspx" class="nav-link" style="color: aliceblue;">
-        <i class="bi bi-credit-card"></i>
-         acceso 
-    </a>
-     </li>   
+            <a href="HorarioInstructor.aspx" class="nav-link" style="color: aliceblue;">
+                <i class="bi bi-calendar"></i>
+                Clases Asignadas
+            </a>
+        </li>
+        <li>
+            <a href="VerificarAcceso.aspx" class="nav-link" style="color: aliceblue;">
+                <i class="bi bi-lock"></i>
+                Verificar Acceso de Miembros
+            </a>
+        </li>
         <li>
             <asp:Button ID="btnCerrarSesion" runat="server" CssClass="btn btn-link nav-link" Text="Cerrar Sesión" OnClick="btnCerrarSesion_Click" style="color: aliceblue; text-align: left;" />
         </li>

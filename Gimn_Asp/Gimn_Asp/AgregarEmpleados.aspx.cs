@@ -14,18 +14,9 @@ namespace Gimn_Asp
 
             if (Convert.ToInt32(Session["Rol"]) != 1)
             {
-
-
                 Session["Mensaje"] = "Solo el Administrador puede Realizar esta accion. por favor inicia sesion nuevamente";
                 Session["URL"] = "Login.aspx";
-
                 Response.Redirect("Error401.aspx");
-
-
-
-
-
-
             }
 
 
@@ -98,6 +89,14 @@ namespace Gimn_Asp
 
                 if (exito)
                 {
+
+                    Persona p = new Persona();
+                    PersonaNegocio pn = new PersonaNegocio();
+                    p = pn.BuscarPersona(empleado.DNI);
+
+
+
+
                     // Guardar imagen si se ha cargado
                     if (fileUploadImagen.HasFile)
                     {
@@ -105,7 +104,7 @@ namespace Gimn_Asp
                         ImagenNegocio negocioImagen = new ImagenNegocio();
                         try
                         {
-                            negocioImagen.InsertarImagen(empleado.IDPersona, datosImagen);
+                            negocioImagen.InsertarImagen(p.IDPersona, datosImagen);
                             lblMensaje.Text = "Empleado, usuario e imagen agregados correctamente.";
                         }
                         catch (Exception ex)

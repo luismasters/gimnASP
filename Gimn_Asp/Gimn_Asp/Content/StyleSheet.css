@@ -15,6 +15,7 @@
 
 body {
     background-color: rgba(30,30,30,255);
+    color: aliceblue !important;
 }
 
 /* Estilo para los elementos del dropdown cuando se seleccionan o se pasa el ratón sobre ellos */

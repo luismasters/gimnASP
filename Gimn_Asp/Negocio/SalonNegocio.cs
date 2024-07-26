@@ -92,7 +92,27 @@ namespace Negocio
 
 
 
-
+        public bool ModificarSalon(Salon salon, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+            try
+            {
+                DT.setearConsulta("UPDATE Salones SET Nombre = @Nombre, Capacidad = @Capacidad WHERE ID = @ID");
+                DT.agregarParametro("@ID", salon.ID);
+                DT.agregarParametro("@Nombre", salon.Nombre);
+                DT.agregarParametro("@Capacidad", salon.capacidad);
+                return DT.ejecutarAccion();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Error al intentar modificar el salón: " + ex.Message;
+                return false;
+            }
+            finally
+            {
+                DT.cerrarConexion();
+            }
+        }
 
 
 
